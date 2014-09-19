@@ -2,7 +2,7 @@
 using System.Collections;
 
 namespace Kinect.Shape {
-	public class ShapeClass : MonoBehaviour {
+	public class ShapeClass {
 		public static string identifier;
 	}
 }
