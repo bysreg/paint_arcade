@@ -12,7 +12,8 @@ public class CircleGestureSegment{
 	private float maximumCenterVariance = 0.1f;
 	private float minimumAvgDiameter = 0.5f;
 	// Use this for initialization
-	public void Init () {
+
+	public CircleGestureSegment() {
 		points = new List<Vector3>();
 		windowSize = 40;
 		minPointsForDetection = 20;
