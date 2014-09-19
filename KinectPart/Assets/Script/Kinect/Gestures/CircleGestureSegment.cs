@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Kinect.Shape;
 
 public class CircleGestureSegment{
 
@@ -8,8 +9,8 @@ public class CircleGestureSegment{
 	private List<Vector3> points;
 	private int minPointsForDetection;
 	private float startPointDstanceTolerance = 0.1f;
-	private float maximumCenterPointsVariance = 0.02f;
-
+	private float maximumCenterVariance = 0.1f;
+	private float minimumAvgDiameter = 0.5f;
 	// Use this for initialization
 	public void Init () {
 		points = new List<Vector3>();
@@ -20,12 +21,10 @@ public class CircleGestureSegment{
 	public bool AddandDetect(Vector3 point) {
 		points.Add (point);
 		if (points.Count > windowSize) {
-			Debug.Log("CircleGestureSegement Full");
+			//Debug.Log("CircleGestureSegement Full");
 			points.RemoveAt(0);
 		}
-
 		return Detect();
-
 	}
 
 	bool Detect() {
@@ -38,10 +37,6 @@ public class CircleGestureSegment{
 		if (endPointIndex != -1) {
 			DetectCircle(startPointIndex, endPointIndex);
 		}
-
-
-		Debug.Log("End");
-
 
 		return false;
 	}
@@ -62,19 +57,25 @@ public class CircleGestureSegment{
 			endIndex--;
 		}
 
-		List<Vector3> centerPoints = FindCenterPoints(startIndex, endIndex);
-		float variance = VarianceFromCenterPoints(centerPoints);
-		Debug.Log("Variance: " + variance);
-		if(variance <= maximumCenterPointsVariance) {
-			Debug.Log("Detect Circle");
-			points.RemoveAll();
+		List<Circle> circles = FindCircles(startIndex, endIndex);
+		float avgDiameter = AverageDiameterFromCircles (circles);
+		//Debug.Log ("Avg diameter: " + avgDiameter);
+		if (avgDiameter > minimumAvgDiameter) {
+			float variance = CenterVarianceFromCircles(circles);
+			//Debug.Log("Variance: " + variance);
+
+			if(variance <= maximumCenterVariance) {
+				Debug.Log("Detect Circle");
+				points.Clear();
+			}
 		}
+
 	}
 
 
 
-	Vector3 FindCenterPoints(int startIndex, int endIndex) {
-		List<Vector3> centerPoints = new List<Vector3>();
+	List<Circle> FindCircles(int startIndex, int endIndex) {
+		List<Circle> circles = new List<Circle>();
 
 		for(int i=startIndex;i<=endIndex;i++) {
 			float maxDistance = 0;
@@ -87,35 +88,44 @@ public class CircleGestureSegment{
 					farestIndex = j;
 				}
 			}
-			centerPoints.Add((points[startIndex] + points[farestIndex])*.5f);
+			circles.Add(new Circle(maxDistance, (points[startIndex] + points[farestIndex])*.5f));
 		}
-		return centerPoints;
+		return circles;
 	}
 
 
-	float VarianceFromCenterPoints(List<Vector3> list) {
-		Vector3 avg = AverageVectorFromVectorList (list);
+	float CenterVarianceFromCircles(List<Circle> circles) {
+		Vector3 avgCenter = AverageCenterFromCircles (circles);
 		float squareDifferenceSumX = 0f;
 		float squareDifferenceSumY = 0f;
 
-		foreach (Vector3 point in list) {
-			squareDifferenceSumX += Mathf.Pow((point.x-avg.x), 2);
-			squareDifferenceSumY += Mathf.Pow((point.y-avg.y), 2);
+		foreach (Circle circle in circles) {
+			Vector3 center = circle.center;
+			squareDifferenceSumX += Mathf.Pow((center.x-avgCenter.x), 2);
+			squareDifferenceSumY += Mathf.Pow((center.y-avgCenter.y), 2);
 		}
 
-		float varianceX = squareDifferenceSumX/list.Count;
-		float varianceY = squareDifferenceSumY/list.Count;
+		float varianceX = squareDifferenceSumX/circles.Count;
+		float varianceY = squareDifferenceSumY/circles.Count;
 
 		return Mathf.Sqrt(Mathf.Pow(varianceX, 2)+Mathf.Pow(varianceY, 2));
 
 	}
 
-	Vector3 AverageVectorFromVectorList(List<Vector3> list) {
+	Vector3 AverageCenterFromCircles(List<Circle> circles) {
 		Vector3 avg = Vector3.zero;
-		foreach (Vector3 point in list) {
-			avg += point;
+		foreach (Circle circle in circles) {
+			avg += circle.center;
 		}
-		return avg / list.Count;
+		return avg / circles.Count;
+	}
+
+	float AverageDiameterFromCircles(List<Circle> circles) {
+		float avg = 0f;
+		foreach (Circle circle in circles) {
+			avg += circle.diameter;
+		}
+		return avg / circles.Count;
 	}
 
 
