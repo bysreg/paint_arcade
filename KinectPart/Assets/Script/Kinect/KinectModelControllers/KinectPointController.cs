@@ -96,6 +96,8 @@ public class KinectPointController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+
 		if(player == -1)
 			return;
 		//update all of the bones positions
