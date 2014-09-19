@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Kinect.GestureSegement {
 
-	public class GestureSegement : MonoBehaviour {
+	abstract public class GestureSegement : MonoBehaviour {
 		
 		public SkeletonWrapper TrackedSkeleton;
 		public int TrackingID;
@@ -15,24 +15,21 @@ namespace Kinect.GestureSegement {
 
 		protected void Awake() {
 			points = new List<Vector3>();
-			SetIndex();
 		}
 
-		virtual void SetIndex();
+		public abstract void SetIndex();
 		
 		
 		void Update () {
-			for (int i = 0; i < (int)Kinect.NuiSkeletonPositionIndex.Count; i ++) {
-				Add (i);
-			}
+			Add ();
 		}
 		
 		protected void Add () {
-			points.Add(TrackedSkeleton.bonePos[this.TrackingID, boneIndex]);
+			points.Add(TrackedSkeleton.bonePos[this.TrackingID, (int)boneIndex]);
 			DetectGesture();
 		}
 
-		virtual bool DetectGesture();
+		public abstract bool DetectGesture();
 		
 	}
 
