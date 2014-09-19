@@ -11,6 +11,7 @@ public class CircleGestureSegment{
 	private float startPointDstanceTolerance = 0.1f;
 	private float maximumCenterVariance = 0.1f;
 	private float minimumAvgDiameter = 0.5f;
+	private Vector3 avgCenter;
 	// Use this for initialization
 
 	public CircleGestureSegment() {
@@ -19,7 +20,7 @@ public class CircleGestureSegment{
 		minPointsForDetection = 20;
 	}
 
-	public bool AddandDetect(Vector3 point) {
+	public Circle AddandDetect(Vector3 point) {
 		points.Add (point);
 		if (points.Count > windowSize) {
 			//Debug.Log("CircleGestureSegement Full");
@@ -28,18 +29,18 @@ public class CircleGestureSegment{
 		return Detect();
 	}
 
-	bool Detect() {
+	Circle Detect() {
 		if (points.Count < minPointsForDetection)
-			return false;
+			return new Circle(0, Vector3.zero);
 
 		int startPointIndex = 0;
 		int endPointIndex = FindEndPointIndex ();
 
 		if (endPointIndex != -1) {
-			DetectCircle(startPointIndex, endPointIndex);
+			return DetectCircle(startPointIndex, endPointIndex);
 		}
 
-		return false;
+		return new Circle(0, Vector3.zero);
 	}
 
 	int FindEndPointIndex() {
@@ -53,7 +54,7 @@ public class CircleGestureSegment{
 		return -1;
 	}
 
-	void DetectCircle(int startIndex, int endIndex) {
+	Circle DetectCircle(int startIndex, int endIndex) {
 		if (endIndex % 2 == 0) {
 			endIndex--;
 		}
@@ -66,11 +67,13 @@ public class CircleGestureSegment{
 			//Debug.Log("Variance: " + variance);
 
 			if(variance <= maximumCenterVariance) {
-				Debug.Log("Detect Circle");
 				points.Clear();
+				Circle circle = new Circle(avgDiameter, avgCenter);
+				return circle;
 			}
 		}
 
+		return new Circle(0, Vector3.zero);
 	}
 
 
@@ -114,11 +117,12 @@ public class CircleGestureSegment{
 	}
 
 	Vector3 AverageCenterFromCircles(List<Circle> circles) {
-		Vector3 avg = Vector3.zero;
+		avgCenter = Vector3.zero;
 		foreach (Circle circle in circles) {
-			avg += circle.center;
+			avgCenter += circle.center;
 		}
-		return avg / circles.Count;
+		avgCenter /= circles.Count;
+		return avgCenter;
 	}
 
 	float AverageDiameterFromCircles(List<Circle> circles) {
