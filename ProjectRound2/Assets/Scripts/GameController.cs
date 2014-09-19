@@ -10,12 +10,14 @@ public class GameController : MonoBehaviour {
 	Texture2D canvasTexture;
 	GameObject canvasObject;
 	Color drawColor;
+	BrushShape brushShape;
 
 	void Awake()
 	{
 		canvasTexture = new Texture2D (canvasWidth, canvasHeight, TextureFormat.RGBA32, false);
 		canvasObject = GameObject.Find ("Canvas");
 		drawColor = Color.black;
+		brushShape = BrushShape.Circle;
 	}
 
 	void Start()
@@ -39,14 +41,35 @@ public class GameController : MonoBehaviour {
 			handCoord = hitInfo.textureCoord;
 			//print (handCoord.x + " " + handCoord.y);
 			if(Input.GetMouseButton(0))
-				DrawBrush(handCoord, drawColor);
+				DrawBrush(handCoord, drawColor, brushShape);
 		}
 	}
 
-	void DrawBrush(Vector2 uv, Color color)
+	void DrawBrush(Vector2 uv, Color color, BrushShape brushShape)
 	{
 		//ConvertUVToPixel (ref uv);
-		canvasTexture.SetPixel ((int)(uv.x * canvasWidth), (int)(uv.y * canvasHeight), drawColor);
+		int k = 0;
+		int x, y;
+		y = (int) (uv.y * canvasHeight - brushShape.height / 2.0f);
+		for (int i = brushShape.height - 1; i >= 0; i--) 
+		{
+			x = (int) (uv.x * canvasWidth - brushShape.width / 2.0f);
+
+			for(int j = 0;j < brushShape.width; j++)
+			{
+				if (x < 0 || x >= canvasWidth)
+					continue;
+				if (y < 0 || y >= canvasHeight)
+					continue;
+
+				//print (x + " " + y + " " + i + " " + j);
+				if(brushShape.matrix[i*brushShape.width + j] == 1)
+					canvasTexture.SetPixel (x, y, color);
+				x++;
+			}
+			y++;
+		}
+
 		canvasTexture.Apply ();
 	}
 
@@ -61,6 +84,5 @@ public class GameController : MonoBehaviour {
 		}
 		canvasTexture.Apply ();
 	}
-
-	//void ConvertUVToPixel()
+	
 }
