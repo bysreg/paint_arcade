@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Kinect.Monitor;
 
 public class LeftHandMonitor : HandMonitor {
-	
 
 	public override void SetWristIndex() {
 		wristIndex = (int)Kinect.NuiSkeletonPositionIndex.WristLeft;
