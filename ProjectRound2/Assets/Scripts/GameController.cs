@@ -7,6 +7,8 @@ public class GameController : MonoBehaviour {
 	public int canvasHeight;
 	public bool simulateWithMouse;
 	public int maxHands;
+	public GameObject KinectLeftHand;
+	public GameObject KinectRightHand;
 
 	Texture2D canvasTexture;
 	GameObject canvasObject;
@@ -52,6 +54,18 @@ public class GameController : MonoBehaviour {
 		else
 		{
 			// TODO : kinect part
+			PlayerHand handData = KinectRightHand.GetComponent<PlayerHand>();
+			if(handData.isHandDown) {
+				float x = KinectRightHand.transform.position.x;
+				float y = KinectRightHand.transform.position.y;
+				float width = canvasObject.collider.bounds.size.x;
+				float height = canvasObject.collider.bounds.size.y;
+				int px = (int) ((width*.5f+x)/width*canvasWidth);
+				int py = (int) ((height*.5f+y)/height*canvasHeight);
+				
+				DrawBrush (new Vector2(px, py), drawColor, brushShape);
+			}
+
 		}
 
 		for (int i=0; i<maxHands; i++) 
