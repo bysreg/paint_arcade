@@ -30,6 +30,7 @@ public class GameController : MonoBehaviour {
 		InitPlayerHands ();
 
 		canvasObject.renderer.material.mainTexture = canvasTexture;
+		brushShape = CustomBrushShapes.brushShapes [0];
 	}
 
 	void Update()
@@ -45,7 +46,7 @@ public class GameController : MonoBehaviour {
 
 			bool inCanvas = Physics.Raycast (ray, out hitInfo, 100, layerMask);
 
-			hands [0].prevIsHandDown = hands [0].isHandDown;
+			hands[0].prevIsHandDown = hands [0].isHandDown;
 			hands[0].prevPos = hands[0].pos;
 			hands[0].pos.x = (int) (hitInfo.textureCoord.x * canvasWidth);
 			hands[0].pos.y = (int) (hitInfo.textureCoord.y * canvasHeight);
@@ -93,7 +94,7 @@ public class GameController : MonoBehaviour {
 	{
 		int k = 0;
 		int x, y;
-		y = (int) (pos.y - brushShape.height/ 2.0f);
+		y = (int) (pos.y - brushShape.height / 2.0f);
 		for (int i = brushShape.height - 1; i >= 0; i--) 
 		{
 			x = (int) (pos.x - brushShape.width / 2.0f);
