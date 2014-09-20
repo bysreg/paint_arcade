@@ -10,6 +10,7 @@ namespace Kinect {
 		//public delegate void OnGesttureDetected(GameObject g);
 		//public event OnGesttureDetected OnClick;
 
+		public bool SimulateWithKeyBoard;
 		public SkeletonWrapper SW;
 		public int player;
 		private LeftHandMonitor leftHandMonitor;
@@ -59,8 +60,45 @@ namespace Kinect {
 			handleLeftHandResult(leftHandResultDict);
 			handleRightHandResult(rightHandResultDict);
 			UpdateSkeletonDrawArea();
-			syncLeftHand();
-			syncRightHand();
+			if (SimulateWithKeyBoard) {
+				if(Input.GetKey(KeyCode.W)) {
+					Vector3 pos = RightHandObject.transform.position;
+					pos.y += 0.1f;
+					RightHandObject.transform.position = pos;
+				}
+				if(Input.GetKey(KeyCode.S)) {
+					Vector3 pos = RightHandObject.transform.position;
+					pos.y -= 0.1f;
+					RightHandObject.transform.position = pos;
+				}
+				if(Input.GetKey(KeyCode.A)) {
+					Vector3 pos = RightHandObject.transform.position;
+					pos.x -= 0.1f;
+					RightHandObject.transform.position = pos;
+				}
+				if(Input.GetKey(KeyCode.D)) {
+					Vector3 pos = RightHandObject.transform.position;
+					pos.x += 0.1f;
+					RightHandObject.transform.position = pos;
+				}
+
+				if(Input.GetKey(KeyCode.O)) {
+					PlayerHand handData = RightHandObject.GetComponent<PlayerHand>();
+					handData.isHandDown = true;
+					RightHandObject.renderer.material.mainTexture = OperateTexture;
+				} 
+
+				if(Input.GetKey(KeyCode.P)) {
+					PlayerHand handData = RightHandObject.GetComponent<PlayerHand>();
+					handData.isHandDown = false;
+					RightHandObject.renderer.material.mainTexture = HoldTexture;
+				} 
+
+			} else {
+				syncLeftHand();
+				syncRightHand();
+			}
+
 		}
 
 		void syncLeftHand() {
