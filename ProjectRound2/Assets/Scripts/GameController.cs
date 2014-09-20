@@ -1,40 +1,41 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 public class GameController : MonoBehaviour {
-
+	
 	public int canvasWidth;
 	public int canvasHeight;
 	public bool simulateWithMouse;
 	public int maxHands;
 	public GameObject KinectLeftHand;
 	public GameObject KinectRightHand;
+	public Texture2D canvasBg;
 
 	Texture2D canvasTexture;
 	GameObject canvasObject;
-	Color drawColor;
 	BrushShape brushShape;
 	PlayerHand[] hands;
 
 	void Awake()
 	{
-		canvasTexture = new Texture2D (canvasWidth, canvasHeight, TextureFormat.RGBA32, false);
 		canvasObject = GameObject.Find ("Canvas");
-		drawColor = Color.blue;
-		drawColor.a = 0f;
 		brushShape = BrushShape.CreateSquare (5, 5);
 		hands = new PlayerHand[maxHands];
 	}
 
 	void Start()
 	{
-		canvasObject.renderer.material.mainTexture = canvasTexture;
 		InitCanvasTexture ();
 		InitPlayerHands ();
+
+		canvasObject.renderer.material.mainTexture = canvasTexture;
 	}
 
 	void Update()
 	{
+		HandleKeyPress ();
+
 		if (simulateWithMouse) 
 		{
 			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
@@ -58,27 +59,65 @@ public class GameController : MonoBehaviour {
 		else
 		{
 			PlayerHand handData = KinectRightHand.GetComponent<PlayerHand>();
-			if(handData.isHandDown) {
-				float x = KinectRightHand.transform.position.x;
-				float y = KinectRightHand.transform.position.y;
-				float width = canvasObject.collider.bounds.size.x;
-				float height = canvasObject.collider.bounds.size.y;
-				int px = (int) ((width*.5f+x)/width*canvasWidth);
-				int py = (int) ((height*.5f+y)/height*canvasHeight);
+			hands[0].prevIsHandDown = handData.isHandDown;
+			hands[0].prevPos = hands[0].pos;
+			hands[0].isHandDown = handData.isHandDown;
 
-				DrawBrush (new Vector2(px, py), drawColor, brushShape);
-			}
+			float x = KinectRightHand.transform.position.x;
+			float y = KinectRightHand.transform.position.y;
+			float width = canvasObject.collider.bounds.size.x;
+			float height = canvasObject.collider.bounds.size.y;
+			int px = (int)((width*.5f+x)/width*canvasWidth);
+			int py = (int)((height*.5f+y)/height*canvasHeight);
 
+			hands[0].pos = new Vector2(px, py);
 		}
 
 		for (int i=0; i<maxHands; i++) 
 		{
 			if (hands [i].isHandDown) 
 			{
-				DrawBrush (hands[i].pos, drawColor, brushShape);
-				ConnectBrushPoint(hands[i]);
+				if(hands[i].tool == PlayerHand.ETool.Brush)
+				{
+					ConnectBrushPoint(hands[i], DrawBrush);
+				}
+				else if(hands[i].tool == PlayerHand.ETool.Eraser)
+				{
+					ConnectBrushPoint(hands[i], Erase);
+				}
 			}
 		}
+	}
+
+	void Erase(Vector2 pos, Color color, BrushShape brushShape)
+	{
+		int k = 0;
+		int x, y;
+		y = (int) (pos.y - brushShape.height/ 2.0f);
+		for (int i = brushShape.height - 1; i >= 0; i--) 
+		{
+			x = (int) (pos.x - brushShape.width / 2.0f);
+			
+			for(int j = 0;j < brushShape.width; j++)
+			{
+				if (x < 0 || x >= canvasWidth)
+					continue;
+				if (y < 0 || y >= canvasHeight)
+					continue;
+				
+				//print (x + " " + y + " " + i + " " + j);
+				float u = x * 1.0f / (canvasWidth - 1);
+				float v = y * 1.0f / (canvasHeight - 1);
+				Color oriColor = canvasBg.GetPixelBilinear(u, v);
+
+                if(brushShape.matrix[i*brushShape.width + j] == 1)
+                    canvasTexture.SetPixel (x, y, oriColor);
+                x++;
+            }
+            y++;
+        }
+        
+        //intentionally not using canvasTexture.Apply, it will be done in ConnectBrushPoint
 	}
 
 	void DrawBrush(Vector2 pos, Color color, BrushShape brushShape)
@@ -108,24 +147,24 @@ public class GameController : MonoBehaviour {
 		canvasTexture.Apply ();
 	}
 
-	void ConnectBrushPoint(PlayerHand hand)
+	void ConnectBrushPoint(PlayerHand hand, Action<Vector2, Color, BrushShape> drawf)
 	{
-		int x0, y0, x1, y1;
-		x0 = (int) Mathf.Clamp (hand.prevPos.x, 0, canvasWidth - 1);
-		y0 = (int) Mathf.Clamp (hand.prevPos.y, 0, canvasHeight - 1);
-		x1 = (int) Mathf.Clamp (hand.pos.x, 0, canvasWidth - 1);
-		y1 = (int) Mathf.Clamp (hand.pos.y, 0, canvasHeight - 1);
-
 		if (!hand.prevIsHandDown || !hand.isHandDown)
 			return;
 
-		print (x0 + " " + y0 + " " + x1 + " " + y1 + " " + hand.pos);
+		if (hand.pos.x < 0 || hand.pos.x >= canvasWidth)
+			return;
+		if (hand.pos.y < 0 || hand.pos.y >= canvasHeight)
+            return;
+        
+        //print (pos0.x + " " + pos0.y + " " + pos1.x + " " + pos1.y + " " + hand.pos);
 			 
  		//connect current pos and prev pos
-		DrawLine (hand.prevPos, hand.pos, drawColor);
+		DrawLine (hand.prevPos, hand.pos, hand.color, drawf);
 	}
 
-	void DrawLine(Vector2 pos0, Vector2 pos1, Color color)
+	// NOTE : pos0.x, pos0.y, pos1.x, pos1.y, must be integer
+	void DrawLine(Vector2 pos0, Vector2 pos1, Color color, Action<Vector2, Color, BrushShape> drawf)
 	{
 		float sx, sy, err, e2;
 		float dx = Mathf.Abs(pos1.x - pos0.x);
@@ -142,7 +181,8 @@ public class GameController : MonoBehaviour {
 		
 		while(true)
 		{
-			DrawBrush(pos0, color, brushShape);
+			//DrawBrush(pos0, color, brushShape);
+			drawf(pos0, color, brushShape);
 			if (pos0.x == pos1.x && pos0.y == pos1.y) 
 				break;
 			e2 = 2 * err;
@@ -161,13 +201,36 @@ public class GameController : MonoBehaviour {
 		canvasTexture.Apply ();
 	}
 
+	void HandleKeyPress()
+	{
+		if (Input.GetKeyDown (KeyCode.E)) 
+		{
+			hands[0].tool = PlayerHand.ETool.Eraser;
+		}
+		if (Input.GetKeyDown (KeyCode.B)) 
+		{
+			hands[0].tool = PlayerHand.ETool.Brush;
+		}
+	}
+
 	void InitCanvasTexture()
 	{
-		for (int i=0; i<canvasWidth; i++) 
+		canvasTexture = new Texture2D (canvasWidth, canvasHeight, TextureFormat.RGBA32, false);
+		for (int i=0; i<canvasHeight; i++) 
 		{
-			for(int j=0;j<canvasHeight;j++)
+			for(int j=0;j<canvasWidth;j++)
 			{
-				canvasTexture.SetPixel(i, j, Color.white);
+				if(canvasBg != null)
+				{
+					float u =  j * 1.0f / (canvasWidth - 1);
+					float v = i * 1.0f / (canvasHeight - 1);
+
+					canvasTexture.SetPixel(j, i, canvasBg.GetPixelBilinear(u, v));
+				}
+				else
+				{
+					canvasTexture.SetPixel(j, i, Color.white);
+				}
 			}
 		}
 		canvasTexture.Apply ();

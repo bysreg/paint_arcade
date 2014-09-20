@@ -106,6 +106,10 @@ namespace Kinect {
 			Vector3 pos = leftHandMonitor.GetHandPosition()*kinectToCanvasScale;
 			pos.z = PaintBoard.transform.position.z;
 			LeftHandObject.transform.position = PaintPositionFromSkeletonPosition(pos, 0);
+			handData.prevIsHandDown = handData.isHandDown;
+			handData.prevPos = handData.pos;
+			handData.pos = pos;
+
 			if(leftHandMonitor.GetHandState() == HandMonitor.HandState.Hold) {
 				LeftHandObject.renderer.material.mainTexture = HoldTexture;
 				handData.isHandDown = false;
@@ -113,8 +117,6 @@ namespace Kinect {
 				LeftHandObject.renderer.material.mainTexture = OperateTexture;
 				handData.isHandDown = true;
 			}
-
-
 		}
 
 		void syncRightHand() {
@@ -122,6 +124,7 @@ namespace Kinect {
 			Vector3 pos = rightHandMonitor.GetHandPosition()*kinectToCanvasScale;
 			pos.z = PaintBoard.transform.position.z;
 			RightHandObject.transform.position = PaintPositionFromSkeletonPosition(pos, 1);
+			handData.prevIsHandDown = handData.isHandDown;
 
 			if(rightHandMonitor.GetHandState() == HandMonitor.HandState.Hold) {
 				RightHandObject.renderer.material.mainTexture = HoldTexture;
@@ -184,3 +187,4 @@ namespace Kinect {
 }
 
 
+;
