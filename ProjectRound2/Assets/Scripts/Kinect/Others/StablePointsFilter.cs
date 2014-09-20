@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -27,7 +27,6 @@ namespace Kinect {
 		}
 		
 		public bool CheckPointValidation(Vector3 point, Vector3 velocity) {
-			bool result = false;
 
 			if (velocitys.Count < minPointsForDetection2) {
 				velocitys.Add(velocity);
@@ -59,25 +58,47 @@ namespace Kinect {
 		}
 
 		bool Validation(Vector3 point, Vector3 velocity) {
+			bool result = true;
+			//result = result && InvalidIfVelocityLow (velocity);
+			result = result && InvalidIfMovementLow (point);
+			//result = result && InvalidIfDifferentWithPrediction (point, velocity);
 
-			Vector3 vtmp = velocity;
-			vtmp.z = 0;
-			float velocityValue = vtmp.magnitude;
+			return result;
+		}
 
+		bool InvalidIfVelocityLow(Vector3 velocity) {
+			velocity.z = 0;
+			float velocityValue = velocity.magnitude;
+			
 			if (velocityValue < 0.2f) {
 				return false;
 			}
+			return true;
+		}
 
+		bool InvalidIfMovementLow(Vector3 point) {
+			float movement = Vector3.Distance (point, points [points.Count - 1]);
+			if (movement < 0.01f) {
+				return false;
+			}
+
+			return true;
+		}
+
+		bool InvalidIfDifferentWithPrediction(Vector3 point, Vector3 velocity) {
 			int pointsLength = points.Count;
 			int velocitysLength = velocitys.Count;
-
+			
 			Vector3 movement = points [pointsLength - 1] - points [0];
 			Vector3 avgSpeed = movement / (pointsLength * Time.deltaTime);
 
+			velocity.z = 0;
+			float velocityValue = velocity.magnitude;
+			
 			Vector3 predictPos = points [pointsLength - 1] + avgSpeed * Time.deltaTime;
-
+			
 			float difference = Vector3.Distance (point, predictPos);
-
+			
 			if (difference > maximumPredictionDifference && velocityValue < 1.0f) {
 				points.Add(predictPos);
 				velocitys.Add(avgSpeed);

@@ -8,9 +8,9 @@ namespace Kinect.Monitor {
 		
 		public SkeletonWrapper SW;
 		public int player;
-		public static float validOperateDistanceScale = 1.4f;
-		public static float validOperateDegree = 115f;
-		public float minimumMoveDistance = 10f;
+		public static float validOperateDistanceScale = 1.7f;
+		public static float validOperateDegree = 90f;
+		public float minimumMoveDistance;
 
 		protected Vector3 handPosition;
 		protected HandState handState;
@@ -66,6 +66,7 @@ namespace Kinect.Monitor {
 			}
 
 
+
 			return resultDict;
 		}
 
@@ -75,14 +76,14 @@ namespace Kinect.Monitor {
 			float elbowAngle = Vector3.Angle (elbowToWrist, elbowToShoulder);
 			float headToNeckDistance = Vector3.Distance (SW.bonePos [player, (int)Kinect.NuiSkeletonPositionIndex.Head], SW.bonePos [player, (int)Kinect.NuiSkeletonPositionIndex.ShoulderCenter]);
 			float wristToNeckDistanceZ = SW.bonePos [player, wristIndex].z - SW.bonePos [player, (int)Kinect.NuiSkeletonPositionIndex.ShoulderCenter].z;
-			
+
 			if (wristToNeckDistanceZ > validOperateDistanceScale * headToNeckDistance) {
 				if(elbowAngle > validOperateDegree) {
 					SetOperateState();
 				} else {
 					SetHoldState();
 				}
-			} else {
+			} else {			
 				SetHoldState();
 			}
 		}

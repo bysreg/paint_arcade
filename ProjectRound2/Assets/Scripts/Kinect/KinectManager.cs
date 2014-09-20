@@ -20,7 +20,7 @@ namespace Kinect {
 		public Texture green;
 		public Texture red;
 
-		private float kinectToCanvasScale = 1.4f;
+		private float kinectToCanvasScale = 2f;
 		private float canvasHeightToWidthRatio;
 
 		private float skeletonDrawHeight;
@@ -117,7 +117,7 @@ namespace Kinect {
 			}
 
 			float ratioY = (skeletonPosition.y - skeletonDrawCenter.y) / skeletonDrawHeight;
-			ratioY -= 0.2f;
+			ratioY -= 0.65f;
 			float x = skeletonDrawCenter.x + ratioX * canvasWidth; 
 			float y = skeletonDrawCenter.y + ratioY * canvasHeight; 
 
