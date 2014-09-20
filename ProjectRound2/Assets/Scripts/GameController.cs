@@ -58,17 +58,18 @@ public class GameController : MonoBehaviour {
 		else
 		{
 			PlayerHand handData = KinectRightHand.GetComponent<PlayerHand>();
-			if(handData.isHandDown) {
-				float x = KinectRightHand.transform.position.x;
-				float y = KinectRightHand.transform.position.y;
-				float width = canvasObject.collider.bounds.size.x;
-				float height = canvasObject.collider.bounds.size.y;
-				int px = (int) ((width*.5f+x)/width*canvasWidth);
-				int py = (int) ((height*.5f+y)/height*canvasHeight);
+			hands[0].prevIsHandDown = handData.isHandDown;
+			hands[0].prevPos = hands[0].pos;
+			hands[0].isHandDown = handData.isHandDown;
 
-				DrawBrush (new Vector2(px, py), drawColor, brushShape);
-			}
+			float x = KinectRightHand.transform.position.x;
+			float y = KinectRightHand.transform.position.y;
+			float width = canvasObject.collider.bounds.size.x;
+			float height = canvasObject.collider.bounds.size.y;
+			int px = (int)((width*.5f+x)/width*canvasWidth);
+			int py = (int)((height*.5f+y)/height*canvasHeight);
 
+			hands[0].pos = new Vector2(px, py);
 		}
 
 		for (int i=0; i<maxHands; i++) 
@@ -110,21 +111,21 @@ public class GameController : MonoBehaviour {
 
 	void ConnectBrushPoint(PlayerHand hand)
 	{
-		int x0, y0, x1, y1;
-		x0 = (int) Mathf.Clamp (hand.prevPos.x, 0, canvasWidth - 1);
-		y0 = (int) Mathf.Clamp (hand.prevPos.y, 0, canvasHeight - 1);
-		x1 = (int) Mathf.Clamp (hand.pos.x, 0, canvasWidth - 1);
-		y1 = (int) Mathf.Clamp (hand.pos.y, 0, canvasHeight - 1);
-
 		if (!hand.prevIsHandDown || !hand.isHandDown)
 			return;
 
-		print (x0 + " " + y0 + " " + x1 + " " + y1 + " " + hand.pos);
+		if (hand.pos.x < 0 || hand.pos.x >= canvasWidth)
+			return;
+		if (hand.pos.y < 0 || hand.pos.y >= canvasHeight)
+            return;
+        
+        //print (pos0.x + " " + pos0.y + " " + pos1.x + " " + pos1.y + " " + hand.pos);
 			 
  		//connect current pos and prev pos
 		DrawLine (hand.prevPos, hand.pos, drawColor);
 	}
 
+	// NOTE : pos0.x, pos0.y, pos1.x, pos1.y, must be integer
 	void DrawLine(Vector2 pos0, Vector2 pos1, Color color)
 	{
 		float sx, sy, err, e2;
