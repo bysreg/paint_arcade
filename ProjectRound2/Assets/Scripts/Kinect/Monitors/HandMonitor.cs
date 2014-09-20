@@ -19,7 +19,10 @@ namespace Kinect.Monitor {
 		protected int wristIndex;
 		protected int elbowIndex;
 		protected int shoulderIndex;
-		protected Dictionary<string, ShapeClass> resultDict;		
+		protected Dictionary<string, ShapeClass> resultDict;
+		protected Vector3 startPoint;
+		protected Vector3 endPoint;
+
 		public enum HandState{
 			Hold,
 			Operate
