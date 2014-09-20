@@ -120,4 +120,34 @@ public class GameController : MonoBehaviour {
 			hands[i] = new PlayerHand();
 		}
 	}
+
+//	void DrawLine(Vector2 pos0, Vector2 pos1, Color color)
+//	{
+//		float m = (pos1.y - pos0.y
+//	}
+
+	void plotLineWidth(int x0, int y0, int x1, int y1, float wd)
+   	{ 
+		int dx = Mathf.Abs(x1-x0), sx = x0 < x1 ? 1 : -1; 
+		int dy = Mathf.Abs(y1-y0), sy = y0 < y1 ? 1 : -1; 
+		int err = dx-dy, e2, x2, y2;                          /* error value e_xy */
+		float ed = dx+dy == 0 ? 1 : Mathf.Sqrt((float)dx*dx+(float)dy*dy);
+
+		for (wd = (wd+1)/2; ; ) {                                   /* pixel loop */
+			setPixelColor(x0, y0, Mathf.Max(0,255*(Mathf.Abs(err-dx+dy)/ed-wd+1));
+		    e2 = err; x2 = x0;
+		    if (2*e2 >= -dx) {                                           /* x step */
+				for (e2 += dy, y2 = y0; e2 < ed*wd && (y1 != y2 || dx > dy); e2 += dx)
+					canvasTexture.SetPixel(x0, y2 += sy, Mathf.Max(0,255*(Mathf.Abs(e2)/ed-wd+1));
+				if (x0 == x1) break;
+				e2 = err; err -= dy; x0 += sx; 
+			} 
+			if (2*e2 <= dy) {                                            /* y step */
+				for (e2 = dx-e2; e2 < ed*wd && (x1 != x2 || dx < dy); e2 += dy)
+					canvasTexture.SetPixel(x2 += sx, y0, Mathf.Max(0,255*(Mathf.Abs(e2)/ed-wd+1));
+				if (y0 == y1) break;
+				err += dx; y0 += sy; 
+			}
+		}
+	}
 }
