@@ -7,6 +7,7 @@ public class GameController : MonoBehaviour {
 	public int canvasHeight;
 	public bool simulateWithMouse;
 	public int maxHands;
+	public GameObject kinectBall;
 
 	Texture2D canvasTexture;
 	GameObject canvasObject;
@@ -52,6 +53,14 @@ public class GameController : MonoBehaviour {
 		else
 		{
 			// TODO : kinect part
+			float x = kinectBall.transform.position.x;
+			float y = kinectBall.transform.position.y;
+			float width = canvasObject.collider.bounds.size.x;
+			float height = canvasObject.collider.bounds.size.y;
+			int px = (int) ((width*.5f+x)/width*canvasWidth);
+			int py = (int) ((height*.5f+y)/height*canvasHeight);
+		
+			DrawBrush (new Vector2(px, py), drawColor, brushShape);
 		}
 
 		for (int i=0; i<maxHands; i++) 
