@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour {
 	public int maxHands;
 	public GameObject KinectLeftHand;
 	public GameObject KinectRightHand;
+	public Texture2D canvasBg;
 
 	Texture2D canvasTexture;
 	GameObject canvasObject;
@@ -18,7 +19,6 @@ public class GameController : MonoBehaviour {
 
 	void Awake()
 	{
-		canvasTexture = new Texture2D (canvasWidth, canvasHeight, TextureFormat.RGBA32, false);
 		canvasObject = GameObject.Find ("Canvas");
 		drawColor = Color.blue;
 		drawColor.a = 0f;
@@ -28,9 +28,10 @@ public class GameController : MonoBehaviour {
 
 	void Start()
 	{
-		canvasObject.renderer.material.mainTexture = canvasTexture;
 		InitCanvasTexture ();
 		InitPlayerHands ();
+
+		canvasObject.renderer.material.mainTexture = canvasTexture;
 	}
 
 	void Update()
@@ -164,11 +165,22 @@ public class GameController : MonoBehaviour {
 
 	void InitCanvasTexture()
 	{
-		for (int i=0; i<canvasWidth; i++) 
+		canvasTexture = new Texture2D (canvasWidth, canvasHeight, TextureFormat.RGBA32, false);
+		for (int i=0; i<canvasHeight; i++) 
 		{
-			for(int j=0;j<canvasHeight;j++)
+			for(int j=0;j<canvasWidth;j++)
 			{
-				canvasTexture.SetPixel(i, j, Color.white);
+				if(canvasBg != null)
+				{
+					float u =  i * 1.0f / canvasHeight;
+					float v = j * 1.0f / canvasWidth;
+
+					canvasTexture.SetPixel(i, j, canvasBg.GetPixelBilinear(u, v));
+				}
+				else
+				{
+					canvasTexture.SetPixel(i, j, Color.white);
+				}
 			}
 		}
 		canvasTexture.Apply ();
