@@ -59,9 +59,9 @@ namespace Kinect {
 
 		bool Validation(Vector3 point, Vector3 velocity) {
 			bool result = true;
-			//result = result && InvalidIfVelocityLow (velocity);
+			result = result && InvalidIfVelocityLow (velocity);
 			result = result && InvalidIfMovementLow (point);
-			//result = result && InvalidIfDifferentWithPrediction (point, velocity);
+			result = result && InvalidIfDifferentWithPrediction (point, velocity);
 
 			return result;
 		}
