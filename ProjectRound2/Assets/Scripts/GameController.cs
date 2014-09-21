@@ -74,7 +74,7 @@ public class GameController : MonoBehaviour {
 			int px = (int)((width*.5f+x)/width*canvasWidth+canvasObject.transform.position.x);
 			int py = (int)((height*.5f+y)/height*canvasHeight+canvasObject.transform.position.y);
 
-			hands[0].pos = new Vector2(px, py);
+				hands[0].pos = new Vector2(px, py+brushShape.height*2f);
 			}
 
 			//Left Hand
@@ -93,7 +93,7 @@ public class GameController : MonoBehaviour {
 				int px = (int)((width*.5f+x)/width*canvasWidth+canvasObject.transform.position.x);
 				int py = (int)((height*.5f+y)/height*canvasHeight+canvasObject.transform.position.y);
 				
-				hands[1].pos = new Vector2(px, py);
+				hands[1].pos = new Vector2(px, py+brushShape.height*2f);
 			}
 			
 		}
