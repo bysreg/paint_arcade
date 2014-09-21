@@ -27,6 +27,7 @@ namespace Kinect.Monitor {
 
 		protected int holdTimes = 0;
 		protected int operateTimes = 0;
+		protected float smoothFactor = 0.1f;
 
 		public enum HandState{
 			Hold,
@@ -65,9 +66,18 @@ namespace Kinect.Monitor {
 
 				if (!UseStablePointFilter ||stablePointsFilter.CheckPointValidation (SW.bonePos [player, wristIndex], SW.boneVel [player, wristIndex])) {
 					CheckAndUpdateState();
-					UpdateHandData(SW.bonePos [player, wristIndex], SW.boneVel [player, wristIndex]);
+
+					//Smooth
+					Vector3 smoothedPos = (1-smoothFactor)*SW.bonePos [player, wristIndex] + handPosition*smoothFactor;
+					UpdateHandData(smoothedPos, SW.boneVel [player, wristIndex]);
+
+					//^
+
+					//UpdateHandData(SW.bonePos [player, wristIndex], SW.boneVel [player, wristIndex]);
 					resultDict.Clear();
 				}
+
+
 
 				/*
 				if (!UseStablePointFilter || stablePointsFilter2.CheckPointValidation (SW.bonePos [player, wristIndex])) {
