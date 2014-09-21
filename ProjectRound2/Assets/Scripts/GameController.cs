@@ -30,6 +30,7 @@ public class GameController : MonoBehaviour {
 		InitPlayerHands ();
 
 		canvasObject.renderer.material.mainTexture = canvasTexture;
+		brushShape = CustomBrushShapes.brushShapes [0];
 	}
 
 	void Update()
@@ -267,5 +268,15 @@ public class GameController : MonoBehaviour {
 		{
 			hands[i] = new PlayerHand();
 		}
+	}
+
+	public Texture2D GetCanvasTexture()
+	{
+		return canvasTexture;
+	}
+
+	public PlayerHand[] GetPlayerHands()
+	{
+		return hands;
 	}
 }
