@@ -23,7 +23,6 @@ namespace Kinect {
 
 		private float kinectToCanvasScale = 2f;
 		private float canvasHeightToWidthRatio;
-
 		private float skeletonDrawHeight;
 		private float skeletonDrawWidth;
 		private float canvasWidth;

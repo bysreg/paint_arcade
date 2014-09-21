@@ -8,9 +8,6 @@ namespace Kinect {
 		private int windowSize;
 		private int minPointsForDetection;
 
-		private int windowSize2;
-		private int minPointsForDetection2;
-
 		private List<Vector3> points;
 		private List<Vector3> velocitys;
 
@@ -21,21 +18,15 @@ namespace Kinect {
 			velocitys = new List<Vector3>();
 	
 			windowSize = 40;
-			windowSize2 = 10;
 			minPointsForDetection = 30;
-			minPointsForDetection2 = 10;
 		}
 		
 		public bool CheckPointValidation(Vector3 point, Vector3 velocity) {
 
-			if (velocitys.Count < minPointsForDetection2) {
+			if (points.Count < minPointsForDetection) {
 				velocitys.Add(velocity);
-			}
-
-			if(points.Count < minPointsForDetection) {
 				points.Add(point);
-				velocitys.Add(velocity);
-				return true;
+				return false;
 			}
 
 			if (Validation (point, velocity)) {
@@ -43,9 +34,6 @@ namespace Kinect {
 				velocitys.Add(velocity);
 				if (points.Count > windowSize) {
 					points.RemoveAt(0);
-				}
-				
-				if (velocitys.Count > windowSize2) {
 					velocitys.RemoveAt(0);
 				}
 
@@ -70,7 +58,7 @@ namespace Kinect {
 			velocity.z = 0;
 			float velocityValue = velocity.magnitude;
 			
-			if (velocityValue < 0.2f) {
+			if (velocityValue < 0.02f) {
 				return false;
 			}
 			return true;
@@ -108,6 +96,59 @@ namespace Kinect {
 			}
 
 			return true;
+		}
+
+		public Vector3 SmoothPoint(Vector3 point) {
+			int count = points.Count;
+			Vector3 smoothPoint = point * 40;
+			int times = 40;
+			if (count > 10) {
+				for(int i=0;i<9;i++) {
+					smoothPoint += points[count-1-i]*(9-i);
+					times += 9 - i;
+				}
+				return smoothPoint/times;
+			}
+			return point;
+		}
+
+		public Vector3 ExponentialMovingAveragePoint(Vector3 point) {
+			float[] datax = new float[points.Count];
+			float[] datay = new float[points.Count];
+
+			for (int i=0; i<points.Count; i++) {
+				datax[i] = points[i].x;
+				datay[i] = points[i].y;
+			}
+			float x = ExponentialMovingAverage(datax, 0.9f);
+			float y = ExponentialMovingAverage(datax, 0.9f);
+
+			return new Vector3 (x, y, point.z);
+
+		}
+
+		public float ExponentialMovingAverage( float[] data, float baseValue )
+		{
+			float numerator = 0;
+			float denominator = 0;
+			float sum = 0;
+
+			for (int i=0; i< data.Length; i++) {
+				sum += data[i];
+			}
+
+			float average = sum / data.Length;
+
+			for ( int i = 0; i < data.Length; ++i )
+			{
+				numerator += data[i] * Mathf.Pow( baseValue, data.Length - i - 1 );
+				denominator += Mathf.Pow( baseValue, data.Length - i - 1 );
+			}
+			
+			numerator += average * Mathf.Pow( baseValue, data.Length );
+			denominator += Mathf.Pow( baseValue, data.Length );
+			
+			return numerator / denominator;
 		}
 		
 	}
