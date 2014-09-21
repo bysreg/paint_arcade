@@ -3,7 +3,13 @@ using System.Collections;
 
 
 namespace Kinect.Button {
-	public delegate void OnButtonSelectedHandler(int id, int handID);
+
+	public enum ToolType {
+		Colour,
+		Shape
+	}
+
+	public delegate void OnButtonSelectedHandler(int id, int handID, ToolType type);
 	
 	public class ToolButton :MonoBehaviour {
 		
@@ -13,10 +19,7 @@ namespace Kinect.Button {
 			Hover
 		}
 
-		public enum ToolType {
-			Colour,
-			Shape
-		}
+
 		
 		public Texture SelectedTexture;
 		public Texture UnselectedTexture;
@@ -25,6 +28,7 @@ namespace Kinect.Button {
 		public OnButtonSelectedHandler onButtonSelected;
 		public Color DrawColor;
 		public ToolType toolType;
+		public PlayerHand.ETool EToolID;
 		
 		private ButtonStatus buttonStatus = ButtonStatus.Unselected;
 		private MeshRenderer renderer;
@@ -59,7 +63,7 @@ namespace Kinect.Button {
 				timer += Time.deltaTime;
 				if(timer > hoverTime) {
 					SelectButton();
-					onButtonSelected(id, handID);
+					onButtonSelected(id, handID, toolType);
 				}
 			} else {
 				timer = 0f;

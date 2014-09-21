@@ -8,7 +8,7 @@ namespace Kinect.Monitor {
 		
 		public SkeletonWrapper SW;
 		public int player;
-		public static float validOperateDistanceScale = 1.7f;
+		public static float validOperateDistanceScale = 2f;
 		public static float validOperateDegree = 90f;
 		public float minimumMoveDistance;
 		public bool UseStablePointFilter;
@@ -65,7 +65,7 @@ namespace Kinect.Monitor {
 
 				if (!UseStablePointFilter ||stablePointsFilter.CheckPointValidation (SW.bonePos [player, wristIndex], SW.boneVel [player, wristIndex])) {
 					CheckAndUpdateState();
-					UpdateHandData(SW.bonePos [player, wristIndex]);
+					UpdateHandData(SW.bonePos [player, wristIndex], SW.boneVel [player, wristIndex]);
 					resultDict.Clear();
 				}
 
@@ -95,21 +95,25 @@ namespace Kinect.Monitor {
 			float elbowAngle = Vector3.Angle (elbowToWrist, elbowToShoulder);
 			float headToNeckDistance = Vector3.Distance (SW.bonePos [player, (int)Kinect.NuiSkeletonPositionIndex.Head], SW.bonePos [player, (int)Kinect.NuiSkeletonPositionIndex.ShoulderCenter]);
 			float wristToNeckDistanceZ = SW.bonePos [player, wristIndex].z - SW.bonePos [player, (int)Kinect.NuiSkeletonPositionIndex.ShoulderCenter].z;
-
-			if (wristToNeckDistanceZ > validOperateDistanceScale * headToNeckDistance) {
+			float wristToNeckDistance = Vector3.Distance(SW.bonePos [player, wristIndex], SW.bonePos [player, (int)Kinect.NuiSkeletonPositionIndex.ShoulderCenter]);
+			int requiredTimeToChangeStatus = 10;
+			if (wristToNeckDistance > validOperateDistanceScale * headToNeckDistance) {
 				if(elbowAngle > validOperateDegree) {
 					operateTimes++;
 					holdTimes = 0;
-					if(operateTimes > 5)
+					if(operateTimes > requiredTimeToChangeStatus)
 						SetOperateState();
 				} else {
 					holdTimes++;
 					operateTimes = 0;
-					if(holdTimes > 5)
+					if(holdTimes > requiredTimeToChangeStatus)
 						SetHoldState();
 				}
-			} else {			
-				SetHoldState();
+			} else {	
+				holdTimes++;
+				operateTimes = 0;
+				if(holdTimes > requiredTimeToChangeStatus)
+					SetHoldState();
 			}
 		}
 		
@@ -121,9 +125,10 @@ namespace Kinect.Monitor {
 			handState = HandState.Operate;
 		}
 		
-		void UpdateHandData(Vector3 point) {
+		void UpdateHandData(Vector3 point, Vector3 velocity) {
 			float movement = Vector3.Distance (handPosition, point);
-			if (!UseStablePointFilter || movement >= 0f) {
+			float speed = Mathf.Sqrt (Mathf.Pow (velocity.x, 2) + Mathf.Pow (velocity.y, 2));
+			if (movement >= 0.006f && speed > 0.08f) {
 				handPosition = point;
 			}
 		}

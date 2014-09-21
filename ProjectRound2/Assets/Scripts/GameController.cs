@@ -65,6 +65,7 @@ public class GameController : MonoBehaviour {
 			hands[0].prevPos = hands[0].pos;
 			hands[0].isHandDown = handData.isHandDown;
 			hands[0].color = handData.color;
+			hands[0].tool = handData.tool;
 
 			float x = KinectRightHand.transform.position.x;
 			float y = KinectRightHand.transform.position.y;
@@ -83,6 +84,7 @@ public class GameController : MonoBehaviour {
 				hands[1].prevPos = hands[1].pos;
 				hands[1].isHandDown = handData.isHandDown;
 				hands[1].color = handData.color;
+				hands[1].tool = handData.tool;
 
 				float x = KinectLeftHand.transform.position.x;
 				float y = KinectLeftHand.transform.position.y;

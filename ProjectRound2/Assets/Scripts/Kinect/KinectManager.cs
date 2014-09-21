@@ -18,12 +18,14 @@ namespace Kinect {
 		public GameObject LeftHandObject;
 		public GameObject RightHandObject;
 		public GameObject PaintBoard;
-		public Texture OperateTexture;
-		public Texture HoldTexture;
+		public Texture LeftOperateTexture;
+		public Texture RightOperateTexture;
+		public Texture LeftHoldTexture;
+		public Texture RightHoldTexture;
 		public bool UseStablePointFilter;
 
 		private GameObject canvas;
-		private float kinectToCanvasScale = 1.5f;
+		private float kinectToCanvasScale = 1.75f;
 		private float canvasHeightToWidthRatio;
 		private float skeletonDrawHeight;
 		private float skeletonDrawWidth;
@@ -90,13 +92,13 @@ namespace Kinect {
 				if(Input.GetKey(KeyCode.O)) {
 					PlayerHand handData = RightHandObject.GetComponent<PlayerHand>();
 					handData.isHandDown = true;
-					RightHandObject.renderer.material.mainTexture = OperateTexture;
+					RightHandObject.renderer.material.mainTexture = RightOperateTexture;
 				} 
 
 				if(Input.GetKey(KeyCode.P)) {
 					PlayerHand handData = RightHandObject.GetComponent<PlayerHand>();
 					handData.isHandDown = false;
-					RightHandObject.renderer.material.mainTexture = HoldTexture;
+					RightHandObject.renderer.material.mainTexture = RightHoldTexture;
 				} 
 
 			} else {
@@ -119,10 +121,10 @@ namespace Kinect {
 			handData.pos = pos;
 
 			if(leftHandMonitor.GetHandState() == HandMonitor.HandState.Hold) {
-				LeftHandObject.renderer.material.mainTexture = HoldTexture;
+				LeftHandObject.renderer.material.mainTexture = LeftHoldTexture;
 				handData.isHandDown = false;
 			} else if(leftHandMonitor.GetHandState() == HandMonitor.HandState.Operate) {
-				LeftHandObject.renderer.material.mainTexture = OperateTexture;
+				LeftHandObject.renderer.material.mainTexture = LeftOperateTexture;
 				handData.isHandDown = true;
 			}
 		}
@@ -135,7 +137,7 @@ namespace Kinect {
 			PlayerHand handData = RightHandObject.GetComponent<PlayerHand>();
 			pos.z = PaintBoard.transform.position.z;
 
-			Debug.Log ("hand: "+ pos);
+			//Debug.Log ("hand: "+ pos);
 
 			RightHandObject.transform.position = PaintPositionFromSkeletonPosition(pos, 1);
 			handData.prevIsHandDown = handData.isHandDown;
@@ -143,10 +145,10 @@ namespace Kinect {
 			handData.pos = pos;
 
 			if(rightHandMonitor.GetHandState() == HandMonitor.HandState.Hold) {
-				RightHandObject.renderer.material.mainTexture = HoldTexture;
+				RightHandObject.renderer.material.mainTexture = RightHoldTexture;
 				handData.isHandDown = false;
 			} else if(rightHandMonitor.GetHandState() == HandMonitor.HandState.Operate) {
-				RightHandObject.renderer.material.mainTexture = OperateTexture;	
+				RightHandObject.renderer.material.mainTexture = RightOperateTexture;	
 				handData.isHandDown = true;
 			}
 		}
@@ -183,7 +185,7 @@ namespace Kinect {
 			} else if (hand == 1) {
 				float ratioX = (skeletonPosition.x - skeletonDrawCenterRight.x) / (skeletonDrawWidth*.5f);
 				float ratioY = (skeletonPosition.y - skeletonDrawCenterRight.y) / (skeletonDrawHeight*.5f);
-				Debug.Log("ratiox:"+ratioX);
+				//Debug.Log("ratiox:"+ratioX);
 				float x = canvas.transform.position.x + ratioX * canvasWidth*.5f*kinectToCanvasScale; 
 				float y = canvas.transform.position.y + ratioY * canvasHeight*.5f*kinectToCanvasScale; 
 				return new Vector3 (x, y, skeletonPosition.z);
@@ -220,8 +222,8 @@ namespace Kinect {
 			leftCenter.y += skeletonDrawHeight*.25f;
 			skeletonDrawCenterLeft = leftCenter;
 
-			Debug.Log ("center:"+rightCenter);
-			Debug.Log ("width: "+skeletonDrawWidth);
+			//Debug.Log ("center:"+rightCenter);
+			//Debug.Log ("width: "+skeletonDrawWidth);
 
 			if(skeletonDrawHeight !=0 && skeletonDrawWidth !=0)
 				dataReady = true;
