@@ -164,14 +164,14 @@ namespace Kinect {
 			if(hand == 0) {
 				float ratioX = (skeletonPosition.x - skeletonDrawCenterLeft.x) / skeletonDrawWidth;
 				float ratioY = (skeletonPosition.y - skeletonDrawCenterLeft.y) / skeletonDrawHeight;
-				float x = canvas.transform.position.x + ratioX * canvasWidth; 
-				float y = canvas.transform.position.y + ratioY * canvasHeight; 
+				float x = canvas.transform.position.x + ratioX * canvasWidth*.5f; 
+				float y = canvas.transform.position.y + ratioY * canvasHeight*.5f; 
 				return new Vector3 (x, y, skeletonPosition.z);
 			} else if (hand == 1) {
 				float ratioX = (skeletonPosition.x - skeletonDrawCenterRight.x) / skeletonDrawWidth;
 				float ratioY = (skeletonPosition.y - skeletonDrawCenterRight.y) / skeletonDrawHeight;
-				float x = canvas.transform.position.x + ratioX * canvasWidth; 
-				float y = canvas.transform.position.y + ratioY * canvasHeight; 
+				float x = canvas.transform.position.x + ratioX * canvasWidth*.5f; 
+				float y = canvas.transform.position.y + ratioY * canvasHeight*.5f; 
 				return new Vector3 (x, y, skeletonPosition.z);
 			}
 

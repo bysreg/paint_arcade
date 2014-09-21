@@ -11,6 +11,7 @@ namespace Kinect.Monitor {
 		public static float validOperateDistanceScale = 1.7f;
 		public static float validOperateDegree = 90f;
 		public float minimumMoveDistance;
+		public bool UseStablePointFilter;
 
 		protected Vector3 handPosition;
 		protected HandState handState;
@@ -48,6 +49,8 @@ namespace Kinect.Monitor {
 			handState = HandState.Hold;
 			circleGestureSegment = new CircleGestureSegment();
 			stablePointsFilter = new StablePointsFilter();
+			stablePointsFilter2 = new StablePointsFilter2();
+
 			resultDict = new Dictionary<string, ShapeClass>();
 
 		}
@@ -67,7 +70,7 @@ namespace Kinect.Monitor {
 				}
 				*/
 
-				if (stablePointsFilter2.CheckPointValidation (SW.bonePos [player, wristIndex])) {
+				if (!UseStablePointFilter || stablePointsFilter2.CheckPointValidation (SW.bonePos [player, wristIndex])) {
 					CheckAndUpdateState();
 					UpdateHandData(SW.bonePos [player, wristIndex]);
 					resultDict.Clear();
@@ -118,7 +121,7 @@ namespace Kinect.Monitor {
 		
 		void UpdateHandData(Vector3 point) {
 			float movement = Vector3.Distance (handPosition, point);
-			if (movement >= 0.02f) {
+			if (!UseStablePointFilter || movement >= 0.02f) {
 				handPosition = point;
 			}
 		}
