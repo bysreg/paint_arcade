@@ -244,4 +244,9 @@ public class GameController : MonoBehaviour {
 			hands[i] = new PlayerHand();
 		}
 	}
+
+	public Texture2D GetCanvasTexture()
+	{
+		return canvasTexture;
+	}
 }

@@ -14,7 +14,7 @@ public class CustomBrushShapes : MonoBehaviour {
 		for (int i=0; i<brushTextures.Length; i++) 
 		{
 			brushShapes[i] = new BrushShape(brushTextures[i]);
-			print(brushShapes[i].width + " " + brushShapes[i].height);
+			//print(brushShapes[i].width + " " + brushShapes[i].height);
 		}
 	}
 
