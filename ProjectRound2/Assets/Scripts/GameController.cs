@@ -59,10 +59,14 @@ public class GameController : MonoBehaviour {
 		}
 		else
 		{
+			//Right Hand
+			{
 			PlayerHand handData = KinectRightHand.GetComponent<PlayerHand>();
 			hands[0].prevIsHandDown = handData.isHandDown;
 			hands[0].prevPos = hands[0].pos;
 			hands[0].isHandDown = handData.isHandDown;
+			hands[0].color = handData.color;
+			hands[0].tool = handData.tool;
 
 			float x = KinectRightHand.transform.position.x;
 			float y = KinectRightHand.transform.position.y;
@@ -72,6 +76,27 @@ public class GameController : MonoBehaviour {
 			int py = (int)((height*.5f+y)/height*canvasHeight);
 
 			hands[0].pos = new Vector2(px, py);
+			}
+
+			//Left Hand
+			{
+				PlayerHand handData = KinectLeftHand.GetComponent<PlayerHand>();
+				hands[1].prevIsHandDown = handData.isHandDown;
+				hands[1].prevPos = hands[1].pos;
+				hands[1].isHandDown = handData.isHandDown;
+				hands[1].color = handData.color;
+				hands[1].tool = handData.tool;
+
+				float x = KinectLeftHand.transform.position.x;
+				float y = KinectLeftHand.transform.position.y;
+				float width = canvasObject.collider.bounds.size.x;
+				float height = canvasObject.collider.bounds.size.y;
+				int px = (int)((width*.5f+x)/width*canvasWidth);
+				int py = (int)((height*.5f+y)/height*canvasHeight);
+				
+				hands[1].pos = new Vector2(px, py);
+			}
+			
 		}
 
 		for (int i=0; i<maxHands; i++) 
