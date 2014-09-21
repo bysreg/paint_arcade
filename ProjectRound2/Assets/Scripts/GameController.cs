@@ -46,7 +46,7 @@ public class GameController : MonoBehaviour {
 
 			bool inCanvas = Physics.Raycast (ray, out hitInfo, 100, layerMask);
 
-			hands [0].prevIsHandDown = hands [0].isHandDown;
+			hands[0].prevIsHandDown = hands [0].isHandDown;
 			hands[0].prevPos = hands[0].pos;
 			hands[0].pos.x = (int) (hitInfo.textureCoord.x * canvasWidth);
 			hands[0].pos.y = (int) (hitInfo.textureCoord.y * canvasHeight);
