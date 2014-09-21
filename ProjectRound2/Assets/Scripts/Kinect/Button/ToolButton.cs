@@ -3,7 +3,7 @@ using System.Collections;
 
 
 namespace Kinect.Button {
-	public delegate void OnButtonSelectedHandler(int id);
+	public delegate void OnButtonSelectedHandler(int id, int handID);
 	
 	public class ToolButton :MonoBehaviour {
 		
@@ -12,18 +12,26 @@ namespace Kinect.Button {
 			Unselected,
 			Hover
 		}
+
+		public enum ToolType {
+			Colour,
+			Shape
+		}
 		
 		public Texture SelectedTexture;
 		public Texture UnselectedTexture;
 		public Texture HoverTexture;
 		public int id;
 		public OnButtonSelectedHandler onButtonSelected;
+		public Color DrawColor;
+		public ToolType toolType;
 		
 		private ButtonStatus buttonStatus = ButtonStatus.Unselected;
 		private MeshRenderer renderer;
 		private Rect validRect;
 		private float timer;
 		private float hoverTime;
+		private int handID;
 		
 		void Start() {
 			float width = transform.collider.bounds.size.x;
@@ -51,7 +59,7 @@ namespace Kinect.Button {
 				timer += Time.deltaTime;
 				if(timer > hoverTime) {
 					SelectButton();
-					onButtonSelected(id);
+					onButtonSelected(id, handID);
 				}
 			} else {
 				timer = 0f;
@@ -60,15 +68,22 @@ namespace Kinect.Button {
 		
 		public void UpdateWithPlayerHands(PlayerHand leftHand, PlayerHand rightHand) {
 			if (buttonStatus == ButtonStatus.Hover) {
-				if(!validRect.Contains(rightHand.transform.position)) {
+				if(!validRect.Contains(rightHand.transform.position) && !validRect.Contains(leftHand.transform.position)) {
 					buttonStatus = ButtonStatus.Unselected;
 				}
 			
 			} else if(buttonStatus == ButtonStatus.Selected) {
 			
 			} else if(buttonStatus == ButtonStatus.Unselected) {
-				if(validRect.Contains(rightHand.transform.position)) {
+				if(validRect.Contains(rightHand.transform.position) && validRect.Contains(leftHand.transform.position)) {
 					buttonStatus = ButtonStatus.Hover;
+					handID = 2;
+				} else if(validRect.Contains(rightHand.transform.position)) {
+					buttonStatus = ButtonStatus.Hover;
+					handID = 1;
+				} else if(validRect.Contains(leftHand.transform.position)) {
+					buttonStatus = ButtonStatus.Hover;
+					handID = 0;
 				}
 			}
 

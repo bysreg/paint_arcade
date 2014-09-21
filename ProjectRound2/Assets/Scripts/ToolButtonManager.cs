@@ -15,11 +15,31 @@ namespace Kinect.Button {
 			}
 		}
 
-		void HandleOnButtonSelected(int id) {
+		void HandleOnButtonSelected(int id, int handID) {
 			foreach (ToolButton button in buttons) {
-				if(button.id != id)
+				if(button.id != id) {
 					button.UnselectButton();
+				}
+				else {
+					if(button.toolType == ToolButton.ToolType.Colour) {
+						if (handID == 2) {
+							LeftHand.color = button.DrawColor;
+							RightHand.color = button.DrawColor;
+						} else if (handID == 1) {
+							RightHand.color = button.DrawColor;
+						} else if (handID == 0) {
+							LeftHand.color = button.DrawColor;
+						}
+						Debug.Log ("button: " + button.DrawColor);
+
+					}
+
+
+				}
 			}
+
+			Debug.Log (handID);
+			Debug.Log ("rightHand: " + RightHand.color);
 		}
 		
 		// Update is called once per frame
