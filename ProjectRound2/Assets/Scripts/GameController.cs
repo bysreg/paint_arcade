@@ -71,8 +71,8 @@ public class GameController : MonoBehaviour {
 			float y = KinectRightHand.transform.position.y;
 			float width = canvasObject.collider.bounds.size.x;
 			float height = canvasObject.collider.bounds.size.y;
-			int px = (int)((width*.5f+x)/width*canvasWidth);
-			int py = (int)((height*.5f+y)/height*canvasHeight);
+			int px = (int)((width*.5f+x)/width*canvasWidth+canvasObject.transform.position.x);
+			int py = (int)((height*.5f+y)/height*canvasHeight+canvasObject.transform.position.y);
 
 			hands[0].pos = new Vector2(px, py);
 			}
@@ -90,8 +90,8 @@ public class GameController : MonoBehaviour {
 				float y = KinectLeftHand.transform.position.y;
 				float width = canvasObject.collider.bounds.size.x;
 				float height = canvasObject.collider.bounds.size.y;
-				int px = (int)((width*.5f+x)/width*canvasWidth);
-				int py = (int)((height*.5f+y)/height*canvasHeight);
+				int px = (int)((width*.5f+x)/width*canvasWidth+canvasObject.transform.position.x);
+				int py = (int)((height*.5f+y)/height*canvasHeight+canvasObject.transform.position.y);
 				
 				hands[1].pos = new Vector2(px, py);
 			}

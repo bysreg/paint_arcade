@@ -6,7 +6,8 @@ namespace Kinect.Button {
 
 	public enum ToolType {
 		Colour,
-		Shape
+		Shape,
+		System
 	}
 
 	public delegate void OnButtonSelectedHandler(int id, int handID, ToolType type);

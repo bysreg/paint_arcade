@@ -20,6 +20,8 @@ namespace Kinect.Button {
 				HandleColorButtonSelected(id, handID);
 			} else if(type == ToolType.Shape) {
 				HandleShapeButtonSelected(id, handID);
+			} else if(type == ToolType.System) {
+				HandleSystemButtonSelected(id, handID);
 			}
 
 		}
@@ -81,6 +83,14 @@ namespace Kinect.Button {
 					
 				}
 			}
+		}
+
+		void HandleSystemButtonSelected(int id, int handID) {
+			foreach (ToolButton button in buttons) {
+				button.UnselectButton();
+			}
+
+			Debug.Log("Select Continue");
 		}
 	}
 
