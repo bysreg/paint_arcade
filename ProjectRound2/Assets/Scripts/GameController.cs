@@ -8,8 +8,8 @@ public class GameController : MonoBehaviour {
 	public int canvasHeight;
 	public bool simulateWithMouse;
 	public int maxHands;
-	public GameObject KinectLeftHand;
-	public GameObject KinectRightHand;
+	public PlayerHand KinectLeftHand;
+	public PlayerHand KinectRightHand;
 	public Texture2D canvasBg;
 
 	Texture2D canvasTexture;
@@ -61,12 +61,11 @@ public class GameController : MonoBehaviour {
 		{
 			//Right Hand
 			{
-			PlayerHand handData = KinectRightHand.GetComponent<PlayerHand>();
-			hands[0].prevIsHandDown = handData.isHandDown;
+			hands[0].prevIsHandDown = KinectRightHand.isHandDown;
 			hands[0].prevPos = hands[0].pos;
-			hands[0].isHandDown = handData.isHandDown;
-			hands[0].color = handData.color;
-			hands[0].tool = handData.tool;
+			hands[0].isHandDown = KinectRightHand.isHandDown;
+			hands[0].color = KinectRightHand.color;
+			hands[0].tool = KinectRightHand.tool;
 
 			float x = KinectRightHand.transform.position.x;
 			float y = KinectRightHand.transform.position.y;
@@ -80,12 +79,11 @@ public class GameController : MonoBehaviour {
 
 			//Left Hand
 			{
-				PlayerHand handData = KinectLeftHand.GetComponent<PlayerHand>();
-				hands[1].prevIsHandDown = handData.isHandDown;
+				hands[1].prevIsHandDown = KinectLeftHand.isHandDown;
 				hands[1].prevPos = hands[1].pos;
-				hands[1].isHandDown = handData.isHandDown;
-				hands[1].color = handData.color;
-				hands[1].tool = handData.tool;
+				hands[1].isHandDown = KinectLeftHand.isHandDown;
+				hands[1].color = KinectLeftHand.color;
+				hands[1].tool = KinectLeftHand.tool;
 
 				float x = KinectLeftHand.transform.position.x;
 				float y = KinectLeftHand.transform.position.y;

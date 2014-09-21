@@ -35,6 +35,8 @@ namespace Kinect.Button {
 				HandleSystemButtonSelected(id, handID);
 			}
 
+			LeftHand.UpdateOutLook ();
+			RightHand.UpdateOutLook ();
 		}
 		
 		// Update is called once per frame
