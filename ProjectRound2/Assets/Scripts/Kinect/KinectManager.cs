@@ -21,14 +21,16 @@ namespace Kinect {
 		public Texture OperateTexture;
 		public Texture HoldTexture;
 
-		private float kinectToCanvasScale = 2f;
+		private GameObject canvas;
+		private float kinectToCanvasScale = 1.5f;
 		private float canvasHeightToWidthRatio;
 		private float skeletonDrawHeight;
 		private float skeletonDrawWidth;
 		private float canvasWidth;
 		private float canvasHeight;
-		private Vector3 skeletonDrawCenter;
-	
+		private Vector3 skeletonDrawCenterLeft;
+		private Vector3 skeletonDrawCenterRight;
+
 		// Use this for initialization
 		void Start () {
 
@@ -42,7 +44,7 @@ namespace Kinect {
 			leftHandMonitor.player = player;
 			rightHandMonitor.player = player;
 
-			GameObject canvas = GameObject.FindGameObjectWithTag ("canvas");
+			canvas = GameObject.FindGameObjectWithTag ("canvas");
 			canvasWidth = canvas.collider.bounds.size.x;
 			canvasHeight = canvas.collider.bounds.size.y;
 			canvasHeightToWidthRatio = canvasHeight / canvasWidth;
@@ -159,29 +161,49 @@ namespace Kinect {
 		}
 
 		Vector3 PaintPositionFromSkeletonPosition(Vector3 skeletonPosition, int hand) {
-			float ratioX = (skeletonPosition.x - skeletonDrawCenter.x) / skeletonDrawWidth;
-			if (hand == 0) {
-				ratioX += 0.15f;
-			} else {
-				ratioX -= 0.15f;
+			if(hand == 0) {
+				float ratioX = (skeletonPosition.x - skeletonDrawCenterLeft.x) / skeletonDrawWidth;
+				float ratioY = (skeletonPosition.y - skeletonDrawCenterLeft.y) / skeletonDrawHeight;
+				float x = canvas.transform.position.x + ratioX * canvasWidth; 
+				float y = canvas.transform.position.y + ratioY * canvasHeight; 
+				return new Vector3 (x, y, skeletonPosition.z);
+			} else if (hand == 1) {
+				float ratioX = (skeletonPosition.x - skeletonDrawCenterRight.x) / skeletonDrawWidth;
+				float ratioY = (skeletonPosition.y - skeletonDrawCenterRight.y) / skeletonDrawHeight;
+				float x = canvas.transform.position.x + ratioX * canvasWidth; 
+				float y = canvas.transform.position.y + ratioY * canvasHeight; 
+				return new Vector3 (x, y, skeletonPosition.z);
 			}
 
-			float ratioY = (skeletonPosition.y - skeletonDrawCenter.y) / skeletonDrawHeight;
-			ratioY -= 0.65f;
-			float x = skeletonDrawCenter.x + ratioX * canvasWidth; 
-			float y = skeletonDrawCenter.y + ratioY * canvasHeight; 
-
-			return new Vector3 (x, y, skeletonPosition.z);
+			return Vector3.zero;
 		}
 
 		void UpdateSkeletonDrawArea() {
-			int shoulderCenterIndex = (int)Kinect.NuiSkeletonPositionIndex.ShoulderCenter;
-			int hipCenterIndex = (int)Kinect.NuiSkeletonPositionIndex.HipCenter;
-			skeletonDrawHeight = (SW.bonePos[player, shoulderCenterIndex].y - SW.bonePos[player, hipCenterIndex].y)*4f;
-			skeletonDrawWidth = skeletonDrawHeight / canvasHeightToWidthRatio;
-			skeletonDrawCenter = new Vector3(SW.bonePos[player, hipCenterIndex].x, SW.bonePos[player, hipCenterIndex].y+skeletonDrawHeight*.5f, SW.bonePos[player, hipCenterIndex].z);
+			int rightShoulderIndex = (int)Kinect.NuiSkeletonPositionIndex.ShoulderRight;
+			int rightWristIndex = (int)Kinect.NuiSkeletonPositionIndex.WristRight;
+			int leftShoulderIndex = (int)Kinect.NuiSkeletonPositionIndex.ShoulderLeft;
+			int leftWristIndex = (int)Kinect.NuiSkeletonPositionIndex.WristLeft;
+			int centerShoulderIndex = (int)Kinect.NuiSkeletonPositionIndex.ShoulderCenter;
+			int centerHipIndex = (int)Kinect.NuiSkeletonPositionIndex.HipCenter;
 
-			//Debug.Log ("x:"+SW.boneVel [player, (int)Kinect.NuiSkeletonPositionIndex.WristRight].x+"  y:" + SW.boneVel [player, (int)Kinect.NuiSkeletonPositionIndex.WristRight].y);
+
+			float rightHeight =  Vector3.Distance(SW.bonePos[player, rightShoulderIndex], SW.bonePos[player, rightWristIndex]);
+			float leftHeight = Vector3.Distance(SW.bonePos[player, leftShoulderIndex], SW.bonePos[player, leftWristIndex]);
+			float centerHeight = Vector3.Distance(SW.bonePos[player, centerHipIndex], SW.bonePos[player, centerShoulderIndex]);
+
+			float [] heights = {rightHeight, leftHeight, centerHeight};
+			skeletonDrawHeight = Mathf.Max(heights);
+			skeletonDrawWidth = Mathf.Sin((30 * Mathf.PI)/180) * skeletonDrawHeight;
+
+			Vector3 rightCenter = SW.bonePos[player, rightShoulderIndex];
+			rightCenter.x += skeletonDrawWidth*.5f;
+			rightCenter.y += skeletonDrawHeight*.5f;
+			skeletonDrawCenterRight = rightCenter;
+			
+			Vector3 leftCenter = SW.bonePos[player, leftShoulderIndex];
+			leftCenter.x += skeletonDrawWidth*.5f;
+			leftCenter.y += skeletonDrawHeight*.5f;
+			skeletonDrawCenterLeft = leftCenter;
 
 		}
 	}

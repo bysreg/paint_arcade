@@ -16,6 +16,7 @@ namespace Kinect.Monitor {
 		protected HandState handState;
 		protected CircleGestureSegment circleGestureSegment;
 		protected StablePointsFilter stablePointsFilter;
+		protected StablePointsFilter2 stablePointsFilter2;
 		protected int wristIndex;
 		protected int elbowIndex;
 		protected int shoulderIndex;
@@ -58,12 +59,19 @@ namespace Kinect.Monitor {
 		public Dictionary<string, ShapeClass> Process() {
 
 			if (SW.pollSkeleton()) {
+				/*
 				if (stablePointsFilter.CheckPointValidation (SW.bonePos [player, wristIndex], SW.boneVel [player, wristIndex])) {
 					CheckAndUpdateState();
-					UpdateHandData(stablePointsFilter.SmoothPoint(SW.bonePos [player, wristIndex]));
+					UpdateHandData(SW.bonePos [player, wristIndex]);
 					resultDict.Clear();
 				}
-				//Circle Detection
+				*/
+
+				if (stablePointsFilter2.CheckPointValidation (SW.bonePos [player, wristIndex])) {
+					CheckAndUpdateState();
+					UpdateHandData(SW.bonePos [player, wristIndex]);
+					resultDict.Clear();
+				}				//Circle Detection
 				//Circle circle = circleGestureSegment.AddandDetect(SW.bonePos [player, wristIndex]);
 				//if(circle.diameter != 0f) {
 				//resultDict.Add(Circle.identifier, circle);
