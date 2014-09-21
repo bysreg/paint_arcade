@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 public class BrushShape : MonoBehaviour {
@@ -59,6 +60,27 @@ public class BrushShape : MonoBehaviour {
 		this.matrix = matrix;
 		this.width = width;
 		this.height = height;
+	}
+
+	public BrushShape(Texture2D texture)
+	{
+		int x = 0, y = 0;
+		width = texture.width;
+		height = texture.height;
+		matrix = new byte[width * height];
+
+		y = 0;
+		for (int i = height - 1; i >= 0; i--) 
+		{
+			x = 0;
+			
+			for(int j = 0; j < width; j++)
+			{	
+				matrix[i*width + j] = Convert.ToByte(texture.GetPixel(x, y).r == 0);
+				x++;
+			}
+			y++;
+		}
 	}
 
 	public static BrushShape CreateSquare(int width, int height)

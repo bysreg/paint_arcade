@@ -6,12 +6,23 @@ namespace Kinect.Button {
 	public class ToolButtonManager : MonoBehaviour {
 		public PlayerHand LeftHand;
 		public PlayerHand RightHand;
+
 		private ToolButton [] buttons;
+		private PlayerHand[] mouseHands;
+		private bool simulateWithMouse; // need to fetch it from GameController
+
 			// Use this for initialization
 		void Start () {
 			buttons = FindObjectsOfType(typeof(ToolButton)) as ToolButton[];
 			foreach (ToolButton button in buttons) {
 				button.onButtonSelected += HandleOnButtonSelected;
+			}
+
+			GameController gameController = GameObject.Find ("GameController").GetComponent<GameController> ();
+			simulateWithMouse = gameController.simulateWithMouse;
+			if (gameController.simulateWithMouse) 
+			{
+				mouseHands = gameController.GetPlayerHands();
 			}
 		}
 
@@ -30,6 +41,10 @@ namespace Kinect.Button {
 		void Update () {
 			foreach (ToolButton button in buttons) {
 				button.UpdateWithPlayerHands(LeftHand, RightHand);
+				if(simulateWithMouse)
+				{
+					button.UpdateWithPlayerHands(mouseHands[0], mouseHands[1]);
+				}
 			}
 		}
 
