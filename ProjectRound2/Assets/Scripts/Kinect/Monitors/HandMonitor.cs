@@ -23,6 +23,9 @@ namespace Kinect.Monitor {
 		protected Vector3 startPoint;
 		protected Vector3 endPoint;
 
+		protected int holdTimes = 0;
+		protected int operateTimes = 0;
+
 		public enum HandState{
 			Hold,
 			Operate
@@ -57,7 +60,7 @@ namespace Kinect.Monitor {
 			if (SW.pollSkeleton()) {
 				if (stablePointsFilter.CheckPointValidation (SW.bonePos [player, wristIndex], SW.boneVel [player, wristIndex])) {
 					CheckAndUpdateState();
-					UpdateHandData();
+					UpdateHandData(stablePointsFilter.SmoothPoint(SW.bonePos [player, wristIndex]));
 					resultDict.Clear();
 				}
 				//Circle Detection
@@ -82,9 +85,15 @@ namespace Kinect.Monitor {
 
 			if (wristToNeckDistanceZ > validOperateDistanceScale * headToNeckDistance) {
 				if(elbowAngle > validOperateDegree) {
-					SetOperateState();
+					operateTimes++;
+					holdTimes = 0;
+					if(operateTimes > 5)
+						SetOperateState();
 				} else {
-					SetHoldState();
+					holdTimes++;
+					operateTimes = 0;
+					if(holdTimes > 5)
+						SetHoldState();
 				}
 			} else {			
 				SetHoldState();
@@ -99,10 +108,10 @@ namespace Kinect.Monitor {
 			handState = HandState.Operate;
 		}
 		
-		void UpdateHandData() {
-			float movement = Vector3.Distance (handPosition, SW.bonePos [player, wristIndex]);
-			if (movement >= minimumMoveDistance) {
-				handPosition = SW.bonePos [player, wristIndex];
+		void UpdateHandData(Vector3 point) {
+			float movement = Vector3.Distance (handPosition, point);
+			if (movement >= 0.02f) {
+				handPosition = point;
 			}
 		}
 

@@ -23,7 +23,6 @@ namespace Kinect {
 
 		private float kinectToCanvasScale = 2f;
 		private float canvasHeightToWidthRatio;
-
 		private float skeletonDrawHeight;
 		private float skeletonDrawWidth;
 		private float canvasWidth;
@@ -125,6 +124,8 @@ namespace Kinect {
 			pos.z = PaintBoard.transform.position.z;
 			RightHandObject.transform.position = PaintPositionFromSkeletonPosition(pos, 1);
 			handData.prevIsHandDown = handData.isHandDown;
+			handData.prevPos = handData.pos;
+			handData.pos = pos;
 
 			if(rightHandMonitor.GetHandState() == HandMonitor.HandState.Hold) {
 				RightHandObject.renderer.material.mainTexture = HoldTexture;
