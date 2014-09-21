@@ -24,8 +24,8 @@ public class ColorCapture : MonoBehaviour {
 	{
 		int lineTexWidth = lineTexture.width;
 		int lineTexHeight = lineTexture.height;
-		int	uvWidth = (int) (scale * destTexture.width); // uv width in lineTexture
-		int uvHeight = (int) (scale * destTexture.height); // uv height in lineTexture
+		int	uvWidth = (int) (destTexture.width  / scale); // uv width in lineTexture
+		int uvHeight = (int) (destTexture.height / scale); // uv height in lineTexture
 //		uvs = new List<Vector2> ();
 		mappings = new List<Mapping> ();
 
@@ -36,14 +36,14 @@ public class ColorCapture : MonoBehaviour {
 				if(lineTexture.GetPixel(j, i).r == 0) // black ?
 				{
 					Mapping mapping = new Mapping();
-					mapping.canvasUV = new Vector2(j  * 1.0f / (lineTexWidth - 1), i * 1.0f / (lineTexHeight - 1));
+					mapping.canvasUV = new Vector2(j  * 1.0f / (lineTexWidth - 1), i * 1.0f / (lineTexHeight - 1)); // intentionally use lineTexWidth and height rather than canvas to make it more accurate
 					mapping.destUV = new Vector2((j - startBoxPos.x) * 1.0f / (uvWidth - 1), (i - startBoxPos.y) * 1.0f / (uvHeight - 1));
 					mappings.Add(mapping);
 				}
 			}
 		}
 
-		print ("test " + mappings.Count + " " + mappings[0].canvasUV.x + " " + mappings[0].canvasUV.y);
+		print ("test " + mappings.Count + " " + mappings[0].canvasUV.x + " " + mappings[0].canvasUV.y + " " + mappings[0].destUV);
 	}
 
 	void Update()
@@ -63,6 +63,7 @@ public class ColorCapture : MonoBehaviour {
 	void Impose()
 	{
 		GameObject skeleton = GameObject.Find("Skeleton/Skeleton");
+		GameObject earthObj = GameObject.Find ("EarthCube");
 		int matwidth = destTexture.width;
 		int matheight = destTexture.height;
 		Texture2D oriTexture = destTexture;
@@ -83,6 +84,7 @@ public class ColorCapture : MonoBehaviour {
 
 		exportTexture.Apply ();
 		ApplyToObject (exportTexture, skeleton);
+		ApplyToObject (exportTexture, earthObj);
 	}
 
 //	void FinishFillingColor()
