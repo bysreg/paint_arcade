@@ -12,4 +12,32 @@ public class PlayerHand : MonoBehaviour{
 
 	public enum ETool {Brush = 0, Eraser};
 
+	public Texture BrushOperateTexture;
+	public Texture BrushHoldTexture;
+	public Texture EraserOperateTexture;
+	public Texture EraserHoldTexture;
+
+	private MeshRenderer renderer;
+
+
+	private void Start() {
+		renderer = GetComponent<MeshRenderer> ();
+	}
+
+	public void UpdateOutLook() {
+		if (tool == ETool.Brush) {
+			if(isHandDown) {
+				renderer.material.mainTexture = BrushOperateTexture;
+			} else {
+				renderer.material.mainTexture = BrushHoldTexture;
+			}
+		} else if (tool == ETool.Eraser) {
+			if(isHandDown) {
+				renderer.material.mainTexture = EraserOperateTexture;
+			} else {
+				renderer.material.mainTexture = EraserHoldTexture;
+			}
+		}
+	}
+
 }
