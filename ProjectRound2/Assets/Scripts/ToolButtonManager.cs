@@ -30,7 +30,6 @@ namespace Kinect.Button {
 						} else if (handID == 0) {
 							LeftHand.color = button.DrawColor;
 						}
-						Debug.Log ("button: " + button.DrawColor);
 
 					}
 
@@ -38,8 +37,6 @@ namespace Kinect.Button {
 				}
 			}
 
-			Debug.Log (handID);
-			Debug.Log ("rightHand: " + RightHand.color);
 		}
 		
 		// Update is called once per frame

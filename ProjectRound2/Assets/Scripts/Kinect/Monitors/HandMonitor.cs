@@ -62,19 +62,21 @@ namespace Kinect.Monitor {
 		public Dictionary<string, ShapeClass> Process() {
 
 			if (SW.pollSkeleton()) {
+
+				if (!UseStablePointFilter ||stablePointsFilter.CheckPointValidation (SW.bonePos [player, wristIndex], SW.boneVel [player, wristIndex])) {
+					CheckAndUpdateState();
+					UpdateHandData(SW.bonePos [player, wristIndex]);
+					resultDict.Clear();
+				}
+
 				/*
-				if (stablePointsFilter.CheckPointValidation (SW.bonePos [player, wristIndex], SW.boneVel [player, wristIndex])) {
+				if (!UseStablePointFilter || stablePointsFilter2.CheckPointValidation (SW.bonePos [player, wristIndex])) {
 					CheckAndUpdateState();
 					UpdateHandData(SW.bonePos [player, wristIndex]);
 					resultDict.Clear();
 				}
 				*/
-
-				if (!UseStablePointFilter || stablePointsFilter2.CheckPointValidation (SW.bonePos [player, wristIndex])) {
-					CheckAndUpdateState();
-					UpdateHandData(SW.bonePos [player, wristIndex]);
-					resultDict.Clear();
-				}				//Circle Detection
+				//Circle Detection
 				//Circle circle = circleGestureSegment.AddandDetect(SW.bonePos [player, wristIndex]);
 				//if(circle.diameter != 0f) {
 				//resultDict.Add(Circle.identifier, circle);
@@ -121,7 +123,7 @@ namespace Kinect.Monitor {
 		
 		void UpdateHandData(Vector3 point) {
 			float movement = Vector3.Distance (handPosition, point);
-			if (!UseStablePointFilter || movement >= 0.02f) {
+			if (!UseStablePointFilter || movement >= 0f) {
 				handPosition = point;
 			}
 		}
