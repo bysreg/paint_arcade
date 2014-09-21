@@ -46,11 +46,33 @@ public class GameController : MonoBehaviour {
 
 			bool inCanvas = Physics.Raycast (ray, out hitInfo, 100, layerMask);
 
+			//if it's not in canvas try to hit the background
+			if(!inCanvas)
+			{
+				//int layerMask = (1 << LayerMask.NameToLayer("Background")); TODO : test
+			}
+
 			hands[0].prevIsHandDown = hands [0].isHandDown;
 			hands[0].prevPos = hands[0].pos;
 			hands[0].pos.x = (int) (hitInfo.textureCoord.x * canvasWidth);
 			hands[0].pos.y = (int) (hitInfo.textureCoord.y * canvasHeight);
 			//print (hitInfo.textureCoord.x + " " + hitInfo.textureCoord.y);
+
+			//simulate the right hand object with the mouse
+			PlayerHand handData = KinectRightHand.GetComponent<PlayerHand>();
+			handData.isHandDown = hands[0].isHandDown;
+			handData.prevIsHandDown = hands[0].prevIsHandDown;
+			handData.color = hands[0].color;
+			handData.tool = hands[0].tool;
+			handData.pos = hands[0].pos;
+			handData.prevPos = hands[0].prevPos;
+
+			float px = hands[0].pos.x;
+			float py = hands[0].pos.y;
+			float width = canvasObject.collider.bounds.size.x;
+			float height = canvasObject.collider.bounds.size.y;
+			
+			KinectRightHand.transform.position = new Vector3(hitInfo.point.x, hitInfo.point.y, -0.1f);
 
 			if (inCanvas)
 				hands [0].isHandDown = Input.GetMouseButton (0);
@@ -61,21 +83,21 @@ public class GameController : MonoBehaviour {
 		{
 			//Right Hand
 			{
-			PlayerHand handData = KinectRightHand.GetComponent<PlayerHand>();
-			hands[0].prevIsHandDown = handData.isHandDown;
-			hands[0].prevPos = hands[0].pos;
-			hands[0].isHandDown = handData.isHandDown;
-			hands[0].color = handData.color;
-			hands[0].tool = handData.tool;
+				PlayerHand handData = KinectRightHand.GetComponent<PlayerHand>();
+				hands[0].prevIsHandDown = handData.isHandDown;
+				hands[0].prevPos = hands[0].pos;
+				hands[0].isHandDown = handData.isHandDown;
+				hands[0].color = handData.color;
+				hands[0].tool = handData.tool;
 
-			float x = KinectRightHand.transform.position.x;
-			float y = KinectRightHand.transform.position.y;
-			float width = canvasObject.collider.bounds.size.x;
-			float height = canvasObject.collider.bounds.size.y;
-			int px = (int)((width*.5f+x)/width*canvasWidth);
-			int py = (int)((height*.5f+y)/height*canvasHeight);
+				float x = KinectRightHand.transform.position.x;
+				float y = KinectRightHand.transform.position.y;
+				float width = canvasObject.collider.bounds.size.x;
+				float height = canvasObject.collider.bounds.size.y;
+				int px = (int)((width*.5f+x)/width*canvasWidth);
+				int py = (int)((height*.5f+y)/height*canvasHeight);
 
-			hands[0].pos = new Vector2(px, py);
+				hands[0].pos = new Vector2(px, py);
 			}
 
 			//Left Hand
@@ -95,8 +117,7 @@ public class GameController : MonoBehaviour {
 				int py = (int)((height*.5f+y)/height*canvasHeight);
 				
 				hands[1].pos = new Vector2(px, py);
-			}
-			
+			}		
 		}
 
 		for (int i=0; i<maxHands; i++) 
@@ -273,5 +294,10 @@ public class GameController : MonoBehaviour {
 	public Texture2D GetCanvasTexture()
 	{
 		return canvasTexture;
+	}
+
+	public PlayerHand[] GetPlayerHands()
+	{
+		return hands;
 	}
 }

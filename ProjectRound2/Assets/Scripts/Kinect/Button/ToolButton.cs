@@ -75,7 +75,6 @@ namespace Kinect.Button {
 				if(!validRect.Contains(rightHand.transform.position) && !validRect.Contains(leftHand.transform.position)) {
 					buttonStatus = ButtonStatus.Unselected;
 				}
-			
 			} else if(buttonStatus == ButtonStatus.Selected) {
 			
 			} else if(buttonStatus == ButtonStatus.Unselected) {
