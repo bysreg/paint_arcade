@@ -10,15 +10,17 @@ namespace Kinect.Button {
 		System
 	}
 
+	public enum ButtonStatus {
+		Selected,
+		Unselected,
+		Hover
+	}
+
 	public delegate void OnButtonSelectedHandler(int id, int handID, ToolType type);
 	
 	public class ToolButton :MonoBehaviour {
 		
-		public enum ButtonStatus {
-			Selected,
-			Unselected,
-			Hover
-		}
+
 
 
 		public Texture SelectedTexture;

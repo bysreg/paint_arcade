@@ -47,9 +47,12 @@ namespace Kinect {
 			rightHandMonitor.player = player;
 
 			canvas = GameObject.FindGameObjectWithTag ("canvas");
-			canvasWidth = canvas.collider.bounds.size.x;
-			canvasHeight = canvas.collider.bounds.size.y;
-			canvasHeightToWidthRatio = canvasHeight / canvasWidth;
+			if (canvas) {
+				canvasWidth = canvas.collider.bounds.size.x;
+				canvasHeight = canvas.collider.bounds.size.y;
+				canvasHeightToWidthRatio = canvasHeight / canvasWidth;
+			}
+
 
 		}
 		
