@@ -1,7 +1,10 @@
 fileFormatVersion: 2
-guid: e7affae018c89ed4da73b383b4ff3396
+guid: 286ac316748dfb8459ceb3aba1830da3
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: fish 2_0
+    21300002: fish 2_1
+    21300004: fish 2_2
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -42,6 +45,36 @@ TextureImporter:
   textureType: 5
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: fish 2_0
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 172
+        width: 127
+        height: 72
+      alignment: 9
+      pivot: {x: .896737039, y: .671379745}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fish 2_1
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 164
+        width: 145
+        height: 71
+      alignment: 9
+      pivot: {x: .248249128, y: .710000455}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fish 2_2
+      rect:
+        serializedVersion: 2
+        x: 212
+        y: 139
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 
