@@ -18,7 +18,7 @@ public class ColorCapture2D : MonoBehaviour {
 	public Texture2D oriSprite;
 	public Vector2 sizeInCanvas;
 	public Texture2D drawableArea; // black and white texture that acts as a mask. black means that the player can draw in that area.
-	public Texture2D goldenFrame;
+	public Texture2D goldenFrame; 
 
 	public GameObject TargetObj;
 	public GameObject test;
