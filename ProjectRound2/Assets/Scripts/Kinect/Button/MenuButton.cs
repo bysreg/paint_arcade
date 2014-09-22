@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Kinect;
 
 namespace Kinect.Button {
 
@@ -42,7 +43,7 @@ namespace Kinect.Button {
 		}
 		
 		void Update() {
-			UpdateWithPlayerHands (LeftHand, RightHand);
+			//UpdateWithPlayerHands (LeftHand, RightHand);
 			if(buttonStatus == ButtonStatus.Hover) {
 				timer += Time.deltaTime;
 				if(timer > hoverTime) {
@@ -51,7 +52,6 @@ namespace Kinect.Button {
 			} else {
 				timer = 0f;
 			}
-
 
 		}
 		
@@ -86,6 +86,15 @@ namespace Kinect.Button {
 
 			}
 
+		}
+
+		void OnMouseDown() {
+			//TODO:for temp test
+			if (id == 0) {
+				Application.Quit();
+			} else if (id == 1) {
+				SceneManager.instance.asyncLoadScene("Level1");
+			}
 		}
 
 	}

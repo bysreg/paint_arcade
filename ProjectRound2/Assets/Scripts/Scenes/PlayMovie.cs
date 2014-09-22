@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace TheBoxWorld.Scene {
+namespace Kinect.Scene {
 	public class PlayMovie : MonoBehaviour {
 		
 		public MovieTexture movieTexture;
@@ -28,6 +28,7 @@ namespace TheBoxWorld.Scene {
 			effect.transform.parent = transform;
 			renderer.material.mainTexture = StartTexture;
 			canMove = true;
+			Screen.showCursor = true;
 		}
 
 		void Update() {
