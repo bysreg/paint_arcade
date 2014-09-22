@@ -27,7 +27,7 @@ namespace Kinect.Monitor {
 
 		protected int holdTimes = 0;
 		protected int operateTimes = 0;
-		protected float smoothFactor = 0.1f;
+		protected float smoothFactor = 0.3f;
 
 		public enum HandState{
 			Hold,
@@ -68,7 +68,7 @@ namespace Kinect.Monitor {
 					CheckAndUpdateState();
 
 					//Smooth
-					Vector3 smoothedPos = (1-smoothFactor)*SW.bonePos [player, wristIndex] + handPosition*smoothFactor;
+					Vector3 smoothedPos = smoothFactor*SW.bonePos [player, wristIndex] + handPosition*(1-smoothFactor);
 					UpdateHandData(smoothedPos, SW.boneVel [player, wristIndex]);
 
 					//^
@@ -136,11 +136,14 @@ namespace Kinect.Monitor {
 		}
 		
 		void UpdateHandData(Vector3 point, Vector3 velocity) {
+			handPosition = point;
+			/*
 			float movement = Vector3.Distance (handPosition, point);
 			float speed = Mathf.Sqrt (Mathf.Pow (velocity.x, 2) + Mathf.Pow (velocity.y, 2));
 			if (movement >= 0.006f && speed > 0.08f) {
 				handPosition = point;
 			}
+			*/
 		}
 
 	}
