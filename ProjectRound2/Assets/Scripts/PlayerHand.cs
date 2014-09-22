@@ -10,7 +10,7 @@ public class PlayerHand : MonoBehaviour{
 	public ETool tool = ETool.Brush;
 	public Color color = Color.blue;
 
-	public enum ETool {Brush = 0, Eraser};
+	public enum ETool {Brush = 0, Eraser, None};
 
 	public Texture BrushOperateTexture;
 	public Texture BrushHoldTexture;

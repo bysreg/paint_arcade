@@ -13,7 +13,7 @@ namespace Kinect {
 		private string targetLoadingSceneName;
 		private AsyncOperation async;
 		public string NextSceneName;
-
+	
 		static SceneManager _instance;
 		
 		static public bool isActive { 
