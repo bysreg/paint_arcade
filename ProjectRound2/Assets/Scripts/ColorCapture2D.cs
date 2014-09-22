@@ -5,11 +5,17 @@ using System;
 using System.Text.RegularExpressions;
 	
 public class ColorCapture2D : MonoBehaviour {
-	
+
+	class Mapping
+	{
+		public Vector2 canvasUV;
+		public Vector2 destUV;
+	}
+
 	public Vector2 spriteInCanvasPos; // relative to canvas
 	public Texture2D oriSprite;
-	//public float scale; // spriteInCanvas divided by the original sprite
 	public Vector2 sizeInCanvas;
+	public Texture2D drawableArea; // black and white texture that acts as a mask. black means that the player can draw in that area.
 
 	public GameObject TargetObj;
 	public GameObject test;
@@ -19,6 +25,7 @@ public class ColorCapture2D : MonoBehaviour {
 	public string FileExtension;
 
 	private Sprite[] newSprite;
+	private List<Mapping> mappings;
 
 	public Texture2D testReplacedTexture;
 
