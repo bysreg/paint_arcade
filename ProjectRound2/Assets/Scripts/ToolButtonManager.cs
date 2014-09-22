@@ -11,11 +11,16 @@ namespace Kinect.Button {
 		private PlayerHand[] mouseHands;
 		private bool simulateWithMouse; // need to fetch it from GameController
 
+		private ToolButton brushButton;
+
 			// Use this for initialization
 		void Start () {
 			buttons = FindObjectsOfType(typeof(ToolButton)) as ToolButton[];
 			foreach (ToolButton button in buttons) {
 				button.onButtonSelected += HandleOnButtonSelected;
+				if(button.EToolID == PlayerHand.ETool.Brush) {
+					brushButton = button;
+				}
 			}
 
 			GameController gameController = GameObject.Find ("GameController").GetComponent<GameController> ();
@@ -66,6 +71,7 @@ namespace Kinect.Button {
 				}
 				else {
 					if(button.toolType == ToolType.Colour) {
+						HandleShapeButtonSelected(brushButton.id, handID);
 						if (handID == 2) {
 							LeftHand.color = button.DrawColor;
 							LeftHand.color.a = 1;
@@ -123,7 +129,7 @@ namespace Kinect.Button {
 				button.UnselectButton();
 			}
 
-			Debug.Log("Select Continue");
+			SceneManager.instance.asyncLoadNextSceneWithDelay (1f);
 		}
 	}
 
