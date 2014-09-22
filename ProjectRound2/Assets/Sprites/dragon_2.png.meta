@@ -1,20 +1,20 @@
 fileFormatVersion: 2
-guid: 6c5c74f07c6eb884bbd15fc17d2ddcf0
+guid: c283a7153dfe687439c1b82e752a710c
 TextureImporter:
   fileIDToRecycleName:
-    21300000: dragon_0
-    21300002: dragon_1
-    21300004: dragon_2
-    21300006: dragon_3
-    21300008: dragon_4
-    21300010: dragon_5
-    21300012: dragon_6
-    21300014: dragon_7
-    21300016: dragon_8
-    21300018: dragon_9
-    21300020: dragon_10
-    21300022: dragon_11
-    21300024: dragon_12
+    21300000: dragon_2_0
+    21300002: dragon_2_1
+    21300004: dragon_2_2
+    21300006: dragon_2_3
+    21300008: dragon_2_4
+    21300010: dragon_2_5
+    21300012: dragon_2_6
+    21300014: dragon_2_7
+    21300016: dragon_2_8
+    21300018: dragon_2_9
+    21300020: dragon_2_10
+    21300022: dragon_2_11
+    21300024: dragon_2_12
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -53,94 +53,90 @@ TextureImporter:
   spritePixelsToUnits: 100
   alphaIsTransparency: 1
   textureType: 5
-  buildTargetSettings:
-  - buildTarget: iPhone
-    maxTextureSize: 1024
-    textureFormat: 13
-    compressionQuality: 50
+  buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: dragon_0
+    - name: dragon_2_0
       rect:
         serializedVersion: 2
         x: 3
         y: 74
         width: 209
         height: 197
-      alignment: 9
-      pivot: {x: .775183916, y: .163707361}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: dragon_1
+    - name: dragon_2_1
       rect:
         serializedVersion: 2
         x: 214
         y: 98
         width: 117
         height: 173
-      alignment: 9
-      pivot: {x: .45644334, y: .20121792}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: dragon_2
+    - name: dragon_2_2
       rect:
         serializedVersion: 2
-        x: 335
-        y: 133
+        x: 334
+        y: 132
         width: 108
         height: 139
-      alignment: 9
-      pivot: {x: .0753227547, y: .175272435}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: dragon_3
+    - name: dragon_2_3
       rect:
         serializedVersion: 2
         x: 444
         y: 167
         width: 56
         height: 103
-      alignment: 9
-      pivot: {x: .382997781, y: .0971161202}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: dragon_4
+    - name: dragon_2_4
       rect:
         serializedVersion: 2
         x: 334
-        y: 16
+        y: 15
         width: 90
         height: 115
-      alignment: 9
-      pivot: {x: .451465875, y: .892496705}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: dragon_5
+    - name: dragon_2_5
       rect:
         serializedVersion: 2
         x: 444
         y: 121
         width: 56
         height: 43
-      alignment: 9
-      pivot: {x: .838008881, y: .652375698}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: dragon_6
+    - name: dragon_2_6
       rect:
         serializedVersion: 2
         x: 214
         y: 5
         width: 101
         height: 90
-      alignment: 9
-      pivot: {x: .867613256, y: .758850873}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: dragon_7
+    - name: dragon_2_7
       rect:
         serializedVersion: 2
         x: 426
         y: 72
         width: 80
         height: 47
-      alignment: 9
-      pivot: {x: .0904899612, y: .345102519}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: dragon_8
+    - name: dragon_2_8
       rect:
         serializedVersion: 2
         x: 2
@@ -148,9 +144,9 @@ TextureImporter:
         width: 48
         height: 39
       alignment: 0
-      pivot: {x: .5, y: .5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: dragon_9
+    - name: dragon_2_9
       rect:
         serializedVersion: 2
         x: 52
@@ -158,19 +154,19 @@ TextureImporter:
         width: 49
         height: 29
       alignment: 0
-      pivot: {x: .5, y: .5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: dragon_10
+    - name: dragon_2_10
       rect:
         serializedVersion: 2
         x: 103
         y: 32
         width: 24
         height: 40
-      alignment: 9
-      pivot: {x: .682004631, y: .2633937}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: dragon_11
+    - name: dragon_2_11
       rect:
         serializedVersion: 2
         x: 129
@@ -178,9 +174,9 @@ TextureImporter:
         width: 23
         height: 39
       alignment: 0
-      pivot: {x: .5, y: .5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: dragon_12
+    - name: dragon_2_12
       rect:
         serializedVersion: 2
         x: 168
@@ -188,7 +184,7 @@ TextureImporter:
         width: 28
         height: 28
       alignment: 0
-      pivot: {x: .5, y: .5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 
