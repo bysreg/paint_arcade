@@ -21,6 +21,7 @@ public class ColorCapture2D : MonoBehaviour {
 
 	private Sprite[] newSprite;
 
+	public Texture2D testReplacedTexture;
 
 	void Start() {
 		UnityEngine.Object[] allSprites = AssetDatabase.LoadAllAssetRepresentationsAtPath("Assets/Sprites/"+oriSprite.name+"."+FileExtension);
@@ -28,11 +29,16 @@ public class ColorCapture2D : MonoBehaviour {
 		newSprite = new Sprite[sprites.Length];
 		ObjContents = new Transform[sprites.Length];
 		FindChildAndSetData(TargetObj.transform);
+
+		if (testReplacedTexture != null) 
+		{
+			CombineTexture2DAndGameObject(testReplacedTexture);
+		}
 	}
 
 	void FindChildAndSetData(Transform t) {
 		SpriteRenderer renderer = t.GetComponent<SpriteRenderer>();
-		string numbersOnly = Regex.Replace(renderer.sprite.name, "[^0-9]", "");
+		string numbersOnly = Regex.Replace(renderer.sprite.name, ".+[^0-9]", "");
 		Debug.Log (int.Parse (numbersOnly));
 		ObjContents [int.Parse (numbersOnly)] = t;
 		foreach (Transform pt in t) {
@@ -51,7 +57,7 @@ public class ColorCapture2D : MonoBehaviour {
 
 		for (int i=0; i<ObjContents.Length; i++) {
 			SpriteRenderer renderer = ObjContents[i].GetComponent<SpriteRenderer>();
-			string numbersOnly = Regex.Replace(renderer.sprite.name, "[^0-9]", "");
+			string numbersOnly = Regex.Replace(renderer.sprite.name, ".+[^0-9]", "");
 			Bounds bounds =renderer.bounds;
 			Vector2 position = ObjContents[i].transform.position;
 			Vector2 min = bounds.min;
@@ -74,12 +80,12 @@ public class ColorCapture2D : MonoBehaviour {
 		Texture2D canvasTexture = gameController.GetCanvasTexture ();
 		Texture2D canvasBg = gameController.GetCanvasBg ();
 		Texture2D newSprite = new Texture2D (oriSprite.width, oriSprite.height, TextureFormat.ARGB32, false);
-		print ("tessst : " + oriSprite.width + " " + oriSprite.height);
+		//print ("tessst : " + oriSprite.width + " " + oriSprite.height);
 		//fill the color from the canvas
 
 		float xscale = sizeInCanvas.x * 1.0f / newSprite.width;
 		float yscale = sizeInCanvas.y * 1.0f / newSprite.height;
-		print ("aaaaaaaaa : " + xscale + " " + yscale);
+		//print ("aaaaaaaaa : " + xscale + " " + yscale);
 
 		for (int i=0; i<newSprite.height; i++) 
 		{
