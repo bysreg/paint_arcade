@@ -7,7 +7,7 @@ public class Level1Entry : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Screen.showCursor = false;
-		SceneManager.instance.NextSceneName = "Level1";
+		SceneManager.instance.NextSceneName = "Level2";
 	}
 
 }
