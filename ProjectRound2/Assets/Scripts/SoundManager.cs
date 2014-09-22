@@ -9,7 +9,7 @@ public class SoundManager : MonoBehaviour {
 	public GameObject ButtonSoundPlayer;
 	public AudioSource ButtonSoundAudioSource;
 
-	private string[] bgMusic = new string[] {"BlankBG", "Stage1BG", "Stage2BG", "Stage2BG2"};
+	private string[] bgMusic = new string[] {"BlankSceneBG", "FishSceneBG", "TreeSceneBG"};
 	private string bgMusicPath = "Sounds/BGMusic/";
 
 	private string[] buttonSound = new string[] {"BrushSelector", "CircleSelector", "ColourSelector", "EraserSelector"};

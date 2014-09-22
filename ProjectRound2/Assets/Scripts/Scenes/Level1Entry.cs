@@ -8,6 +8,7 @@ public class Level1Entry : SceneEntry {
 	void Start () {
 		Screen.showCursor = false;
 		SceneManager.instance.NextSceneName = "Level2";
+		SoundManager.instance.PlayBGMusic (0);
 	}
 	
 	public override void ProcessDoneButton() {
