@@ -22,7 +22,6 @@ public class GameController : MonoBehaviour {
 	{
 		canvasObject = GameObject.Find ("Canvas");
 		canvasBgObject = GameObject.Find ("CanvasBg");
-		brushShape = BrushShape.CreateSquare (5, 5);
 		hands = new PlayerHand[maxHands];
 	}
 
@@ -33,6 +32,19 @@ public class GameController : MonoBehaviour {
 
 		canvasObject.renderer.material.mainTexture = canvasTexture;
 		brushShape = CustomBrushShapes.brushShapes [0];
+	}
+
+	void OnGUI()
+	{
+		if(GUI.Button(new Rect(20, 40, 100, 35), "Done"))  {
+			ColorCapture2D[] colorCapture2Ds = GetComponents<ColorCapture2D>();
+			for(int i=0; i<colorCapture2Ds.Length;i++)
+			{
+				colorCapture2Ds[i].Impose();
+				//activate that object
+				colorCapture2Ds[i].TargetObj.SetActive(true);
+			}
+		}
 	}
 
 	void Update()

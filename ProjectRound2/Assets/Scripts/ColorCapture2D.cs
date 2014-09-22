@@ -30,6 +30,7 @@ public class ColorCapture2D : MonoBehaviour {
 		ObjContents = new Transform[sprites.Length];
 		FindChildAndSetData(TargetObj.transform);
 
+		//testing code
 		if (testReplacedTexture != null) 
 		{
 			CombineTexture2DAndGameObject(testReplacedTexture);
@@ -46,14 +47,10 @@ public class ColorCapture2D : MonoBehaviour {
 		}
 	}
 
-	void OnGUI()
-	{
-		if(GUI.Button(new Rect(20, 40, 100, 35), "Done"))  {
-			Impose();
-		}
-	}
-
 	public void CombineTexture2DAndGameObject(Texture2D texture) {
+
+		if (ObjContents == null)
+			return;
 
 		for (int i=0; i<ObjContents.Length; i++) {
 			SpriteRenderer renderer = ObjContents[i].GetComponent<SpriteRenderer>();
@@ -74,7 +71,7 @@ public class ColorCapture2D : MonoBehaviour {
 		}
 	}
 
-	void Impose()
+	public void Impose()
 	{
 		GameController gameController = GameObject.Find ("GameController").GetComponent<GameController> ();
 		Texture2D canvasTexture = gameController.GetCanvasTexture ();
@@ -113,7 +110,8 @@ public class ColorCapture2D : MonoBehaviour {
 
 		newSprite.Apply ();
 
-		test.renderer.material.mainTexture = newSprite;
+		if(test != null)
+			test.renderer.material.mainTexture = newSprite;
 
 		CombineTexture2DAndGameObject (newSprite);
 	}
