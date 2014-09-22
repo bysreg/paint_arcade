@@ -8,10 +8,10 @@ using System.Text.RegularExpressions;
 public class ColorCapture2D : MonoBehaviour {
 
 	public Texture2D OriginalTexture;
-	public Texture2D NewTexture;
 	public Vector2 spriteInCanvasPos; // relative to canvas
 	public Texture2D oriSprite;
-	public float scale; // spriteInCanvas divided by the original sprite
+	//public float scale; // spriteInCanvas divided by the original sprite
+	public Vector2 sizeInCanvas;
 
 	public GameObject TargetObj;
 	public GameObject test;
@@ -29,8 +29,6 @@ public class ColorCapture2D : MonoBehaviour {
 		newSprite = new Sprite[sprites.Length];
 		ObjContents = new Transform[sprites.Length];
 		FindChildAndSetData(TargetObj.transform);
-		
-		//CombineTexture2DAndGameObject (NewTexture);
 	}
 
 	void FindChildAndSetData(Transform t) {
@@ -75,20 +73,28 @@ public class ColorCapture2D : MonoBehaviour {
 	{
 		GameController gameController = GameObject.Find ("GameController").GetComponent<GameController> ();
 		Texture2D canvasTexture = gameController.GetCanvasTexture ();
+		Texture2D canvasBg = gameController.GetCanvasBg ();
 		Texture2D newSprite = new Texture2D (oriSprite.width, oriSprite.height, TextureFormat.ARGB32, false);
 		print ("tessst : " + oriSprite.width + " " + oriSprite.height);
 		//fill the color from the canvas
+
+		float xscale = sizeInCanvas.x * 1.0f / newSprite.width;
+		float yscale = sizeInCanvas.y * 1.0f / newSprite.height;
+		print ("aaaaaaaaa : " + xscale + " " + yscale);
 
 		for (int i=0; i<newSprite.height; i++) 
 		{
 			for (int j=0; j<newSprite.width; j++) 
 			{
-				float u = (spriteInCanvasPos.x + (j * scale)) * 1.0f / (canvasTexture.width - 1);
-				float v = (spriteInCanvasPos.y + (i * scale)) * 1.0f / (canvasTexture.height - 1);
+				//float u = (spriteInCanvasPos.x + (j * xscale)) * 1.0f / (canvasTexture.width - 1);
+				//float v = (spriteInCanvasPos.y + (i * yscale)) * 1.0f / (canvasTexture.height - 1);
+				float u = (spriteInCanvasPos.x + (j * xscale)) * 1.0f / (canvasBg.width - 1);
+				float v = (spriteInCanvasPos.y + (i * yscale)) * 1.0f / (canvasBg.height - 1);
 
 				if(i==newSprite.height - 1 && j == newSprite.width - 1)
 				{
-					print (u + " " + v);
+					print ("lalalal : " + u + " " + v);
+					print (spriteInCanvasPos.x + " " + j + " " + canvasTexture.width + " " + xscale);
 				}
 
 				Color color = canvasTexture.GetPixelBilinear(u, v);

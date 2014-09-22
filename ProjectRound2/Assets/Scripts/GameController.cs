@@ -273,6 +273,11 @@ public class GameController : MonoBehaviour {
 		return canvasTexture;
 	}
 
+	public Texture2D GetCanvasBg()
+	{
+		return canvasBg;
+	}
+
 	public PlayerHand[] GetPlayerHands()
 	{
 		return hands;

@@ -1,0 +1,70 @@
+fileFormatVersion: 2
+guid: 7d9bc5ecfc382bb4dbd7453930b89187
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: fish 1
+    21300002: fish 1_0
+    21300004: fish 1_1
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 1024
+  textureSettings:
+    filterMode: -1
+    aniso: 1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: fish 1_0
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 252
+        width: 78
+        height: 119
+      alignment: 9
+      pivot: {x: .737294912, y: .152632251}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fish 1_1
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 139
+        width: 96
+        height: 119
+      alignment: 9
+      pivot: {x: .152956322, y: .847367764}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 
