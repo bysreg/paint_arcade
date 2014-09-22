@@ -21,7 +21,6 @@ namespace Kinect.Button {
 		}
 
 
-		
 		public Texture SelectedTexture;
 		public Texture UnselectedTexture;
 		public Texture HoverTexture;
@@ -31,7 +30,7 @@ namespace Kinect.Button {
 		public ToolType toolType;
 		public PlayerHand.ETool EToolID;
 		
-		private ButtonStatus buttonStatus = ButtonStatus.Unselected;
+		public ButtonStatus buttonStatus = ButtonStatus.Unselected;
 		private MeshRenderer renderer;
 		private Rect validRect;
 		private float timer;

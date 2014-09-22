@@ -69,10 +69,14 @@ namespace Kinect.Button {
 						if (handID == 2) {
 							LeftHand.color = button.DrawColor;
 							RightHand.color = button.DrawColor;
+							LeftHand.tool = PlayerHand.ETool.Brush;
+							RightHand.tool = PlayerHand.ETool.Brush;
 						} else if (handID == 1) {
 							RightHand.color = button.DrawColor;
+							RightHand.tool = PlayerHand.ETool.Brush;
 						} else if (handID == 0) {
 							LeftHand.color = button.DrawColor;
+							LeftHand.tool = PlayerHand.ETool.Brush;
 						}
 					}
 					

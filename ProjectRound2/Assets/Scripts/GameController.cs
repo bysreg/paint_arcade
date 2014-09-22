@@ -61,20 +61,20 @@ public class GameController : MonoBehaviour {
 		{
 			//Right Hand
 			{
-			hands[0].prevIsHandDown = KinectRightHand.isHandDown;
-			hands[0].prevPos = hands[0].pos;
-			hands[0].isHandDown = KinectRightHand.isHandDown;
-			hands[0].color = KinectRightHand.color;
-			hands[0].tool = KinectRightHand.tool;
-
-			float x = KinectRightHand.transform.position.x;
-			float y = KinectRightHand.transform.position.y;
-			float width = canvasObject.collider.bounds.size.x;
-			float height = canvasObject.collider.bounds.size.y;
-			int px = (int)((width*.5f+x)/width*canvasWidth+canvasObject.transform.position.x);
-			int py = (int)((height*.5f+y)/height*canvasHeight+canvasObject.transform.position.y);
-
-				hands[0].pos = new Vector2(px, py+brushShape.height*2f);
+				hands[0].prevIsHandDown = KinectRightHand.isHandDown;
+				hands[0].prevPos = hands[0].pos;
+				hands[0].isHandDown = KinectRightHand.isHandDown;
+				hands[0].color = KinectRightHand.color;
+				hands[0].tool = KinectRightHand.tool;
+				
+				float x = KinectRightHand.transform.position.x;
+				float y = KinectRightHand.transform.position.y;
+				float width = canvasObject.collider.bounds.size.x;
+				float height = canvasObject.collider.bounds.size.y;
+				int px = (int)((width*.5f+x)/width*canvasWidth+canvasObject.transform.position.x);
+				int py = (int)((height*.5f+y)/height*canvasHeight+canvasObject.transform.position.y);
+				
+				hands[0].pos = new Vector2(px-brushShape.width*.5f, py+brushShape.height*2f);
 			}
 
 			//Left Hand
@@ -92,7 +92,7 @@ public class GameController : MonoBehaviour {
 				int px = (int)((width*.5f+x)/width*canvasWidth+canvasObject.transform.position.x);
 				int py = (int)((height*.5f+y)/height*canvasHeight+canvasObject.transform.position.y);
 				
-				hands[1].pos = new Vector2(px, py+brushShape.height*2f);
+				hands[1].pos = new Vector2(px-brushShape.width*.5f, py+brushShape.height*2f);
 			}
 			
 		}
