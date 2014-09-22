@@ -15,7 +15,7 @@ public class ColorCapture2D : MonoBehaviour {
 
 	public GameObject TargetObj;
 	public GameObject test;
-	public Transform []ObjContents; // need to be same order as sprites
+	private Transform []ObjContents; // need to be same order as sprites
 
 	private Sprite [] sprites;
 	public string FileExtension;
@@ -27,7 +27,20 @@ public class ColorCapture2D : MonoBehaviour {
 		UnityEngine.Object[] allSprites = AssetDatabase.LoadAllAssetRepresentationsAtPath("Assets/Sprites/"+OriginalTexture.name+"."+FileExtension);
 		sprites = Array.ConvertAll(allSprites, item => item as Sprite);
 		newSprite = new Sprite[sprites.Length];
+		ObjContents = new Transform[sprites.Length];
+		FindChildAndSetData(TargetObj.transform);
+		
 		//CombineTexture2DAndGameObject (NewTexture);
+	}
+
+	void FindChildAndSetData(Transform t) {
+		SpriteRenderer renderer = t.GetComponent<SpriteRenderer>();
+		string numbersOnly = Regex.Replace(renderer.sprite.name, "[^0-9]", "");
+		Debug.Log (int.Parse (numbersOnly));
+		ObjContents [int.Parse (numbersOnly)] = t;
+		foreach (Transform pt in t) {
+			FindChildAndSetData(pt);
+		}
 	}
 
 	void OnGUI()
