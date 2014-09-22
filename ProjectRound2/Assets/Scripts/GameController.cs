@@ -115,6 +115,7 @@ public class GameController : MonoBehaviour {
 		{
 			if (hands [i].isHandDown) 
 			{
+				print ("hands down");
 				if(hands[i].tool == PlayerHand.ETool.Brush)
 				{
 					ConnectBrushPoint(hands[i], DrawBrush);
@@ -249,6 +250,14 @@ public class GameController : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.B)) 
 		{
 			hands[0].tool = PlayerHand.ETool.Brush;
+		}
+		if(Input.GetKeyDown (KeyCode.N))
+		{
+			hands[0].color = Color.blue;
+		}
+		if(Input.GetKeyDown (KeyCode.M))
+		{
+			hands[0].color = Color.red;
 		}
 	}
 
