@@ -16,14 +16,6 @@ public class FishMove : MonoBehaviour {
 
 	void Update()
 	{
-//		timer += Time.deltaTime;
-//		if (timer >= timeToRotate) 
-//		{
-//			transform.Rotate (0, 0, Random.Range (-4, 1), Space.World);
-//			timer -= timeToRotate;
-//			print ("rotate");
-//		}
-
 		if (mode == 0) {
 			transform.Rotate (0, 0, -1, Space.World);
 			transform.position += -transform.up * speed * Time.deltaTime;

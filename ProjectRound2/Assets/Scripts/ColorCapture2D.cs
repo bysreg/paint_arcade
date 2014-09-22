@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿//#define ENABLE_DRAWABLE_AREA
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.Text.RegularExpressions;
-	
+
 public class ColorCapture2D : MonoBehaviour {
 
 	class Mapping
@@ -16,6 +18,7 @@ public class ColorCapture2D : MonoBehaviour {
 	public Texture2D oriSprite;
 	public Vector2 sizeInCanvas;
 	public Texture2D drawableArea; // black and white texture that acts as a mask. black means that the player can draw in that area.
+	public Texture2D goldenFrame;
 
 	public GameObject TargetObj;
 	public GameObject test;
@@ -39,6 +42,23 @@ public class ColorCapture2D : MonoBehaviour {
 		{
 			CombineTexture2DAndGameObject(testReplacedTexture);
 		}
+
+#if ENABLE_DRAWABLE_AREA
+		mappings = new List<Mapping>();
+		for (int i=0; i < drawableArea.height; i++) 
+		{
+			for(int j=0; j < drawableArea.width; j++)
+			{
+				if(drawableArea.GetPixel(j, i).r == 0) // black ?
+				{
+					Mapping mapping = new Mapping();
+					mapping.canvasUV = new Vector2(j  * 1.0f / (lineTexWidth - 1), i * 1.0f / (lineTexHeight - 1)); // intentionally use lineTexWidth and height rather than canvas to make it more accurate
+					mapping.destUV = new Vector2((j - startBoxPos.x) * 1.0f / (uvWidth - 1), (i - startBoxPos.y) * 1.0f / (uvHeight - 1));
+                    mappings.Add(mapping);
+                }
+            }
+        }
+#endif
 	}
 
 	void FindChildAndSetData(Transform t) {

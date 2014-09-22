@@ -1,7 +1,10 @@
 fileFormatVersion: 2
-guid: e7affae018c89ed4da73b383b4ff3396
+guid: 817b8782c2c048e40867575d56fa731a
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: dovea_0
+    21300002: dovea_1
+    21300004: dovea_2
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -42,6 +45,36 @@ TextureImporter:
   textureType: 5
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: dovea_0
+      rect:
+        serializedVersion: 2
+        x: 342
+        y: 397
+        width: 402
+        height: 381
+      alignment: 9
+      pivot: {x: .209038422, y: .216391578}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: dovea_1
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 0
+        width: 450
+        height: 419
+      alignment: 9
+      pivot: {x: .509901941, y: .601028144}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: dovea_2
+      rect:
+        serializedVersion: 2
+        x: 277
+        y: 457
+        width: 31
+        height: 25
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 
