@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEditor;
 using System.Collections.Generic;
 using System;
 using System.Text.RegularExpressions;
-
+	
 public class ColorCapture2D : MonoBehaviour {
 	
 	public Vector2 spriteInCanvasPos; // relative to canvas
@@ -15,8 +14,8 @@ public class ColorCapture2D : MonoBehaviour {
 	public GameObject TargetObj;
 	public GameObject test;
 	private Transform []ObjContents; // need to be same order as sprites
+	public int SpriteNum;
 
-	private Sprite [] sprites;
 	public string FileExtension;
 
 	private Sprite[] newSprite;
@@ -24,10 +23,8 @@ public class ColorCapture2D : MonoBehaviour {
 	public Texture2D testReplacedTexture;
 
 	void Start() {
-		UnityEngine.Object[] allSprites = AssetDatabase.LoadAllAssetRepresentationsAtPath("Assets/Sprites/"+oriSprite.name+"."+FileExtension);
-		sprites = Array.ConvertAll(allSprites, item => item as Sprite);
-		newSprite = new Sprite[sprites.Length];
-		ObjContents = new Transform[sprites.Length];
+		newSprite = new Sprite[SpriteNum];
+		ObjContents = new Transform[SpriteNum];
 		FindChildAndSetData(TargetObj.transform);
 
 		//testing code
@@ -65,8 +62,7 @@ public class ColorCapture2D : MonoBehaviour {
 					offsetOfAbsolutePositionRelativelyToMinOfBounds.x/size.x,
 					offsetOfAbsolutePositionRelativelyToMinOfBounds.y/size.y
 					);
-			Sprite s = sprites [i];
-			newSprite[i] = Sprite.Create (texture, s.rect, pivotVector);
+			newSprite[i] = Sprite.Create (texture, renderer.sprite.rect, pivotVector);
 			renderer.sprite = newSprite [i];
 		}
 	}
