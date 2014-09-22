@@ -94,7 +94,8 @@ public class ColorCapture2D : MonoBehaviour {
 				if(i==newSprite.height - 1 && j == newSprite.width - 1)
 				{
 					print ("lalalal : " + u + " " + v);
-					print (spriteInCanvasPos.x + " " + j + " " + canvasTexture.width + " " + xscale);
+					print ("x comp : " + spriteInCanvasPos.x + " " + j + " " + canvasTexture.width + " " + xscale);
+					print ("y comp : " + spriteInCanvasPos.y + " " + i + " " + canvasTexture.height + " " + yscale);
 				}
 
 				Color color = canvasTexture.GetPixelBilinear(u, v);
