@@ -14,12 +14,14 @@ public class GameController : MonoBehaviour {
 
 	Texture2D canvasTexture;
 	GameObject canvasObject;
+	GameObject canvasBgObject;
 	BrushShape brushShape;
 	PlayerHand[] hands;
 
 	void Awake()
 	{
 		canvasObject = GameObject.Find ("Canvas");
+		canvasBgObject = GameObject.Find ("CanvasBg");
 		brushShape = BrushShape.CreateSquare (5, 5);
 		hands = new PlayerHand[maxHands];
 	}
@@ -133,6 +135,7 @@ public class GameController : MonoBehaviour {
 				float u = x * 1.0f / (canvasWidth - 1);
 				float v = y * 1.0f / (canvasHeight - 1);
 				Color oriColor = canvasBg.GetPixelBilinear(u, v);
+				oriColor.a = 0f; // the part of the image will become transparent if erase. if this is equal to one, it will result in drawing the oiginal canvasBg
 
                 if(brushShape.matrix[i*brushShape.width + j] == 1)
                     canvasTexture.SetPixel (x, y, oriColor);
@@ -239,25 +242,34 @@ public class GameController : MonoBehaviour {
 
 	void InitCanvasTexture()
 	{
-		canvasTexture = new Texture2D (canvasWidth, canvasHeight, TextureFormat.RGBA32, false);
+		canvasTexture = new Texture2D (canvasWidth, canvasHeight, TextureFormat.ARGB32, false);
 		for (int i=0; i<canvasHeight; i++) 
 		{
 			for(int j=0;j<canvasWidth;j++)
 			{
-				if(canvasBg != null)
-				{
-					float u =  j * 1.0f / (canvasWidth - 1);
-					float v = i * 1.0f / (canvasHeight - 1);
+//				if(canvasBg != null)
+//				{
+//					float u =  j * 1.0f / (canvasWidth - 1);
+//					float v = i * 1.0f / (canvasHeight - 1);
+//					Color color = canvasBg.GetPixelBilinear(u, v);
+//
+//					canvasTexture.SetPixel(j, i, color);
+//				}
+//				else
+//				{
+					Color color = Color.white;
+					color.a = 0f;
 
-					canvasTexture.SetPixel(j, i, canvasBg.GetPixelBilinear(u, v));
-				}
-				else
-				{
-					canvasTexture.SetPixel(j, i, Color.white);
-				}
+					canvasTexture.SetPixel(j, i, color);
+//				}
 			}
 		}
 		canvasTexture.Apply ();
+
+		if(canvasBgObject != null)
+		{
+			canvasBgObject.renderer.material.mainTexture = canvasBg;
+		}
 	}
 	
 	void InitPlayerHands()

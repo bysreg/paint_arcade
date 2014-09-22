@@ -6,8 +6,7 @@ using System;
 using System.Text.RegularExpressions;
 
 public class ColorCapture2D : MonoBehaviour {
-
-	public Texture2D OriginalTexture;
+	
 	public Vector2 spriteInCanvasPos; // relative to canvas
 	public Texture2D oriSprite;
 	//public float scale; // spriteInCanvas divided by the original sprite
@@ -24,7 +23,7 @@ public class ColorCapture2D : MonoBehaviour {
 
 
 	void Start() {
-		UnityEngine.Object[] allSprites = AssetDatabase.LoadAllAssetRepresentationsAtPath("Assets/Sprites/"+OriginalTexture.name+"."+FileExtension);
+		UnityEngine.Object[] allSprites = AssetDatabase.LoadAllAssetRepresentationsAtPath("Assets/Sprites/"+oriSprite.name+"."+FileExtension);
 		sprites = Array.ConvertAll(allSprites, item => item as Sprite);
 		newSprite = new Sprite[sprites.Length];
 		ObjContents = new Transform[sprites.Length];
