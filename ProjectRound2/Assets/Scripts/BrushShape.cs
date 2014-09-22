@@ -69,15 +69,6 @@ public class BrushShape : MonoBehaviour {
 		height = texture.height;
 		matrix = new byte[width * height];
 
-		//for (int i = height - 1; i >= 0; i--) 
-//		for (int i = 0; i < height; i++)
-//		{
-//			for(int j = 0;j < width; j++)
-//			{
-//				matrix[i*width + j] = Convert.ToByte(texture.GetPixel(j, i).r == 0);
-//			}
-//		}
-
 		y = 0;
 		for (int i = height - 1; i >= 0; i--) 
 		{

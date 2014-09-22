@@ -9,12 +9,13 @@ public class CustomBrushShapes : MonoBehaviour {
 
 	void Awake()
 	{
+
 		brushShapes = new BrushShape[brushTextures.Length];
 
 		for (int i=0; i<brushTextures.Length; i++) 
 		{
 			brushShapes[i] = new BrushShape(brushTextures[i]);
-			print(brushShapes[i].width + " " + brushShapes[i].height);
+			//print(brushShapes[i].width + " " + brushShapes[i].height);
 		}
 	}
 

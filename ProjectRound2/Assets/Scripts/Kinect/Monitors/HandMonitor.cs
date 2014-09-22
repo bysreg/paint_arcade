@@ -8,14 +8,16 @@ namespace Kinect.Monitor {
 		
 		public SkeletonWrapper SW;
 		public int player;
-		public static float validOperateDistanceScale = 1.7f;
+		public static float validOperateDistanceScale = 2f;
 		public static float validOperateDegree = 90f;
 		public float minimumMoveDistance;
+		public bool UseStablePointFilter;
 
 		protected Vector3 handPosition;
 		protected HandState handState;
 		protected CircleGestureSegment circleGestureSegment;
 		protected StablePointsFilter stablePointsFilter;
+		protected StablePointsFilter2 stablePointsFilter2;
 		protected int wristIndex;
 		protected int elbowIndex;
 		protected int shoulderIndex;
@@ -25,6 +27,7 @@ namespace Kinect.Monitor {
 
 		protected int holdTimes = 0;
 		protected int operateTimes = 0;
+		protected float smoothFactor = 0.3f;
 
 		public enum HandState{
 			Hold,
@@ -47,6 +50,8 @@ namespace Kinect.Monitor {
 			handState = HandState.Hold;
 			circleGestureSegment = new CircleGestureSegment();
 			stablePointsFilter = new StablePointsFilter();
+			stablePointsFilter2 = new StablePointsFilter2();
+
 			resultDict = new Dictionary<string, ShapeClass>();
 
 		}
@@ -58,11 +63,29 @@ namespace Kinect.Monitor {
 		public Dictionary<string, ShapeClass> Process() {
 
 			if (SW.pollSkeleton()) {
-				if (stablePointsFilter.CheckPointValidation (SW.bonePos [player, wristIndex], SW.boneVel [player, wristIndex])) {
+
+				if (!UseStablePointFilter ||stablePointsFilter.CheckPointValidation (SW.bonePos [player, wristIndex], SW.boneVel [player, wristIndex])) {
 					CheckAndUpdateState();
-					UpdateHandData(stablePointsFilter.SmoothPoint(SW.bonePos [player, wristIndex]));
+
+					//Smooth
+					Vector3 smoothedPos = smoothFactor*SW.bonePos [player, wristIndex] + handPosition*(1-smoothFactor);
+					UpdateHandData(smoothedPos, SW.boneVel [player, wristIndex]);
+
+					//^
+
+					//UpdateHandData(SW.bonePos [player, wristIndex], SW.boneVel [player, wristIndex]);
 					resultDict.Clear();
 				}
+
+
+
+				/*
+				if (!UseStablePointFilter || stablePointsFilter2.CheckPointValidation (SW.bonePos [player, wristIndex])) {
+					CheckAndUpdateState();
+					UpdateHandData(SW.bonePos [player, wristIndex]);
+					resultDict.Clear();
+				}
+				*/
 				//Circle Detection
 				//Circle circle = circleGestureSegment.AddandDetect(SW.bonePos [player, wristIndex]);
 				//if(circle.diameter != 0f) {
@@ -82,21 +105,25 @@ namespace Kinect.Monitor {
 			float elbowAngle = Vector3.Angle (elbowToWrist, elbowToShoulder);
 			float headToNeckDistance = Vector3.Distance (SW.bonePos [player, (int)Kinect.NuiSkeletonPositionIndex.Head], SW.bonePos [player, (int)Kinect.NuiSkeletonPositionIndex.ShoulderCenter]);
 			float wristToNeckDistanceZ = SW.bonePos [player, wristIndex].z - SW.bonePos [player, (int)Kinect.NuiSkeletonPositionIndex.ShoulderCenter].z;
-
-			if (wristToNeckDistanceZ > validOperateDistanceScale * headToNeckDistance) {
+			float wristToNeckDistance = Vector3.Distance(SW.bonePos [player, wristIndex], SW.bonePos [player, (int)Kinect.NuiSkeletonPositionIndex.ShoulderCenter]);
+			int requiredTimeToChangeStatus = 10;
+			if (wristToNeckDistance > validOperateDistanceScale * headToNeckDistance) {
 				if(elbowAngle > validOperateDegree) {
 					operateTimes++;
 					holdTimes = 0;
-					if(operateTimes > 5)
+					if(operateTimes > requiredTimeToChangeStatus)
 						SetOperateState();
 				} else {
 					holdTimes++;
 					operateTimes = 0;
-					if(holdTimes > 5)
+					if(holdTimes > requiredTimeToChangeStatus)
 						SetHoldState();
 				}
-			} else {			
-				SetHoldState();
+			} else {	
+				holdTimes++;
+				operateTimes = 0;
+				if(holdTimes > requiredTimeToChangeStatus)
+					SetHoldState();
 			}
 		}
 		
@@ -108,11 +135,15 @@ namespace Kinect.Monitor {
 			handState = HandState.Operate;
 		}
 		
-		void UpdateHandData(Vector3 point) {
+		void UpdateHandData(Vector3 point, Vector3 velocity) {
+			handPosition = point;
+			/*
 			float movement = Vector3.Distance (handPosition, point);
-			if (movement >= 0.02f) {
+			float speed = Mathf.Sqrt (Mathf.Pow (velocity.x, 2) + Mathf.Pow (velocity.y, 2));
+			if (movement >= 0.006f && speed > 0.08f) {
 				handPosition = point;
 			}
+			*/
 		}
 
 	}

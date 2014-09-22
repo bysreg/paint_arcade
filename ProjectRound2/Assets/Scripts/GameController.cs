@@ -8,18 +8,20 @@ public class GameController : MonoBehaviour {
 	public int canvasHeight;
 	public bool simulateWithMouse;
 	public int maxHands;
-	public GameObject KinectLeftHand;
-	public GameObject KinectRightHand;
+	public PlayerHand KinectLeftHand;
+	public PlayerHand KinectRightHand;
 	public Texture2D canvasBg;
 
 	Texture2D canvasTexture;
 	GameObject canvasObject;
+	GameObject canvasBgObject;
 	BrushShape brushShape;
 	PlayerHand[] hands;
 
 	void Awake()
 	{
 		canvasObject = GameObject.Find ("Canvas");
+		canvasBgObject = GameObject.Find ("CanvasBg");
 		brushShape = BrushShape.CreateSquare (5, 5);
 		hands = new PlayerHand[maxHands];
 	}
@@ -61,38 +63,38 @@ public class GameController : MonoBehaviour {
 		{
 			//Right Hand
 			{
-			PlayerHand handData = KinectRightHand.GetComponent<PlayerHand>();
-			hands[0].prevIsHandDown = handData.isHandDown;
-			hands[0].prevPos = hands[0].pos;
-			hands[0].isHandDown = handData.isHandDown;
-			hands[0].color = handData.color;
-
-			float x = KinectRightHand.transform.position.x;
-			float y = KinectRightHand.transform.position.y;
-			float width = canvasObject.collider.bounds.size.x;
-			float height = canvasObject.collider.bounds.size.y;
-			int px = (int)((width*.5f+x)/width*canvasWidth);
-			int py = (int)((height*.5f+y)/height*canvasHeight);
-
-			hands[0].pos = new Vector2(px, py);
+				hands[0].prevIsHandDown = KinectRightHand.isHandDown;
+				hands[0].prevPos = hands[0].pos;
+				hands[0].isHandDown = KinectRightHand.isHandDown;
+				hands[0].color = KinectRightHand.color;
+				hands[0].tool = KinectRightHand.tool;
+				
+				float x = KinectRightHand.transform.position.x;
+				float y = KinectRightHand.transform.position.y;
+				float width = canvasObject.collider.bounds.size.x;
+				float height = canvasObject.collider.bounds.size.y;
+				int px = (int)((width*.5f+x)/width*canvasWidth+canvasObject.transform.position.x);
+				int py = (int)((height*.5f+y)/height*canvasHeight+canvasObject.transform.position.y);
+				
+				hands[0].pos = new Vector2(px-brushShape.width*.5f, py+brushShape.height*2f);
 			}
 
 			//Left Hand
 			{
-				PlayerHand handData = KinectLeftHand.GetComponent<PlayerHand>();
-				hands[1].prevIsHandDown = handData.isHandDown;
+				hands[1].prevIsHandDown = KinectLeftHand.isHandDown;
 				hands[1].prevPos = hands[1].pos;
-				hands[1].isHandDown = handData.isHandDown;
-				hands[1].color = handData.color;
+				hands[1].isHandDown = KinectLeftHand.isHandDown;
+				hands[1].color = KinectLeftHand.color;
+				hands[1].tool = KinectLeftHand.tool;
 
 				float x = KinectLeftHand.transform.position.x;
 				float y = KinectLeftHand.transform.position.y;
 				float width = canvasObject.collider.bounds.size.x;
 				float height = canvasObject.collider.bounds.size.y;
-				int px = (int)((width*.5f+x)/width*canvasWidth);
-				int py = (int)((height*.5f+y)/height*canvasHeight);
+				int px = (int)((width*.5f+x)/width*canvasWidth+canvasObject.transform.position.x);
+				int py = (int)((height*.5f+y)/height*canvasHeight+canvasObject.transform.position.y);
 				
-				hands[1].pos = new Vector2(px, py);
+				hands[1].pos = new Vector2(px-brushShape.width*.5f, py+brushShape.height*2f);
 			}
 			
 		}
@@ -117,7 +119,7 @@ public class GameController : MonoBehaviour {
 	{
 		int k = 0;
 		int x, y;
-		y = (int) (pos.y - brushShape.height / 2.0f);
+		y = (int) (pos.y - brushShape.height/ 2.0f);
 		for (int i = brushShape.height - 1; i >= 0; i--) 
 		{
 			x = (int) (pos.x - brushShape.width / 2.0f);
@@ -133,6 +135,7 @@ public class GameController : MonoBehaviour {
 				float u = x * 1.0f / (canvasWidth - 1);
 				float v = y * 1.0f / (canvasHeight - 1);
 				Color oriColor = canvasBg.GetPixelBilinear(u, v);
+				oriColor.a = 0f; // the part of the image will become transparent if erase. if this is equal to one, it will result in drawing the oiginal canvasBg
 
                 if(brushShape.matrix[i*brushShape.width + j] == 1)
                     canvasTexture.SetPixel (x, y, oriColor);
@@ -239,25 +242,34 @@ public class GameController : MonoBehaviour {
 
 	void InitCanvasTexture()
 	{
-		canvasTexture = new Texture2D (canvasWidth, canvasHeight, TextureFormat.RGBA32, false);
+		canvasTexture = new Texture2D (canvasWidth, canvasHeight, TextureFormat.ARGB32, false);
 		for (int i=0; i<canvasHeight; i++) 
 		{
 			for(int j=0;j<canvasWidth;j++)
 			{
-				if(canvasBg != null)
-				{
-					float u =  j * 1.0f / (canvasWidth - 1);
-					float v = i * 1.0f / (canvasHeight - 1);
+//				if(canvasBg != null)
+//				{
+//					float u =  j * 1.0f / (canvasWidth - 1);
+//					float v = i * 1.0f / (canvasHeight - 1);
+//					Color color = canvasBg.GetPixelBilinear(u, v);
+//
+//					canvasTexture.SetPixel(j, i, color);
+//				}
+//				else
+//				{
+					Color color = Color.white;
+					color.a = 0f;
 
-					canvasTexture.SetPixel(j, i, canvasBg.GetPixelBilinear(u, v));
-				}
-				else
-				{
-					canvasTexture.SetPixel(j, i, Color.white);
-				}
+					canvasTexture.SetPixel(j, i, color);
+//				}
 			}
 		}
 		canvasTexture.Apply ();
+
+		if(canvasBgObject != null)
+		{
+			canvasBgObject.renderer.material.mainTexture = canvasBg;
+		}
 	}
 	
 	void InitPlayerHands()
@@ -266,5 +278,20 @@ public class GameController : MonoBehaviour {
 		{
 			hands[i] = new PlayerHand();
 		}
+	}
+
+	public Texture2D GetCanvasTexture()
+	{
+		return canvasTexture;
+	}
+
+	public Texture2D GetCanvasBg()
+	{
+		return canvasBg;
+	}
+
+	public PlayerHand[] GetPlayerHands()
+	{
+		return hands;
 	}
 }

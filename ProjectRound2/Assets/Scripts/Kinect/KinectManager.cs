@@ -15,37 +15,44 @@ namespace Kinect {
 		public int player;
 		private LeftHandMonitor leftHandMonitor;
 		private RightHandMonitor rightHandMonitor;
-		public GameObject LeftHandObject;
-		public GameObject RightHandObject;
+		public PlayerHand LeftHand;
+		public PlayerHand RightHand;
 		public GameObject PaintBoard;
-		public Texture OperateTexture;
-		public Texture HoldTexture;
+		public bool UseStablePointFilter;
 
-		private float kinectToCanvasScale = 2f;
+		private GameObject canvas;
+		private float kinectToCanvasScale = 1.75f;
 		private float canvasHeightToWidthRatio;
 		private float skeletonDrawHeight;
 		private float skeletonDrawWidth;
 		private float canvasWidth;
 		private float canvasHeight;
-		private Vector3 skeletonDrawCenter;
-	
+		private Vector3 skeletonDrawCenterLeft;
+		private Vector3 skeletonDrawCenterRight;
+		private bool dataReady = false;
+
 		// Use this for initialization
 		void Start () {
 
 			//TODO: pass data rather than offer SW object
 			leftHandMonitor = gameObject.AddComponent<LeftHandMonitor>();
 			rightHandMonitor = gameObject.AddComponent<RightHandMonitor>();
-			leftHandMonitor.minimumMoveDistance = LeftHandObject.collider.bounds.size.x / 8f;
-			rightHandMonitor.minimumMoveDistance = RightHandObject.collider.bounds.size.x / 8f;
+			leftHandMonitor.UseStablePointFilter = this.UseStablePointFilter;
+			rightHandMonitor.UseStablePointFilter = this.UseStablePointFilter;
+			leftHandMonitor.minimumMoveDistance = LeftHand.collider.bounds.size.x / 8f;
+			rightHandMonitor.minimumMoveDistance = RightHand.collider.bounds.size.x / 8f;
 			leftHandMonitor.SW = SW;
 			rightHandMonitor.SW = SW;
 			leftHandMonitor.player = player;
 			rightHandMonitor.player = player;
 
-			GameObject canvas = GameObject.FindGameObjectWithTag ("canvas");
-			canvasWidth = canvas.collider.bounds.size.x;
-			canvasHeight = canvas.collider.bounds.size.y;
-			canvasHeightToWidthRatio = canvasHeight / canvasWidth;
+			canvas = GameObject.FindGameObjectWithTag ("canvas");
+			if (canvas) {
+				canvasWidth = canvas.collider.bounds.size.x;
+				canvasHeight = canvas.collider.bounds.size.y;
+				canvasHeightToWidthRatio = canvasHeight / canvasWidth;
+			}
+
 
 		}
 		
@@ -61,36 +68,34 @@ namespace Kinect {
 			UpdateSkeletonDrawArea();
 			if (SimulateWithKeyBoard) {
 				if(Input.GetKey(KeyCode.W)) {
-					Vector3 pos = RightHandObject.transform.position;
+					Vector3 pos = RightHand.transform.position;
 					pos.y += 0.1f;
-					RightHandObject.transform.position = pos;
+					RightHand.transform.position = pos;
 				}
 				if(Input.GetKey(KeyCode.S)) {
-					Vector3 pos = RightHandObject.transform.position;
+					Vector3 pos = RightHand.transform.position;
 					pos.y -= 0.1f;
-					RightHandObject.transform.position = pos;
+					RightHand.transform.position = pos;
 				}
 				if(Input.GetKey(KeyCode.A)) {
-					Vector3 pos = RightHandObject.transform.position;
+					Vector3 pos = RightHand.transform.position;
 					pos.x -= 0.1f;
-					RightHandObject.transform.position = pos;
+					RightHand.transform.position = pos;
 				}
 				if(Input.GetKey(KeyCode.D)) {
-					Vector3 pos = RightHandObject.transform.position;
+					Vector3 pos = RightHand.transform.position;
 					pos.x += 0.1f;
-					RightHandObject.transform.position = pos;
+					RightHand.transform.position = pos;
 				}
 
 				if(Input.GetKey(KeyCode.O)) {
-					PlayerHand handData = RightHandObject.GetComponent<PlayerHand>();
-					handData.isHandDown = true;
-					RightHandObject.renderer.material.mainTexture = OperateTexture;
+					RightHand.isHandDown = true;
+					RightHand.UpdateOutLook();
 				} 
 
 				if(Input.GetKey(KeyCode.P)) {
-					PlayerHand handData = RightHandObject.GetComponent<PlayerHand>();
-					handData.isHandDown = false;
-					RightHandObject.renderer.material.mainTexture = HoldTexture;
+					RightHand.isHandDown = false;
+					RightHand.UpdateOutLook();
 				} 
 
 			} else {
@@ -101,38 +106,45 @@ namespace Kinect {
 		}
 
 		void syncLeftHand() {
-			PlayerHand handData = LeftHandObject.GetComponent<PlayerHand>();
-			Vector3 pos = leftHandMonitor.GetHandPosition()*kinectToCanvasScale;
+			if (!dataReady) {
+				return;
+			}
+			Vector3 pos = leftHandMonitor.GetHandPosition();
 			pos.z = PaintBoard.transform.position.z;
-			LeftHandObject.transform.position = PaintPositionFromSkeletonPosition(pos, 0);
-			handData.prevIsHandDown = handData.isHandDown;
-			handData.prevPos = handData.pos;
-			handData.pos = pos;
+			LeftHand.transform.position = PaintPositionFromSkeletonPosition(pos, 0);
+			LeftHand.prevIsHandDown = LeftHand.isHandDown;
+			LeftHand.prevPos = LeftHand.pos;
+			LeftHand.pos = pos;
 
 			if(leftHandMonitor.GetHandState() == HandMonitor.HandState.Hold) {
-				LeftHandObject.renderer.material.mainTexture = HoldTexture;
-				handData.isHandDown = false;
+				LeftHand.isHandDown = false;
+				LeftHand.UpdateOutLook();
 			} else if(leftHandMonitor.GetHandState() == HandMonitor.HandState.Operate) {
-				LeftHandObject.renderer.material.mainTexture = OperateTexture;
-				handData.isHandDown = true;
+				LeftHand.isHandDown = true;
+				LeftHand.UpdateOutLook();
 			}
 		}
 
 		void syncRightHand() {
-			PlayerHand handData = RightHandObject.GetComponent<PlayerHand>();
-			Vector3 pos = rightHandMonitor.GetHandPosition()*kinectToCanvasScale;
+			if (!dataReady) {
+				return;
+			}
+			Vector3 pos = rightHandMonitor.GetHandPosition();
 			pos.z = PaintBoard.transform.position.z;
-			RightHandObject.transform.position = PaintPositionFromSkeletonPosition(pos, 1);
-			handData.prevIsHandDown = handData.isHandDown;
-			handData.prevPos = handData.pos;
-			handData.pos = pos;
+
+			//Debug.Log ("hand: "+ pos);
+
+			RightHand.transform.position = PaintPositionFromSkeletonPosition(pos, 1);
+			RightHand.prevIsHandDown = RightHand.isHandDown;
+			RightHand.prevPos = RightHand.pos;
+			RightHand.pos = pos;
 
 			if(rightHandMonitor.GetHandState() == HandMonitor.HandState.Hold) {
-				RightHandObject.renderer.material.mainTexture = HoldTexture;
-				handData.isHandDown = false;
+				RightHand.isHandDown = false;
+				RightHand.UpdateOutLook();
 			} else if(rightHandMonitor.GetHandState() == HandMonitor.HandState.Operate) {
-				RightHandObject.renderer.material.mainTexture = OperateTexture;	
-				handData.isHandDown = true;
+				RightHand.isHandDown = true;
+				RightHand.UpdateOutLook();
 			}
 		}
 
@@ -159,30 +171,57 @@ namespace Kinect {
 		}
 
 		Vector3 PaintPositionFromSkeletonPosition(Vector3 skeletonPosition, int hand) {
-			float ratioX = (skeletonPosition.x - skeletonDrawCenter.x) / skeletonDrawWidth;
-			if (hand == 0) {
-				ratioX += 0.15f;
-			} else {
-				ratioX -= 0.15f;
+			if(hand == 0) {
+				float ratioX = (skeletonPosition.x - skeletonDrawCenterLeft.x) / (skeletonDrawWidth*.5f);
+				float ratioY = (skeletonPosition.y - skeletonDrawCenterLeft.y) / (skeletonDrawHeight*.5f);
+				float x = canvas.transform.position.x + ratioX * canvasWidth*.5f*kinectToCanvasScale; 
+				float y = canvas.transform.position.y + ratioY * canvasHeight*.5f*kinectToCanvasScale; 
+				return new Vector3 (x, y, skeletonPosition.z);
+			} else if (hand == 1) {
+				float ratioX = (skeletonPosition.x - skeletonDrawCenterRight.x) / (skeletonDrawWidth*.5f);
+				float ratioY = (skeletonPosition.y - skeletonDrawCenterRight.y) / (skeletonDrawHeight*.5f);
+				//Debug.Log("ratiox:"+ratioX);
+				float x = canvas.transform.position.x + ratioX * canvasWidth*.5f*kinectToCanvasScale; 
+				float y = canvas.transform.position.y + ratioY * canvasHeight*.5f*kinectToCanvasScale; 
+				return new Vector3 (x, y, skeletonPosition.z);
 			}
 
-			float ratioY = (skeletonPosition.y - skeletonDrawCenter.y) / skeletonDrawHeight;
-			ratioY -= 0.65f;
-			float x = skeletonDrawCenter.x + ratioX * canvasWidth; 
-			float y = skeletonDrawCenter.y + ratioY * canvasHeight; 
-
-			return new Vector3 (x, y, skeletonPosition.z);
+			return Vector3.zero;
 		}
 
 		void UpdateSkeletonDrawArea() {
-			int shoulderCenterIndex = (int)Kinect.NuiSkeletonPositionIndex.ShoulderCenter;
-			int hipCenterIndex = (int)Kinect.NuiSkeletonPositionIndex.HipCenter;
-			skeletonDrawHeight = (SW.bonePos[player, shoulderCenterIndex].y - SW.bonePos[player, hipCenterIndex].y)*4f;
-			skeletonDrawWidth = skeletonDrawHeight / canvasHeightToWidthRatio;
-			skeletonDrawCenter = new Vector3(SW.bonePos[player, hipCenterIndex].x, SW.bonePos[player, hipCenterIndex].y+skeletonDrawHeight*.5f, SW.bonePos[player, hipCenterIndex].z);
+			int rightShoulderIndex = (int)Kinect.NuiSkeletonPositionIndex.ShoulderRight;
+			int rightWristIndex = (int)Kinect.NuiSkeletonPositionIndex.WristRight;
+			int leftShoulderIndex = (int)Kinect.NuiSkeletonPositionIndex.ShoulderLeft;
+			int leftWristIndex = (int)Kinect.NuiSkeletonPositionIndex.WristLeft;
+			int centerShoulderIndex = (int)Kinect.NuiSkeletonPositionIndex.ShoulderCenter;
+			int centerHipIndex = (int)Kinect.NuiSkeletonPositionIndex.HipCenter;
+			int leftElbowIndex = (int)Kinect.NuiSkeletonPositionIndex.ElbowLeft;
+			int rightElbowIndex = (int)Kinect.NuiSkeletonPositionIndex.ElbowRight;
 
-			//Debug.Log ("x:"+SW.boneVel [player, (int)Kinect.NuiSkeletonPositionIndex.WristRight].x+"  y:" + SW.boneVel [player, (int)Kinect.NuiSkeletonPositionIndex.WristRight].y);
+			float rightHeight =  Vector3.Distance(SW.bonePos[player, rightShoulderIndex], SW.bonePos[player, rightWristIndex]);
+			float leftHeight = Vector3.Distance(SW.bonePos[player, leftShoulderIndex], SW.bonePos[player, leftWristIndex]);
+			float centerHeight = Vector3.Distance(SW.bonePos[player, centerHipIndex], SW.bonePos[player, centerShoulderIndex]);
 
+			float [] heights = {rightHeight, leftHeight, centerHeight};
+			skeletonDrawHeight = Mathf.Max(heights);
+			skeletonDrawWidth = Mathf.Sin((60 * Mathf.PI)/180) * skeletonDrawHeight;
+
+			Vector3 rightCenter = SW.bonePos[player, rightShoulderIndex];
+			rightCenter.x += skeletonDrawWidth*.5f;
+			rightCenter.y += skeletonDrawHeight*.25f;
+			skeletonDrawCenterRight = rightCenter;
+			
+			Vector3 leftCenter = SW.bonePos[player, leftShoulderIndex];
+			leftCenter.x -= skeletonDrawWidth*.5f;
+			leftCenter.y += skeletonDrawHeight*.25f;
+			skeletonDrawCenterLeft = leftCenter;
+
+			//Debug.Log ("center:"+rightCenter);
+			//Debug.Log ("width: "+skeletonDrawWidth);
+
+			if(skeletonDrawHeight !=0 && skeletonDrawWidth !=0)
+				dataReady = true;
 		}
 	}
 }
