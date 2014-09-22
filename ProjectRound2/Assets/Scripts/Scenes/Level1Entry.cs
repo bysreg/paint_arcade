@@ -2,7 +2,7 @@
 using System.Collections;
 using Kinect;
 
-public class Level1Entry : MonoBehaviour {
+public class Level1Entry : SceneEntry {
 
 	// Use this for initialization
 	void Start () {
@@ -10,8 +10,8 @@ public class Level1Entry : MonoBehaviour {
 		SceneManager.instance.NextSceneName = "Level2";
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
+	public override void ProcessDoneButton() {
+		SceneManager.instance.asyncLoadNextSceneWithDelay (2f);
 	}
+
 }

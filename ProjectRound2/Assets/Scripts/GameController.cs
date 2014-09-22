@@ -115,7 +115,6 @@ public class GameController : MonoBehaviour {
 		{
 			if (hands [i].isHandDown) 
 			{
-				print ("hands down");
 				if(hands[i].tool == PlayerHand.ETool.Brush)
 				{
 					ConnectBrushPoint(hands[i], DrawBrush);

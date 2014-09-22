@@ -13,7 +13,7 @@ namespace Kinect {
 		private string targetLoadingSceneName;
 		private AsyncOperation async;
 		public string NextSceneName;
-
+	
 		static SceneManager _instance;
 		
 		static public bool isActive { 
@@ -90,9 +90,8 @@ namespace Kinect {
 		}
 
 		public void asyncLoadNextSceneWithDelay(float delay) {
-			isLoading = true;
 			targetLoadingSceneName = NextSceneName;
-			StartCoroutine (AsyncLoadLevelWithDelay (name, delay));
+			StartCoroutine (AsyncLoadLevelWithDelay (NextSceneName, delay));
 		}
 
 
@@ -107,6 +106,7 @@ namespace Kinect {
 
 		IEnumerator AsyncLoadLevelWithDelay (string name, float delay) {
 			yield return new WaitForSeconds(delay);
+			isLoading = true;
 			async = Application.LoadLevelAsync (name);
 			while (!async.isDone) {
 				yield return 0;

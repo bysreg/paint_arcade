@@ -6,6 +6,7 @@ namespace Kinect.Button {
 	public class ToolButtonManager : MonoBehaviour {
 		public PlayerHand LeftHand;
 		public PlayerHand RightHand;
+		public float LoadNextSceneDelayTime;
 
 		private ToolButton [] buttons;
 		private PlayerHand[] mouseHands;
@@ -72,6 +73,7 @@ namespace Kinect.Button {
 				else {
 					if(button.toolType == ToolType.Colour) {
 						HandleShapeButtonSelected(brushButton.id, handID);
+						brushButton.SelectButton();
 						if (handID == 2) {
 							LeftHand.color = button.DrawColor;
 							LeftHand.color.a = 1;
@@ -125,11 +127,8 @@ namespace Kinect.Button {
 		}
 
 		void HandleSystemButtonSelected(int id, int handID) {
-			foreach (ToolButton button in buttons) {
-				button.UnselectButton();
-			}
-
-			SceneManager.instance.asyncLoadNextSceneWithDelay (1f);
+			SceneEntry entry = GameObject.FindGameObjectWithTag ("scene_entry").GetComponent<SceneEntry>();
+			entry.ProcessDoneButton ();
 		}
 	}
 
