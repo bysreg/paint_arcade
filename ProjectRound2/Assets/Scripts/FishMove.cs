@@ -9,11 +9,6 @@ public class FishMove : MonoBehaviour {
 	private float timeToRotate = 1f;
 	private float timer = 0;
 
-	void Start()
-	{
-
-	}
-
 	void Update()
 	{
 		if (mode == 0) {

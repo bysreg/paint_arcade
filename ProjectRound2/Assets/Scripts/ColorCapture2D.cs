@@ -110,7 +110,7 @@ public class ColorCapture2D : MonoBehaviour {
 		for (int i=0; i<newSprite.height; i++) 
 		{
 			for (int j=0; j<newSprite.width; j++) 
-			{
+			{	
 				float u = (spriteInCanvasPos.x + (j * xscale)) * 1.0f / (canvasBg.width - 1);
 				float v = (spriteInCanvasPos.y + (i * yscale)) * 1.0f / (canvasBg.height - 1);
 
