@@ -7,11 +7,7 @@ public class Level1Entry : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Screen.showCursor = false;
-		SceneManager.instance.NextSceneName = "Level2";
+		SceneManager.instance.NextSceneName = "Level1";
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
 }

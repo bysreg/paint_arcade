@@ -121,11 +121,7 @@ namespace Kinect.Button {
 		}
 
 		void HandleSystemButtonSelected(int id, int handID) {
-			foreach (ToolButton button in buttons) {
-				button.UnselectButton();
-			}
-
-			SceneManager.instance.asyncLoadNextSceneWithDelay (1f);
+			SceneManager.instance.asyncLoadNextSceneWithDelay (2f);
 		}
 	}
 
