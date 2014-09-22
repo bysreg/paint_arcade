@@ -1,23 +1,60 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEditor;
+using System.Collections.Generic;
+using System;
+using System.Text.RegularExpressions;
 
 public class ColorCapture2D : MonoBehaviour {
 
-	public GameObject creature;
+	public Texture2D OriginalTexture;
+	public Texture2D NewTexture;
 	public Vector2 spriteInCanvasPos; // relative to canvas
 	public Texture2D oriSprite;
 	public float scale; // spriteInCanvas divided by the original sprite
 
+	public GameObject TargetObj;
 	public GameObject test;
+	public Transform []ObjContents; // need to be same order as sprites
 
-	void Start()
-	{
+	private Sprite [] sprites;
+	public string FileExtension;
+
+	private Sprite[] newSprite;
+
+
+	void Start() {
+		UnityEngine.Object[] allSprites = AssetDatabase.LoadAllAssetRepresentationsAtPath("Assets/Sprites/"+OriginalTexture.name+"."+FileExtension);
+		sprites = Array.ConvertAll(allSprites, item => item as Sprite);
+		newSprite = new Sprite[sprites.Length];
+		//CombineTexture2DAndGameObject (NewTexture);
 	}
 
 	void OnGUI()
 	{
 		if(GUI.Button(new Rect(20, 40, 100, 35), "Done"))  {
 			Impose();
+		}
+	}
+
+	public void CombineTexture2DAndGameObject(Texture2D texture) {
+
+		for (int i=0; i<ObjContents.Length; i++) {
+			SpriteRenderer renderer = ObjContents[i].GetComponent<SpriteRenderer>();
+			string numbersOnly = Regex.Replace(renderer.sprite.name, "[^0-9]", "");
+			Bounds bounds =renderer.bounds;
+			Vector2 position = ObjContents[i].transform.position;
+			Vector2 min = bounds.min;
+			Vector2 size = bounds.size;
+			Vector2 offsetOfAbsolutePositionRelativelyToMinOfBounds = position - min;
+			Vector2 pivotVector =
+				new Vector2(
+					offsetOfAbsolutePositionRelativelyToMinOfBounds.x/size.x,
+					offsetOfAbsolutePositionRelativelyToMinOfBounds.y/size.y
+					);
+			Sprite s = sprites [i];
+			newSprite[i] = Sprite.Create (texture, s.rect, pivotVector);
+			renderer.sprite = newSprite [i];
 		}
 	}
 
@@ -42,6 +79,11 @@ public class ColorCapture2D : MonoBehaviour {
 				}
 
 				Color color = canvasTexture.GetPixelBilinear(u, v);
+				if(color.r == 1.0f && color.g == 1.0f && color.b == 1.0f)
+				{
+					color.a = 0f;
+				}
+
 				newSprite.SetPixel(j, i, color);
 			}
 		}
@@ -50,11 +92,7 @@ public class ColorCapture2D : MonoBehaviour {
 
 		test.renderer.material.mainTexture = newSprite;
 
-		//ChangeTexture (creature, canvasTexture);
+		CombineTexture2DAndGameObject (newSprite);
 	}
 
-	void ChangeTexture(GameObject obj, Texture2D texture)
-	{
-
-	}
 }
