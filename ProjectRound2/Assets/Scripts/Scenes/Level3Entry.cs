@@ -5,7 +5,7 @@ public class Level3Entry : SceneEntry {
 
 	// Use this for initialization
 	void Start () {
-		//Screen.showCursor = false; //FIXME :
+		Screen.showCursor = false; //FIXME :
 		SoundManager.instance.PlayBGMusic (2);
 		
 	}
