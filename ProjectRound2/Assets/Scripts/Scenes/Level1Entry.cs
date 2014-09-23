@@ -6,7 +6,7 @@ public class Level1Entry : SceneEntry {
 
 	// Use this for initialization
 	void Start () {
-		Screen.showCursor = false;
+		//Screen.showCursor = false; // FIXME : 
 		SceneManager.instance.NextSceneName = "Level2";
 		SoundManager.instance.PlayBGMusic (0);
 	}

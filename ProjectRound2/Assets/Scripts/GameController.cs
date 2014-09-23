@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using Kinect;
 
 public class GameController : MonoBehaviour {
 	
@@ -242,11 +243,11 @@ public class GameController : MonoBehaviour {
 
 	void HandleKeyPress()
 	{
-		if (Input.GetKeyDown (KeyCode.E)) 
+		if (Input.GetKeyDown (KeyCode.Z)) 
 		{
 			hands[0].tool = PlayerHand.ETool.Eraser;
 		}
-		if (Input.GetKeyDown (KeyCode.B)) 
+		if (Input.GetKeyDown (KeyCode.X)) 
 		{
 			hands[0].tool = PlayerHand.ETool.Brush;
 		}
@@ -257,6 +258,42 @@ public class GameController : MonoBehaviour {
 		if(Input.GetKeyDown (KeyCode.M))
 		{
 			hands[0].color = Color.red;
+		}
+		if (Input.GetKeyDown (KeyCode.Q)) 
+		{
+			hands[0].color = Color.black;
+		}
+		if (Input.GetKeyDown (KeyCode.W)) 
+		{
+			hands[0].color = Color.white;
+		}
+		if (Input.GetKeyDown (KeyCode.E)) 
+		{
+			hands[0].color = Color.red;
+		}
+		if (Input.GetKeyDown (KeyCode.R)) 
+		{
+			hands[0].color = Color.magenta;
+		}
+		if (Input.GetKeyDown (KeyCode.T)) 
+		{
+			hands[0].color = Color.yellow;
+		}
+		if (Input.GetKeyDown (KeyCode.Y)) 
+		{
+			hands[0].color = Color.green;
+		}
+		if (Input.GetKeyDown (KeyCode.U)) 
+		{
+			hands[0].color = Color.blue;
+		}
+		if (Input.GetKeyDown (KeyCode.I)) 
+		{
+			hands[0].color = Color.cyan;
+		}
+		if (Input.GetKeyDown (KeyCode.B)) 
+		{
+			SceneManager.instance.asyncLoadNextSceneWithDelay (0f);
 		}
 	}
 
