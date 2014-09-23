@@ -4,8 +4,10 @@ using Kinect;
 
 public class Level4Entry : SceneEntry {
 
+	public bool showCursor;
+
 	void Start () {
-		Screen.showCursor = false; //FIXME :
+		Screen.showCursor = showCursor; //FIXME :
 		SceneManager.instance.NextSceneName = "Level2";
 		SoundManager.instance.PlayBGMusic (2);
 	}

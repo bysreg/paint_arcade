@@ -1,4 +1,4 @@
-﻿//#define ENABLE_DRAWABLE_AREA
+﻿#define ENABLE_DRAWABLE_AREA
 
 using UnityEngine;
 using System.Collections;
@@ -49,15 +49,18 @@ public class ColorCapture2D : MonoBehaviour {
 		{
 			for(int j=0; j < drawableArea.width; j++)
 			{
-				if(drawableArea.GetPixel(j, i).r == 0) // black ?
+				Color color = drawableArea.GetPixel(j, i);
+				if(color.r <=0.1) // black ?
 				{
+					//print ("a : " + j + " " + i + " " + color.r);
 					Mapping mapping = new Mapping();
-					mapping.canvasUV = new Vector2(j  * 1.0f / (lineTexWidth - 1), i * 1.0f / (lineTexHeight - 1)); // intentionally use lineTexWidth and height rather than canvas to make it more accurate
-					mapping.destUV = new Vector2((j - startBoxPos.x) * 1.0f / (uvWidth - 1), (i - startBoxPos.y) * 1.0f / (uvHeight - 1));
+					mapping.canvasUV = new Vector2(j  * 1.0f / (drawableArea.width - 1), i * 1.0f / (drawableArea.height - 1)); // intentionally use lineTexWidth and height rather than canvas to make it more accurate
+					mapping.destUV = new Vector2((j - spriteInCanvasPos.x) * 1.0f / (sizeInCanvas.x - 1), (i - spriteInCanvasPos.y) * 1.0f / (sizeInCanvas.y - 1));
                     mappings.Add(mapping);
                 }
             }
         }
+		print ("count " + mappings.Count);
 #endif
 	}
 
@@ -107,35 +110,44 @@ public class ColorCapture2D : MonoBehaviour {
 		float yscale = sizeInCanvas.y * 1.0f / newSprite.height;
 		//print ("aaaaaaaaa : " + xscale + " " + yscale);
 
-		for (int i=0; i<newSprite.height; i++) 
+//		for (int i=0; i<newSprite.height; i++) 
+//		{
+//			for (int j=0; j<newSprite.width; j++) 
+//			{	
+//				float u = (spriteInCanvasPos.x + (j * xscale)) * 1.0f / (canvasBg.width - 1);
+//				float v = (spriteInCanvasPos.y + (i * yscale)) * 1.0f / (canvasBg.height - 1);
+//
+//				if(i==newSprite.height - 1 && j == newSprite.width - 1)
+//				{
+//					print ("lalalal : " + u + " " + v);
+//					print ("x comp : " + spriteInCanvasPos.x + " " + j + " " + canvasTexture.width + " " + xscale);
+//					print ("y comp : " + spriteInCanvasPos.y + " " + i + " " + canvasTexture.height + " " + yscale);
+//				}
+//
+//				Color color = canvasTexture.GetPixelBilinear(u, v);
+//				if(color.r == 1.0f && color.g == 1.0f && color.b == 1.0f)
+//				{
+//					color.a = 0f;
+//				}
+//
+//				newSprite.SetPixel(j, i, color);
+//			}
+//		}
+
+#if ENABLE_DRAWABLE_AREA
+		//initialize with white color
+		for(int i=0;i<newSprite.height;i++)
 		{
-			for (int j=0; j<newSprite.width; j++) 
-			{	
-				float u = (spriteInCanvasPos.x + (j * xscale)) * 1.0f / (canvasBg.width - 1);
-				float v = (spriteInCanvasPos.y + (i * yscale)) * 1.0f / (canvasBg.height - 1);
-
-				if(i==newSprite.height - 1 && j == newSprite.width - 1)
-				{
-					print ("lalalal : " + u + " " + v);
-					print ("x comp : " + spriteInCanvasPos.x + " " + j + " " + canvasTexture.width + " " + xscale);
-					print ("y comp : " + spriteInCanvasPos.y + " " + i + " " + canvasTexture.height + " " + yscale);
-				}
-
-				Color color = canvasTexture.GetPixelBilinear(u, v);
-				if(color.r == 1.0f && color.g == 1.0f && color.b == 1.0f)
-				{
-					color.a = 0f;
-				}
-
-				newSprite.SetPixel(j, i, color);
+			for(int j=0;j<newSprite.width;j++)
+			{
+				newSprite.SetPixel(j, i, new Color(1, 1, 1, 0));
 			}
 		}
 
-#if ENABLE_DRAWABLE_AREA
 		for(int i=0;i<mappings.Count;i++)
 		{
 			Color color = canvasTexture.GetPixelBilinear(mappings[i].canvasUV.x, mappings[i].canvasUV.y);
-			newSprite.SetPixel((int) (mappings[i].destUV.x * canvasTexture.width), (int) (mappings[i].destUV.y * canvasTexture.height), color);
+			newSprite.SetPixel((int) (mappings[i].destUV.x * newSprite.width), (int) (mappings[i].destUV.y * newSprite.height), color);
 		}
 #endif
 

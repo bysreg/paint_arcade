@@ -33,6 +33,7 @@ public class GameController : MonoBehaviour {
 
 		canvasObject.renderer.material.mainTexture = canvasTexture;
 		brushShape = CustomBrushShapes.brushShapes [0];
+		brushShape = BrushShape.CreateSquare (30, 30);
 	}
 
 	void OnGUI()
