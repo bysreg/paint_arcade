@@ -1,13 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Level3Entry : SceneEntry {
+public class Level7Entry : SceneEntry {
 
-	// Use this for initialization
 	void Start () {
 		Screen.showCursor = false; //FIXME :
 		SoundManager.instance.PlayBGMusic (2);
-		
 	}
 	
 	public override void ProcessDoneButton() {
@@ -16,7 +14,6 @@ public class Level3Entry : SceneEntry {
 			colorCapture2Ds[i].Impose();
 			colorCapture2Ds[i].TargetObj.SetActive(true);
 		}
-		
 	}
 
 }
