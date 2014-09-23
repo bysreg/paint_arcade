@@ -130,6 +130,20 @@ namespace Kinect.Button {
 			SceneEntry entry = GameObject.FindGameObjectWithTag ("scene_entry").GetComponent<SceneEntry>();
 			entry.ProcessDoneButton ();
 		}
+
+		public float DistanceFromNearestButton(Vector3 pos) {
+			ToolButton button = buttons[0];
+			float minDistance = 999f;
+			foreach (ToolButton b in buttons) {
+				float d = Vector3.Distance(pos, b.transform.position);
+				if(d<minDistance) {
+					button = b;
+					minDistance = d;
+				}
+			}
+
+			return minDistance;
+		}
 	}
 
 
