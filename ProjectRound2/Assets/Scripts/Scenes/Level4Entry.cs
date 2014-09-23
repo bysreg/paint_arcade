@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Kinect;
 
 public class Level4Entry : SceneEntry {
 
 	void Start () {
 		Screen.showCursor = false; //FIXME :
+		SceneManager.instance.NextSceneName = "Level2";
 		SoundManager.instance.PlayBGMusic (2);
-		
 	}
 
 	public override void ProcessDoneButton() {

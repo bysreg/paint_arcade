@@ -131,6 +131,14 @@ public class ColorCapture2D : MonoBehaviour {
 			}
 		}
 
+#if ENABLE_DRAWABLE_AREA
+		for(int i=0;i<mappings.Count;i++)
+		{
+			Color color = canvasTexture.GetPixelBilinear(mappings[i].canvasUV.x, mappings[i].canvasUV.y);
+			newSprite.SetPixel((int) (mappings[i].destUV.x * canvasTexture.width), (int) (mappings[i].destUV.y * canvasTexture.height), color);
+		}
+#endif
+
 		newSprite.Apply ();
 
 		if(test != null)
