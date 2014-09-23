@@ -108,21 +108,12 @@ namespace Kinect.Monitor {
 			float wristToNeckDistance = Vector3.Distance(SW.bonePos [player, wristIndex], SW.bonePos [player, (int)Kinect.NuiSkeletonPositionIndex.ShoulderCenter]);
 			int requiredTimeToChangeStatus = 10;
 			if (wristToNeckDistance > validOperateDistanceScale * headToNeckDistance) {
-				if(elbowAngle > validOperateDegree) {
-					operateTimes++;
-					holdTimes = 0;
-					if(operateTimes > requiredTimeToChangeStatus)
-						SetOperateState();
-				} else {
-					holdTimes++;
-					operateTimes = 0;
-					if(holdTimes > requiredTimeToChangeStatus)
-						SetHoldState();
-				}
+				SetOperateState();
+
 			} else {	
-				holdTimes++;
-				operateTimes = 0;
-				if(holdTimes > requiredTimeToChangeStatus)
+				//holdTimes++;
+				//operateTimes = 0;
+				//if(holdTimes > requiredTimeToChangeStatus)
 					SetHoldState();
 			}
 		}

@@ -16,6 +16,13 @@ public class Level4Entry : SceneEntry {
 			colorCapture2Ds[i].Impose();
 			colorCapture2Ds[i].TargetObj.SetActive(true);
 		}
-		
+
+
+		Invoke ("LoadNext", 5f);
+
+	}
+
+	void LoadNext() {
+		SceneManager.instance.asyncLoadNextSceneWithDelay (1f);
 	}
 }
