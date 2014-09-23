@@ -27,7 +27,7 @@ namespace Kinect.Monitor {
 
 		protected int holdTimes = 0;
 		protected int operateTimes = 0;
-		protected float smoothFactor = 0.3f;
+		protected float smoothFactor = 0.2f;
 
 		public enum HandState{
 			Hold,

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Kinect.Button;
 
 public class PlayerHand : MonoBehaviour{
 
@@ -16,7 +17,7 @@ public class PlayerHand : MonoBehaviour{
 	public Texture BrushHoldTexture;
 	public Texture EraserOperateTexture;
 	public Texture EraserHoldTexture;
-
+	
 	private MeshRenderer renderer;
 
 
@@ -38,6 +39,19 @@ public class PlayerHand : MonoBehaviour{
 				renderer.material.mainTexture = EraserHoldTexture;
 			}
 		}
+	}
+
+	public void UpdatePosition(Vector3 pos) {
+		ToolButtonManager tbm = GameObject.FindGameObjectWithTag ("tool_button_manager").GetComponent<ToolButtonManager>();;
+		if (tbm != null) {
+			float distanceFromButton = tbm.DistanceFromNearestButton(pos);
+			Debug.Log(distanceFromButton);
+		} else {
+			this.pos = pos;
+
+		}
+
+
 	}
 
 }

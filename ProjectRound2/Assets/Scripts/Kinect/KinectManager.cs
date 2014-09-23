@@ -31,6 +31,16 @@ namespace Kinect {
 		private Vector3 skeletonDrawCenterRight;
 		private bool dataReady = false;
 
+
+		Vector3 rightShoulder = Vector3.zero;
+		Vector3 rightWrist = Vector3.zero;
+		Vector3 leftShoulder = Vector3.zero;
+		Vector3 leftWrist = Vector3.zero;
+		Vector3 centerShoulder = Vector3.zero;
+		Vector3 centerHip = Vector3.zero;
+		Vector3 leftElbow = Vector3.zero;
+		Vector3 rightElbow = Vector3.zero;
+
 		// Use this for initialization
 		void Start () {
 
@@ -114,7 +124,7 @@ namespace Kinect {
 			LeftHand.transform.position = PaintPositionFromSkeletonPosition(pos, 0);
 			LeftHand.prevIsHandDown = LeftHand.isHandDown;
 			LeftHand.prevPos = LeftHand.pos;
-			LeftHand.pos = pos;
+			LeftHand.UpdatePosition(pos);
 
 			if(leftHandMonitor.GetHandState() == HandMonitor.HandState.Hold) {
 				LeftHand.isHandDown = false;
@@ -137,7 +147,7 @@ namespace Kinect {
 			RightHand.transform.position = PaintPositionFromSkeletonPosition(pos, 1);
 			RightHand.prevIsHandDown = RightHand.isHandDown;
 			RightHand.prevPos = RightHand.pos;
-			RightHand.pos = pos;
+			RightHand.UpdatePosition(pos);
 
 			if(rightHandMonitor.GetHandState() == HandMonitor.HandState.Hold) {
 				RightHand.isHandDown = false;
@@ -199,20 +209,29 @@ namespace Kinect {
 			int leftElbowIndex = (int)Kinect.NuiSkeletonPositionIndex.ElbowLeft;
 			int rightElbowIndex = (int)Kinect.NuiSkeletonPositionIndex.ElbowRight;
 
-			float rightHeight =  Vector3.Distance(SW.bonePos[player, rightShoulderIndex], SW.bonePos[player, rightWristIndex]);
-			float leftHeight = Vector3.Distance(SW.bonePos[player, leftShoulderIndex], SW.bonePos[player, leftWristIndex]);
-			float centerHeight = Vector3.Distance(SW.bonePos[player, centerHipIndex], SW.bonePos[player, centerShoulderIndex]);
+			rightShoulder = SW.bonePos [player, rightShoulderIndex] * 0.2f + rightShoulder * 0.8f;
+			rightWrist = SW.bonePos[player, rightWristIndex] * 0.2f + rightWrist * 0.8f;
+			leftShoulder = SW.bonePos[player, leftShoulderIndex] * 0.2f + leftShoulder * 0.8f;
+			leftWrist = SW.bonePos[player, leftWristIndex] * 0.2f + leftWrist * 0.8f;
+			centerShoulder = SW.bonePos[player, centerShoulderIndex] * 0.2f + centerShoulder * 0.8f;
+			centerHip = SW.bonePos[player, centerHipIndex] * 0.2f + centerHip * 0.8f;
+			leftElbow = SW.bonePos[player, leftElbowIndex] * 0.2f + leftElbow * 0.8f;
+			rightElbow = SW.bonePos[player, rightElbowIndex] * 0.2f + rightElbow * 0.8f;
+
+			float rightHeight =  Vector3.Distance(rightShoulder, rightWrist);
+			float leftHeight = Vector3.Distance(leftShoulder, leftWrist);
+			float centerHeight = Vector3.Distance(centerHip, centerShoulder);
 
 			float [] heights = {rightHeight, leftHeight, centerHeight};
 			skeletonDrawHeight = Mathf.Max(heights);
 			skeletonDrawWidth = Mathf.Sin((60 * Mathf.PI)/180) * skeletonDrawHeight;
 
-			Vector3 rightCenter = SW.bonePos[player, rightShoulderIndex];
+			Vector3 rightCenter = rightShoulder;
 			rightCenter.x += skeletonDrawWidth*.5f;
 			rightCenter.y += skeletonDrawHeight*.25f;
 			skeletonDrawCenterRight = rightCenter;
 			
-			Vector3 leftCenter = SW.bonePos[player, leftShoulderIndex];
+			Vector3 leftCenter = leftShoulder;
 			leftCenter.x -= skeletonDrawWidth*.5f;
 			leftCenter.y += skeletonDrawHeight*.25f;
 			skeletonDrawCenterLeft = leftCenter;
