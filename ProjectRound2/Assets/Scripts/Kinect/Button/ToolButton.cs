@@ -95,6 +95,23 @@ namespace Kinect.Button {
 			UpdateOutlook();
 		}
 
+		public void UpdateWithPlayerHand(PlayerHand rightHand) {
+			if (buttonStatus == ButtonStatus.Hover) {
+				if(!validRect.Contains(rightHand.transform.position)) {
+					buttonStatus = ButtonStatus.Unselected;
+				}
+			} else if(buttonStatus == ButtonStatus.Selected) {
+				
+			} else if(buttonStatus == ButtonStatus.Unselected) {
+				if(validRect.Contains(rightHand.transform.position)) {
+					buttonStatus = ButtonStatus.Hover;
+					handID = 1;
+				} 
+			}
+			
+			UpdateOutlook();
+		}
+
 		public void SelectButton() {
 			buttonStatus = ButtonStatus.Selected;
 			UpdateOutlook();

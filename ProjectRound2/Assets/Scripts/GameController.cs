@@ -92,24 +92,6 @@ public class GameController : MonoBehaviour {
 				
 				hands[0].pos = new Vector2(px-brushShape.width*.5f, py+brushShape.height*2f);
 			}
-
-			//Left Hand
-			{
-				hands[1].prevIsHandDown = KinectLeftHand.isHandDown;
-				hands[1].prevPos = hands[1].pos;
-				hands[1].isHandDown = KinectLeftHand.isHandDown;
-				hands[1].color = KinectLeftHand.color;
-				hands[1].tool = KinectLeftHand.tool;
-
-				float x = KinectLeftHand.transform.position.x;
-				float y = KinectLeftHand.transform.position.y;
-				float width = canvasObject.collider.bounds.size.x;
-				float height = canvasObject.collider.bounds.size.y;
-				int px = (int)((width*.5f+x)/width*canvasWidth+canvasObject.transform.position.x);
-				int py = (int)((height*.5f+y)/height*canvasHeight+canvasObject.transform.position.y);
-				
-				hands[1].pos = new Vector2(px-brushShape.width*.5f, py+brushShape.height*2f);
-			}
 			
 		}
 

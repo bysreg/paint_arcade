@@ -45,7 +45,7 @@ public class PlayerHand : MonoBehaviour{
 		ToolButtonManager tbm = GameObject.FindGameObjectWithTag ("tool_button_manager").GetComponent<ToolButtonManager>();;
 		if (tbm != null) {
 			float distanceFromButton = tbm.DistanceFromNearestButton(pos);
-			Debug.Log(distanceFromButton);
+			//TODO: unfinished
 		} else {
 			this.pos = pos;
 

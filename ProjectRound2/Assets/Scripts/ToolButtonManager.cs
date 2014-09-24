@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 namespace Kinect.Button {
 	public class ToolButtonManager : MonoBehaviour {
-		public PlayerHand LeftHand;
 		public PlayerHand RightHand;
 		public float LoadNextSceneDelayTime;
 
@@ -41,17 +40,16 @@ namespace Kinect.Button {
 				HandleSystemButtonSelected(id, handID);
 			}
 
-			LeftHand.UpdateOutLook ();
 			RightHand.UpdateOutLook ();
 		}
 		
 		// Update is called once per frame
 		void Update () {
 			foreach (ToolButton button in buttons) {
-				button.UpdateWithPlayerHands(LeftHand, RightHand);
+				button.UpdateWithPlayerHand(RightHand);
 				if(simulateWithMouse)
 				{
-					button.UpdateWithPlayerHands(mouseHands[0], mouseHands[1]);
+					button.UpdateWithPlayerHand(mouseHands[0]);
 				}
 			}
 		}
@@ -74,22 +72,11 @@ namespace Kinect.Button {
 					if(button.toolType == ToolType.Colour) {
 						HandleShapeButtonSelected(brushButton.id, handID);
 						brushButton.SelectButton();
-						if (handID == 2) {
-							LeftHand.color = button.DrawColor;
-							LeftHand.color.a = 1;
-							RightHand.color = button.DrawColor;
-							RightHand.color.a = 1;
-							LeftHand.tool = PlayerHand.ETool.Brush;
-							RightHand.tool = PlayerHand.ETool.Brush;
-						} else if (handID == 1) {
+						if (handID == 1) {
 							RightHand.color = button.DrawColor;
 							RightHand.color.a = 1;
 							RightHand.tool = PlayerHand.ETool.Brush;
-						} else if (handID == 0) {
-							LeftHand.color = button.DrawColor;
-							LeftHand.color.a = 1;
-							LeftHand.tool = PlayerHand.ETool.Brush;
-						}
+						} 
 					}
 					
 				}
@@ -106,14 +93,9 @@ namespace Kinect.Button {
 				} else {
 					t = button.EToolID;
 					if(button.toolType == ToolType.Shape) {
-						if (handID == 2) {
-							LeftHand.tool = button.EToolID;
+						if (handID == 1) {
 							RightHand.tool = button.EToolID;
-						} else if (handID == 1) {
-							RightHand.tool = button.EToolID;
-						} else if (handID == 0) {
-							LeftHand.tool = button.EToolID;
-						}
+						} 
 					}
 
 				}
@@ -132,15 +114,15 @@ namespace Kinect.Button {
 		}
 
 		public float DistanceFromNearestButton(Vector3 pos) {
-			ToolButton button = buttons[0];
 			float minDistance = 999f;
+
 			foreach (ToolButton b in buttons) {
 				float d = Vector3.Distance(pos, b.transform.position);
 				if(d<minDistance) {
-					button = b;
 					minDistance = d;
 				}
 			}
+			Debug.Log(minDistance);// set 1;
 
 			return minDistance;
 		}
