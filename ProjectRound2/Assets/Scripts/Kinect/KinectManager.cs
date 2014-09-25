@@ -81,10 +81,9 @@ namespace Kinect {
 			Vector3 pos = rightHandMonitor.GetHandPosition();
 			pos.z = Canvas.transform.position.z;
 
-			RightHand.transform.position = PaintPositionFromSkeletonPosition(pos);
 			RightHand.prevIsHandDown = RightHand.isHandDown;
 			RightHand.prevPos = RightHand.pos;
-			RightHand.UpdatePosition(RightHand.transform.position);
+			RightHand.UpdatePosition(PaintPositionFromSkeletonPosition(pos));
 
 			if(rightHandMonitor.GetHandState() == HandMonitor.HandState.Hold) {
 				RightHand.isHandDown = false;
@@ -108,7 +107,7 @@ namespace Kinect {
 			if(ratioX < -1f) ratioX = -1f;
 			if(ratioY < -1f) ratioY = -1f;
 
-			//Debug.Log (ratioX + ", " + ratioY);
+			Debug.Log (ratioX + ", " + ratioY);
 
 
 			float x = Canvas.transform.position.x + ratioX * canvasWidth*.5f * Consts.kinectToCanvasScale; 
@@ -123,6 +122,7 @@ namespace Kinect {
 			if (maxIndex <= 0)
 				return;
 
+			//Debug.Log(data[(int)Kinect.NuiSkeletonPositionIndex.HandRight][maxIndex].Position.x + " " + data[(int)Kinect.NuiSkeletonPositionIndex.HandRight][maxIndex].Position.y);
 
 			int rightShoulderIndex = (int)Kinect.NuiSkeletonPositionIndex.ShoulderRight;
 			int centerShoulderIndex = (int)Kinect.NuiSkeletonPositionIndex.ShoulderCenter;

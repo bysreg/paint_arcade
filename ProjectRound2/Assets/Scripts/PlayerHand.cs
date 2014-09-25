@@ -44,14 +44,19 @@ public class PlayerHand : MonoBehaviour{
 	public void UpdatePosition(Vector3 pos) {
 		ToolButtonManager tbm = GameObject.FindGameObjectWithTag ("tool_button_manager").GetComponent<ToolButtonManager>();;
 		if (tbm != null) {
-			float distanceFromButton = tbm.DistanceFromNearestButton(pos);
-			//TODO: unfinished
+			ToolButton button = tbm.NearstestButton(pos);
+			if(button != null) {
+				Vector3 p = pos *.4f + button.transform.position *.6f;
+				this.pos = p;
+				this.transform.position = p;
+			} else {
+				this.pos = pos;
+				this.transform.position = pos;
+			}
+
 		} else {
 			this.pos = pos;
-
+			this.transform.position = pos;
 		}
-
-
 	}
-
 }

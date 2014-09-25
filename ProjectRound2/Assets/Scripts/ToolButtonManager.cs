@@ -113,18 +113,21 @@ namespace Kinect.Button {
 			entry.ProcessDoneButton ();
 		}
 
-		public float DistanceFromNearestButton(Vector3 pos) {
+		public ToolButton NearstestButton(Vector3 pos) {
 			float minDistance = 999f;
-
+			ToolButton button = buttons [0];
 			foreach (ToolButton b in buttons) {
 				float d = Vector3.Distance(pos, b.transform.position);
 				if(d<minDistance) {
 					minDistance = d;
+					button = b;
 				}
 			}
-			Debug.Log(minDistance);// set 1;
 
-			return minDistance;
+			if (minDistance < .5f)
+				return button;
+
+			return null;
 		}
 	}
 

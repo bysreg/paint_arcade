@@ -12,6 +12,7 @@ namespace Kinect.Monitor {
 		protected int wristIndex;
 		protected int elbowIndex;
 		protected int shoulderIndex;
+		protected int handIndex;
 
 		public enum HandState{
 			Hold,
@@ -31,12 +32,14 @@ namespace Kinect.Monitor {
 			SetElbowIndex ();
 			SetShoulderIndex ();
 			SetWristIndex ();
+			SetHandIndex ();
 			handState = HandState.Hold;
 		}
 		
 		public abstract void SetWristIndex();
 		public abstract void SetElbowIndex();
 		public abstract void SetShoulderIndex();
+		public abstract void SetHandIndex();
 
 		public void Process(Dictionary <int, List <ContextPoint>> data) {
 			int maxIndex = data[0].Count-1;
@@ -44,6 +47,7 @@ namespace Kinect.Monitor {
 				return;
 			
 			Vector3 wristPosition = data [wristIndex] [maxIndex].Position;
+			Vector3 handPos = data [handIndex] [maxIndex].Position;
 			Vector3 headPosition = data [(int)Kinect.NuiSkeletonPositionIndex.Head] [maxIndex].Position;
 			Vector3 neckPosition = data [(int)Kinect.NuiSkeletonPositionIndex.ShoulderCenter] [maxIndex].Position;
 

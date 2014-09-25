@@ -15,4 +15,8 @@ public class RightHandMonitor : HandMonitor {
 	public override void SetElbowIndex() {
 		elbowIndex = (int)Kinect.NuiSkeletonPositionIndex.ElbowRight;
 	}
+
+	public override void SetHandIndex() {
+		handIndex = (int)Kinect.NuiSkeletonPositionIndex.HandRight;
+	}
 }
