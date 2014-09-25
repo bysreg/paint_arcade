@@ -50,20 +50,28 @@ namespace Kinect.Monitor {
 			Vector3 handPos = data [handIndex] [maxIndex].Position;
 			Vector3 headPosition = data [(int)Kinect.NuiSkeletonPositionIndex.Head] [maxIndex].Position;
 			Vector3 neckPosition = data [(int)Kinect.NuiSkeletonPositionIndex.ShoulderCenter] [maxIndex].Position;
+			Vector3 hipPosition = data [(int)Kinect.NuiSkeletonPositionIndex.HipCenter] [maxIndex].Position;
 
-			float headToNeckDistance = Vector3.Distance (headPosition, neckPosition);
+			float headToNeckDistance = Vector3.Distance(headPosition, neckPosition);
 			float wristToNeckDistance = Vector3.Distance(wristPosition, neckPosition);
-			
-			//Debug.Log("wrist to neck: " + wristToNeckDistance);
-			//Debug.Log("head to neck: " + headToNeckDistance);
-			
+			float hipToNeckDistanceY = neckPosition.y - hipPosition.y;
+			float wristToHipDistanceY = wristPosition.y - hipPosition.y;
+
+			if(wristToHipDistanceY > hipToNeckDistanceY * 0.4f) {
+				SetOperateState();
+			} else {
+				SetHoldState();
+			}
+
+
+			/*
 			if (wristToNeckDistance > Consts.ValidOperateDistanceScale * headToNeckDistance) {
 				SetOperateState();
 			} else {
 				SetHoldState();
 				SetOperateState();//TODO: del
-
 			}
+			*/
 		
 			handPosition = wristPosition;
 		}

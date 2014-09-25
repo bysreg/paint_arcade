@@ -6,6 +6,7 @@ namespace Kinect.Button {
 
 
 	public class MenuButton : MonoBehaviour {
+
 		public Texture UnselectedTexture;
 		public Texture HoverTexture;
 		public  ButtonStatus buttonStatus = ButtonStatus.Unselected;
@@ -15,11 +16,9 @@ namespace Kinect.Button {
 		private Rect validRect;
 		private float timer;
 		private float hoverTime;
-
-		public PlayerHand LeftHand;
-		public PlayerHand RightHand;
-
+		private Vector3 originalScale;
 		public int id;
+
 		// Use this for initialization
 		void Start () {
 			float width = transform.collider.bounds.size.x;
@@ -30,6 +29,7 @@ namespace Kinect.Button {
 			validRect = new Rect (x, y, width * .9f, height * .9f);
 			timer = 0f;
 			hoverTime = 1f;
+			originalScale = transform.localScale;
 		}
 		
 		void UpdateOutlook() {
@@ -43,33 +43,30 @@ namespace Kinect.Button {
 		}
 		
 		void Update() {
-			//UpdateWithPlayerHands (LeftHand, RightHand);
 			if(buttonStatus == ButtonStatus.Hover) {
 				timer += Time.deltaTime;
 				if(timer > hoverTime) {
 					SelectButton();
+					StartCoroutine(PlaySelectAnimation());
 				}
 			} else {
 				timer = 0f;
 			}
-
 		}
 		
-		void UpdateWithPlayerHands(PlayerHand leftHand, PlayerHand rightHand) {
+		public void UpdateWithPlayerHand(PlayerHand rightHand) {
 			if (buttonStatus == ButtonStatus.Hover) {
-				if(!validRect.Contains(rightHand.transform.position) && !validRect.Contains(leftHand.transform.position)) {
+				if(!validRect.Contains(rightHand.transform.position)) {
 					buttonStatus = ButtonStatus.Unselected;
+					rightHand.HideProgressBar();
 				}
-			} else if(buttonStatus == ButtonStatus.Selected) {
-				
 			} else if(buttonStatus == ButtonStatus.Unselected) {
-				if(validRect.Contains(rightHand.transform.position) && validRect.Contains(leftHand.transform.position)) {
+				if(validRect.Contains(rightHand.transform.position)) {
 					buttonStatus = ButtonStatus.Hover;
-				} else if(validRect.Contains(rightHand.transform.position)) {
-					buttonStatus = ButtonStatus.Hover;
-				} else if(validRect.Contains(leftHand.transform.position)) {
-					buttonStatus = ButtonStatus.Hover;
-				}
+					rightHand.ShowProgressBar();
+				} 
+			} else {
+			
 			}
 			
 			UpdateOutlook();
@@ -94,6 +91,22 @@ namespace Kinect.Button {
 				Application.Quit();
 			} else if (id == 1) {
 				SceneManager.instance.asyncLoadScene("Level1");
+			}
+		}
+
+		IEnumerator PlaySelectAnimation() {
+			float x = 0f;
+			while(x<0.5f) {
+				transform.localScale = Vector3.Lerp(originalScale *0.9f, originalScale*1.05f, x*2f);
+				x+=Time.deltaTime;
+			}
+			yield return new WaitForSeconds(.2f);
+			
+			x=0;
+			
+			while(x<0.1f) {
+				transform.localScale = Vector3.Lerp(transform.localScale, originalScale*1, x*10f);
+				x+=Time.deltaTime;
 			}
 		}
 

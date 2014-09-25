@@ -71,7 +71,7 @@ namespace Kinect.Button {
 				timer = 0f;
 			}
 		}
-		
+
 		public void UpdateWithPlayerHands(PlayerHand leftHand, PlayerHand rightHand) {
 			if (buttonStatus == ButtonStatus.Hover) {
 				if(!validRect.Contains(rightHand.transform.position) && !validRect.Contains(leftHand.transform.position)) {

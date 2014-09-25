@@ -8,26 +8,31 @@ using PaintArcade.Generic;
 namespace Kinect {
 	public class KinectManager : MonoBehaviour {
 
+		public enum PlayerStatus {
+			Hold,
+			Operate
+		}
+
 
 		public bool SimulateWithKeyBoard;
 
 		public SkeletonWrapper SW;
 		public int player;
 		public PlayerHand RightHand;
-		public GameObject PaintBoard;
-		public GameObject Canvas;
 
 
 		private ContextTracker contextTracker;
+		private PlayerStatus playerStatus = PlayerStatus.Hold;
 		private float canvasHeightToWidthRatio;
 		private float skeletonDrawHeight;
 		private float skeletonDrawWidth;
 		private Vector3 skeletonDrawCenter;
 		private float canvasWidth;
 		private float canvasHeight;
+		private GameObject canvas;
 
 		private RightHandMonitor rightHandMonitor;
-
+		private LeftHandMonitor leftHandMonitor;
 
 
 		// Use this for initialization
@@ -45,19 +50,22 @@ namespace Kinect {
 				return;
 			}
 
-			if (Canvas == null) {
+			canvas = GameObject.FindGameObjectWithTag("canvas");
+
+			if (canvas == null) {
 				Debug.Log ("Cannot find canvas");
 				this.enabled = false;
 				return;
 			}
 
 			rightHandMonitor = gameObject.AddComponent<RightHandMonitor>();
+			leftHandMonitor = gameObject.AddComponent<LeftHandMonitor>();
 
 			contextTracker = gameObject.AddComponent<ContextTracker>();
 			contextTracker.AssignSkeletonWrapper (SW, player);
 
-			canvasWidth = Canvas.collider.bounds.size.x;
-			canvasHeight = Canvas.collider.bounds.size.y;
+			canvasWidth = canvas.collider.bounds.size.x;
+			canvasHeight = canvas.collider.bounds.size.y;
 			canvasHeightToWidthRatio = canvasHeight / canvasWidth;
 		}
 		
@@ -70,21 +78,41 @@ namespace Kinect {
 
 			if (contextTracker.ReadSkeleton ()) {
 				rightHandMonitor.Process(contextTracker.GetData());
+				leftHandMonitor.Process(contextTracker.GetData());
 				UpdateSkeletonDrawArea(contextTracker.GetData());
+				syncLeftHand();
 				syncRightHand();
 			}
 
 		}
 
+		void syncLeftHand() {
+			if(leftHandMonitor.GetHandState() == HandMonitor.HandState.Hold) {
+				playerStatus = PlayerStatus.Hold;
+			} else if(leftHandMonitor.GetHandState() == HandMonitor.HandState.Operate) {
+				playerStatus = PlayerStatus.Operate;
+			}
+		}
+
+
 		void syncRightHand() {
 
 			Vector3 pos = rightHandMonitor.GetHandPosition();
-			pos.z = Canvas.transform.position.z;
+			pos.z = canvas.transform.position.z;
 
 			RightHand.prevIsHandDown = RightHand.isHandDown;
 			RightHand.prevPos = RightHand.pos;
 			RightHand.UpdatePosition(PaintPositionFromSkeletonPosition(pos));
 
+			if(playerStatus == PlayerStatus.Hold) {
+				RightHand.isHandDown = false;
+				RightHand.UpdateOutLook();
+			} else if(playerStatus == PlayerStatus.Operate) {
+				RightHand.isHandDown = true;
+				RightHand.UpdateOutLook();
+			}
+
+			/*
 			if(rightHandMonitor.GetHandState() == HandMonitor.HandState.Hold) {
 				RightHand.isHandDown = false;
 				RightHand.UpdateOutLook();
@@ -92,6 +120,7 @@ namespace Kinect {
 				RightHand.isHandDown = true;
 				RightHand.UpdateOutLook();
 			}
+			*/
 		}
 
 
@@ -112,8 +141,8 @@ namespace Kinect {
 			Debug.Log (ratioX + ", " + ratioY);
 
 
-			float x = Canvas.transform.position.x + ratioX * canvasWidth*.5f * Consts.kinectToCanvasScale; 
-			float y = Canvas.transform.position.y + ratioY * canvasHeight*.5f * Consts.kinectToCanvasScale; 
+			float x = canvas.transform.position.x + ratioX * canvasWidth*.5f * Consts.kinectToCanvasScale; 
+			float y = canvas.transform.position.y + ratioY * canvasHeight*.5f * Consts.kinectToCanvasScale; 
 
 			return new Vector3 (x, y, skeletonPosition.z);
 	

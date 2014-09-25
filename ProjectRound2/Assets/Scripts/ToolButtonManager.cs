@@ -5,7 +5,6 @@ using System.Collections.Generic;
 namespace Kinect.Button {
 	public class ToolButtonManager : MonoBehaviour {
 		public PlayerHand RightHand;
-		public float LoadNextSceneDelayTime;
 
 		private ToolButton [] buttons;
 		private PlayerHand[] mouseHands;
@@ -23,12 +22,17 @@ namespace Kinect.Button {
 				}
 			}
 
-			GameController gameController = GameObject.Find ("GameController").GetComponent<GameController> ();
-			simulateWithMouse = gameController.simulateWithMouse;
-			if (gameController.simulateWithMouse) 
-			{
-				mouseHands = gameController.GetPlayerHands();
+			GameObject gObj = GameObject.Find ("GameController");
+			if(gObj != null) {
+				GameController gameController = gObj.GetComponent<GameController> ();
+				simulateWithMouse = gameController.simulateWithMouse;
+				if (gameController.simulateWithMouse) {
+					mouseHands = gameController.GetPlayerHands();
+				}
+			} else {
+				Debug.Log("Cannot find game controller");
 			}
+
 		}
 
 		void HandleOnButtonSelected(int id, int handID, ToolType type) {
