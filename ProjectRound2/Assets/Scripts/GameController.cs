@@ -11,7 +11,7 @@ public class GameController : MonoBehaviour {
 	public int maxHands;
 	public PlayerHand KinectLeftHand;
 	public PlayerHand KinectRightHand;
-	public Texture2D canvasBg;
+	public Texture2D canvasBg; // mandatory
 	public Texture2D canvasDrawableArea;
 
 	Texture2D canvasTexture;
@@ -19,7 +19,8 @@ public class GameController : MonoBehaviour {
 	GameObject canvasBgObject;
 	BrushShape brushShape;
 	PlayerHand[] hands;
-
+	Color[] canvasDrawableAreaColors;
+	
 	void Awake()
 	{
 		canvasObject = GameObject.Find ("Canvas");
@@ -67,7 +68,11 @@ public class GameController : MonoBehaviour {
 			hands[0].prevPos = hands[0].pos;
 			hands[0].pos.x = (int) (hitInfo.textureCoord.x * canvasWidth);
 			hands[0].pos.y = (int) (hitInfo.textureCoord.y * canvasHeight);
+			hands[0].uvpos.x = hitInfo.textureCoord.x;
+			hands[0].uvpos.y = hitInfo.textureCoord.y;
+		
 			//print (hitInfo.textureCoord.x + " " + hitInfo.textureCoord.y);
+			//print (hands[0].pos.x + " " + hands[0].pos.y);
 
 			if (inCanvas)
 				hands [0].isHandDown = Input.GetMouseButton (0);
@@ -148,20 +153,26 @@ public class GameController : MonoBehaviour {
 	{
 		int k = 0;
 		int x, y;
+		float u, v;
+
 		y = (int) (pos.y - brushShape.height/ 2.0f);
 		for (int i = brushShape.height - 1; i >= 0; i--) 
 		{
 			x = (int) (pos.x - brushShape.width / 2.0f);
+			v = y * 1.0f / canvasHeight;
 
 			for(int j = 0;j < brushShape.width; j++)
 			{
+				u = x * 1.0f / canvasWidth;
+
 				if (x < 0 || x >= canvasWidth)
 					continue;
 				if (y < 0 || y >= canvasHeight)
 					continue;
 
 				//print (x + " " + y + " " + i + " " + j);
-				if(brushShape.matrix[i*brushShape.width + j] == 1)
+				if(brushShape.matrix[i*brushShape.width + j] == 1 && CheckIsDrawable(u, v))
+				//if(brushShape.matrix[i*brushShape.width + j] == 1 && CheckIsDrawable(x, y))
 					canvasTexture.SetPixel (x, y, color);
 				x++;
 			}
@@ -169,6 +180,23 @@ public class GameController : MonoBehaviour {
 		}
 
 		//intentionally not using canvasTexture.Apply, it will be done in ConnectBrushPoint
+	}
+
+	bool CheckIsDrawable(float u, float v)
+	{
+		//fIXME
+		int x, y;
+		x = (int) (u * canvasBg.width);
+		y = (int) (v * canvasBg.height);
+		//x = (int) u;
+		//y = (int) v;
+		//return canvasDrawableAreaColors [u + v * canvasWidth].r <= 0.1;
+		//return canvasDrawableAreaColors [x + y * canvasWidth].r <= 0.1;
+		//print (x + " " + y);
+		//return canvasDrawableAreaColors [x + y * canvasBg.width].r <= 0.1; // 2
+		//return canvasDrawableArea.GetPixelBilinear (u, v).r > 0.;
+		return canvasDrawableArea.GetPixel (x, y).r == 0;
+//		return true;
 	}
 
 	void ConnectBrushPoint(PlayerHand hand, Action<Vector2, Color, BrushShape> drawf)
@@ -184,12 +212,16 @@ public class GameController : MonoBehaviour {
         //print (pos0.x + " " + pos0.y + " " + pos1.x + " " + pos1.y + " " + hand.pos);
 			 
  		//connect current pos and prev pos
-		DrawLine (hand.prevPos, hand.pos, hand.color, drawf);
+		DrawLine (hand, drawf);
 	}
 
 	// NOTE : pos0.x, pos0.y, pos1.x, pos1.y, must be integer
-	void DrawLine(Vector2 pos0, Vector2 pos1, Color color, Action<Vector2, Color, BrushShape> drawf)
+	void DrawLine(PlayerHand hand, Action<Vector2, Color, BrushShape> drawf)
 	{
+		Vector2 pos0 = hand.prevPos;
+		Vector2 pos1 = hand.pos;
+		Color color = hand.color;
+
 		float sx, sy, err, e2;
 		float dx = Mathf.Abs(pos1.x - pos0.x);
 		float dy = Mathf.Abs(pos1.y - pos0.y); 
@@ -288,21 +320,10 @@ public class GameController : MonoBehaviour {
 		{
 			for(int j=0;j<canvasWidth;j++)
 			{
-//				if(canvasBg != null)
-//				{
-//					float u =  j * 1.0f / (canvasWidth - 1);
-//					float v = i * 1.0f / (canvasHeight - 1);
-//					Color color = canvasBg.GetPixelBilinear(u, v);
-//
-//					canvasTexture.SetPixel(j, i, color);
-//				}
-//				else
-//				{
-					Color color = Color.white;
-					color.a = 0f;
+				Color color = Color.white;
+				color.a = 0f;
 
-					canvasTexture.SetPixel(j, i, color);
-//				}
+				canvasTexture.SetPixel(j, i, color);
 			}
 		}
 		canvasTexture.Apply ();
@@ -311,6 +332,8 @@ public class GameController : MonoBehaviour {
 		{
 			canvasBgObject.renderer.material.mainTexture = canvasBg;
 		}
+
+		canvasDrawableAreaColors = canvasDrawableArea.GetPixels ();
 	}
 	
 	void InitPlayerHands()
