@@ -21,7 +21,7 @@ public class PlayerHand : MonoBehaviour{
 	private MeshRenderer renderer;
 	private CircularProgressBar progressBar;
 
-	private void Start() {
+	private void Awake() {
 		renderer = GetComponent<MeshRenderer> ();
 		progressBar = transform.FindChild("ProgressBar").GetComponent<CircularProgressBar>();
 	}
