@@ -33,7 +33,8 @@ public class ColorCapture2D : MonoBehaviour {
 
 	public Texture2D testReplacedTexture;
 
-	void Start() {
+	void Start() 
+	{
 		newSprite = new Sprite[SpriteNum];
 		ObjContents = new Transform[SpriteNum];
 		FindChildAndSetData(TargetObj.transform);
@@ -65,7 +66,8 @@ public class ColorCapture2D : MonoBehaviour {
 #endif
 	}
 
-	void FindChildAndSetData(Transform t) {
+	void FindChildAndSetData(Transform t) 
+	{
 		SpriteRenderer renderer = t.GetComponent<SpriteRenderer>();
 		string numbersOnly = Regex.Replace(renderer.sprite.name, ".+[^0-9]", "");
 		Debug.Log (int.Parse (numbersOnly));
@@ -75,7 +77,8 @@ public class ColorCapture2D : MonoBehaviour {
 		}
 	}
 
-	public void CombineTexture2DAndGameObject(Texture2D texture) {
+	public void CombineTexture2DAndGameObject(Texture2D texture) 
+	{
 
 		if (ObjContents == null)
 			return;
@@ -151,9 +154,22 @@ public class ColorCapture2D : MonoBehaviour {
 			newSprite.SetPixel((int) (mappings[i].destUV.x * newSprite.width), (int) (mappings[i].destUV.y * newSprite.height), color);
 		}
 #endif
-
 		//apply lines
 		Color[] linesColor = lineTexture.GetPixels ();
+
+		int k = 0;
+		for (int i=0; i<lineTexture.height; i++) 
+		{
+			for (int j=0; j < lineTexture.width; j++, k++) 
+			{
+				if(linesColor[k].a < 0.04)
+				{
+					continue;
+				}
+
+				newSprite.SetPixel(j, i, linesColor[k]);
+			}
+		}
 
 		newSprite.Apply ();
 
