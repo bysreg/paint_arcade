@@ -67,6 +67,9 @@ namespace Kinect {
 			canvasWidth = canvas.collider.bounds.size.x;
 			canvasHeight = canvas.collider.bounds.size.y;
 			canvasHeightToWidthRatio = canvasHeight / canvasWidth;
+
+			RightHand.pos = canvas.transform.position;
+			RightHand.transform.position = canvas.transform.position;
 		}
 		
 		// Update is called once per frame

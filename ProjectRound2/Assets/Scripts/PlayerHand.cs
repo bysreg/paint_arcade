@@ -43,7 +43,9 @@ public class PlayerHand : MonoBehaviour{
 	}
 
 	public void UpdatePosition(Vector3 pos) {
-		ToolButtonManager tbm = GameObject.FindGameObjectWithTag ("tool_button_manager").GetComponent<ToolButtonManager>();;
+		ToolButtonManager tbm = GameObject.FindGameObjectWithTag ("tool_button_manager").GetComponent<ToolButtonManager>();
+		MenuButtonManager mbm = GameObject.FindGameObjectWithTag ("menu_button_manager").GetComponent<MenuButtonManager>();
+
 		if (tbm != null) {
 			ToolButton button = tbm.NearstestButton(pos);
 			if(button != null) {
@@ -55,6 +57,22 @@ public class PlayerHand : MonoBehaviour{
 				this.transform.position = pos;
 			}
 
+		} else {
+			this.pos = pos;
+			this.transform.position = pos;
+		}
+
+		if (mbm != null) {
+			MenuButton button = mbm.NearstestButton(pos);
+			if(button != null) {
+				Vector3 p = pos *.4f + button.transform.position *.6f;
+				this.pos = p;
+				this.transform.position = p;
+			} else {
+				this.pos = pos;
+				this.transform.position = pos;
+			}
+			
 		} else {
 			this.pos = pos;
 			this.transform.position = pos;
