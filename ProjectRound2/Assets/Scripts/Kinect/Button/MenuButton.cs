@@ -36,7 +36,7 @@ namespace Kinect.Button {
 			if (buttonStatus == ButtonStatus.Unselected) {
 				renderer.material.mainTexture = UnselectedTexture;
 			} else if(buttonStatus == ButtonStatus.Selected) {
-				renderer.material.mainTexture = UnselectedTexture;
+				renderer.material.mainTexture = HoverTexture;
 			} else if(buttonStatus == ButtonStatus.Hover) {
 				renderer.material.mainTexture = HoverTexture;
 			}
@@ -77,10 +77,10 @@ namespace Kinect.Button {
 			UpdateOutlook();
 
 			if (id == 0) {
-				Debug.Log("exit");
+				Application.Quit();
 			} else if (id == 1) {
-				Debug.Log("continue");
-
+				SceneEntry entry = GameObject.FindGameObjectWithTag ("scene_entry").GetComponent<SceneEntry>();
+				entry.ProcessDoneButton ();
 			}
 
 		}

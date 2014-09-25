@@ -10,6 +10,8 @@ public class Level4Entry : SceneEntry {
 		Screen.showCursor = showCursor; //FIXME :
 		SceneManager.instance.NextSceneName = "Level2";
 		SoundManager.instance.PlayBGMusic (2);
+
+		AddToolButtonManager ();
 	}
 
 	public override void ProcessDoneButton() {

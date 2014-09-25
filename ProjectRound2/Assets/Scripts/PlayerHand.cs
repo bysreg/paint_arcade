@@ -22,7 +22,7 @@ public class PlayerHand : MonoBehaviour{
 	private MeshRenderer renderer;
 	private CircularProgressBar progressBar;
 
-	private void Start() {
+	private void Awake() {
 		renderer = GetComponent<MeshRenderer> ();
 		progressBar = transform.FindChild("ProgressBar").GetComponent<CircularProgressBar>();
 	}
@@ -44,8 +44,11 @@ public class PlayerHand : MonoBehaviour{
 	}
 
 	public void UpdatePosition(Vector3 pos) {
-		ToolButtonManager tbm = GameObject.FindGameObjectWithTag ("tool_button_manager").GetComponent<ToolButtonManager>();;
-		if (tbm != null) {
+		GameObject tbmObj = GameObject.FindGameObjectWithTag ("tool_button_manager");
+		GameObject mbmObj = GameObject.FindGameObjectWithTag ("menu_button_manager");
+
+		if (tbmObj != null) {
+			ToolButtonManager tbm = tbmObj.GetComponent<ToolButtonManager>();
 			ToolButton button = tbm.NearstestButton(pos);
 			if(button != null) {
 				Vector3 p = pos *.4f + button.transform.position *.6f;
@@ -56,6 +59,23 @@ public class PlayerHand : MonoBehaviour{
 				this.transform.position = pos;
 			}
 
+		} else {
+			this.pos = pos;
+			this.transform.position = pos;
+		}
+
+		if (mbmObj != null) {
+			MenuButtonManager mbm = mbmObj.GetComponent<MenuButtonManager>();
+			MenuButton button = mbm.NearstestButton(pos);
+			if(button != null) {
+				Vector3 p = pos *.4f + button.transform.position *.6f;
+				this.pos = p;
+				this.transform.position = p;
+			} else {
+				this.pos = pos;
+				this.transform.position = pos;
+			}
+			
 		} else {
 			this.pos = pos;
 			this.transform.position = pos;
