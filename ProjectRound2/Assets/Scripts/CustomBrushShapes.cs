@@ -9,7 +9,6 @@ public class CustomBrushShapes : MonoBehaviour {
 
 	void Awake()
 	{
-
 		brushShapes = new BrushShape[brushTextures.Length];
 
 		for (int i=0; i<brushTextures.Length; i++) 
