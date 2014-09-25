@@ -28,10 +28,10 @@ namespace Kinect.Button {
 		// Update is called once per frame
 		void Update () {
 			foreach (MenuButton button in buttons) {
-				button.UpdateWithPlayerHand(RightHand);
-				if(simulateWithMouse)
-				{
+				if(simulateWithMouse){
 					button.UpdateWithPlayerHand(mouseHands[0]);
+				} else {
+					button.UpdateWithPlayerHand(RightHand);
 				}
 			}
 		}
