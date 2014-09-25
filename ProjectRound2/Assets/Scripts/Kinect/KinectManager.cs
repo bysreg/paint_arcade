@@ -102,6 +102,8 @@ namespace Kinect {
 
 			ratioX -= 1.5f; // dont let hand go across body, sensor problem, shaky
 
+			ratioY += 0.3f; // from realtime test
+
 			if(ratioX > 1f) ratioX = 1f;
 			if(ratioY > 1f) ratioY = 1f;
 			if(ratioX < -1f) ratioX = -1f;
