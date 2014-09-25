@@ -19,10 +19,11 @@ public class PlayerHand : MonoBehaviour{
 	public Texture EraserHoldTexture;
 	
 	private MeshRenderer renderer;
-
+	private CircularProgressBar progressBar;
 
 	private void Start() {
 		renderer = GetComponent<MeshRenderer> ();
+		progressBar = transform.FindChild("ProgressBar").GetComponent<CircularProgressBar>();
 	}
 
 	public void UpdateOutLook() {
@@ -59,4 +60,13 @@ public class PlayerHand : MonoBehaviour{
 			this.transform.position = pos;
 		}
 	}
+
+	public void ShowProgressBar() {
+		progressBar.Activate();
+	}
+
+	public void HideProgressBar() {
+		progressBar.Deactivate();
+	}
+
 }

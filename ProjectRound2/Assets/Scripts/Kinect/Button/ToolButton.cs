@@ -19,9 +19,6 @@ namespace Kinect.Button {
 	public delegate void OnButtonSelectedHandler(int id, int handID, ToolType type);
 	
 	public class ToolButton :MonoBehaviour {
-		
-
-
 
 		public Texture SelectedTexture;
 		public Texture UnselectedTexture;
@@ -38,6 +35,7 @@ namespace Kinect.Button {
 		private float timer;
 		private float hoverTime;
 		private int handID;
+		private Vector3 originalScale;
 		
 		void Start() {
 			float width = transform.collider.bounds.size.x;
@@ -48,6 +46,7 @@ namespace Kinect.Button {
 			renderer =  transform.GetComponent<MeshRenderer> ();
 			timer = 0f;
 			hoverTime = 1f;
+			originalScale = transform.localScale;
 		}
 		
 		void UpdateOutlook() {
@@ -66,6 +65,7 @@ namespace Kinect.Button {
 				if(timer > hoverTime) {
 					SelectButton();
 					onButtonSelected(id, handID, toolType);
+					StartCoroutine(PlaySelectAnimation());
 				}
 			} else {
 				timer = 0f;
@@ -99,6 +99,7 @@ namespace Kinect.Button {
 			if (buttonStatus == ButtonStatus.Hover) {
 				if(!validRect.Contains(rightHand.transform.position)) {
 					buttonStatus = ButtonStatus.Unselected;
+					rightHand.HideProgressBar();
 				}
 			} else if(buttonStatus == ButtonStatus.Selected) {
 				
@@ -106,6 +107,7 @@ namespace Kinect.Button {
 				if(validRect.Contains(rightHand.transform.position)) {
 					buttonStatus = ButtonStatus.Hover;
 					handID = 1;
+					rightHand.ShowProgressBar();
 				} 
 			}
 			
@@ -120,6 +122,22 @@ namespace Kinect.Button {
 		public void UnselectButton() {
 			buttonStatus = ButtonStatus.Unselected;
 			UpdateOutlook();
+		}
+
+		IEnumerator PlaySelectAnimation() {
+			float x = 0f;
+			while(x<0.5f) {
+				transform.localScale = Vector3.Lerp(originalScale *0.9f, originalScale*1.05f, x*2f);
+				x+=Time.deltaTime;
+			}
+			yield return new WaitForSeconds(.2f);
+
+			x=0;
+
+			while(x<0.1f) {
+				transform.localScale = Vector3.Lerp(transform.localScale, originalScale*1, x*10f);
+				x+=Time.deltaTime;
+			}
 		}
 	}
 }

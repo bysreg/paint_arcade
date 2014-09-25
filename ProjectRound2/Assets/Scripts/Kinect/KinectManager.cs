@@ -63,15 +63,15 @@ namespace Kinect {
 		
 		// Update is called once per frame
 		void Update () {
+			if(SimulateWithKeyBoard) {
+				HandleKeyBoardIssue(); 
+				return;
+			}
+
 			if (contextTracker.ReadSkeleton ()) {
 				rightHandMonitor.Process(contextTracker.GetData());
 				UpdateSkeletonDrawArea(contextTracker.GetData());
-				
-				if (SimulateWithKeyBoard) {
-					HandleKeyBoardIssue(); 
-				} else {
-					syncRightHand();
-				}
+				syncRightHand();
 			}
 
 		}
