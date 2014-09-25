@@ -363,4 +363,10 @@ public class GameController : MonoBehaviour {
 	{
 		return hands;
 	}
+
+	public void ChangeBrushRadius(int value)
+	{
+		brushRadius = value;
+		brushShape = BrushShape.CreateCircle (value);
+	}
 }
