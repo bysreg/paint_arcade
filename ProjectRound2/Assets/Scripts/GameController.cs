@@ -13,11 +13,14 @@ public class GameController : MonoBehaviour {
 	public PlayerHand KinectRightHand;
 	public Texture2D canvasBg; // mandatory
 	public Texture2D canvasDrawableArea;
+	public int brushRadius = 10;
+	public int eraserRadius = 20;
 
 	Texture2D canvasTexture;
 	GameObject canvasObject;
 	GameObject canvasBgObject;
 	BrushShape brushShape;
+	BrushShape eraserShape;
 	PlayerHand[] hands;
 	Color[] canvasDrawableAreaColors;
 	
@@ -34,8 +37,10 @@ public class GameController : MonoBehaviour {
 		InitPlayerHands ();
 
 		canvasObject.renderer.material.mainTexture = canvasTexture;
-		brushShape = CustomBrushShapes.brushShapes [0];
-		brushShape = BrushShape.CreateSquare (30, 30);
+//		brushShape = CustomBrushShapes.brushShapes [0];
+//		brushShape = BrushShape.CreateSquare (30, 30);
+		brushShape = BrushShape.CreateCircle (15);
+		eraserShape = BrushShape.CreateCircle (eraserRadius);
 	}
 
 	void OnGUI()
@@ -107,11 +112,11 @@ public class GameController : MonoBehaviour {
 			{
 				if(hands[i].tool == PlayerHand.ETool.Brush)
 				{
-					ConnectBrushPoint(hands[i], DrawBrush);
+					ConnectBrushPoint(hands[i], DrawBrush, brushShape);
 				}
 				else if(hands[i].tool == PlayerHand.ETool.Eraser)
 				{
-					ConnectBrushPoint(hands[i], Erase);
+					ConnectBrushPoint(hands[i], Erase, eraserShape);
 				}
 			}
 		}
@@ -199,7 +204,7 @@ public class GameController : MonoBehaviour {
 //		return true;
 	}
 
-	void ConnectBrushPoint(PlayerHand hand, Action<Vector2, Color, BrushShape> drawf)
+	void ConnectBrushPoint(PlayerHand hand, Action<Vector2, Color, BrushShape> drawf, BrushShape brushShape)
 	{
 		if (!hand.prevIsHandDown || !hand.isHandDown)
 			return;
@@ -212,11 +217,11 @@ public class GameController : MonoBehaviour {
         //print (pos0.x + " " + pos0.y + " " + pos1.x + " " + pos1.y + " " + hand.pos);
 			 
  		//connect current pos and prev pos
-		DrawLine (hand, drawf);
+		DrawLine (hand, drawf, brushShape);
 	}
 
 	// NOTE : pos0.x, pos0.y, pos1.x, pos1.y, must be integer
-	void DrawLine(PlayerHand hand, Action<Vector2, Color, BrushShape> drawf)
+	void DrawLine(PlayerHand hand, Action<Vector2, Color, BrushShape> drawf, BrushShape brushShape)
 	{
 		Vector2 pos0 = hand.prevPos;
 		Vector2 pos1 = hand.pos;
