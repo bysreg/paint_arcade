@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour {
 	public PlayerHand KinectLeftHand;
 	public PlayerHand KinectRightHand;
 	public Texture2D canvasBg;
+	public Texture2D canvasDrawableArea;
 
 	Texture2D canvasTexture;
 	GameObject canvasObject;
@@ -167,7 +168,7 @@ public class GameController : MonoBehaviour {
 			y++;
 		}
 
-		canvasTexture.Apply ();
+		//intentionally not using canvasTexture.Apply, it will be done in ConnectBrushPoint
 	}
 
 	void ConnectBrushPoint(PlayerHand hand, Action<Vector2, Color, BrushShape> drawf)

@@ -18,7 +18,6 @@ public class ColorCapture2D : MonoBehaviour {
 	public Texture2D oriSprite;
 	public Vector2 sizeInCanvas;
 	public Texture2D drawableArea; // black and white texture that acts as a mask. black means that the player can draw in that area.
-	//public Texture2D goldenFrame; 
 	public Texture2D lineTexture;
 
 	public GameObject TargetObj;
@@ -62,7 +61,7 @@ public class ColorCapture2D : MonoBehaviour {
                 }
             }
         }
-		print ("count " + mappings.Count);
+		//print ("count " + mappings.Count);
 #endif
 	}
 
@@ -70,7 +69,7 @@ public class ColorCapture2D : MonoBehaviour {
 	{
 		SpriteRenderer renderer = t.GetComponent<SpriteRenderer>();
 		string numbersOnly = Regex.Replace(renderer.sprite.name, ".+[^0-9]", "");
-		Debug.Log (int.Parse (numbersOnly));
+		//Debug.Log (int.Parse (numbersOnly));
 		ObjContents [int.Parse (numbersOnly)] = t;
 		foreach (Transform pt in t) {
 			FindChildAndSetData(pt);

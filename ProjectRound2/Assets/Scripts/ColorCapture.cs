@@ -41,7 +41,7 @@ public class ColorCapture : MonoBehaviour {
 			}
 		}
 
-		print ("test " + mappings.Count + " " + mappings[0].canvasUV.x + " " + mappings[0].canvasUV.y + " " + mappings[0].destUV);
+		//print ("test " + mappings.Count + " " + mappings[0].canvasUV.x + " " + mappings[0].canvasUV.y + " " + mappings[0].destUV);
 	}
 
 	void OnGUI()
