@@ -6,12 +6,19 @@ public class Level4Entry : SceneEntry {
 
 	public bool showCursor;
 
+	public void Awake () {
+		AddToolButtonManager ();
+		base.Awake ();
+		Screen.showCursor = false;
+		ActivateGameInSeconds (1f);
+	}
+
+
 	void Start () {
 		Screen.showCursor = showCursor; //FIXME :
 		SceneManager.instance.NextSceneName = "Level2";
 		SoundManager.instance.PlayBGMusic (2);
 
-		AddToolButtonManager ();
 	}
 
 	public override void ProcessDoneButton() {

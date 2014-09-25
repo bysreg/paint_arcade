@@ -17,8 +17,9 @@ public abstract class SceneEntry : MonoBehaviour {
 	}
 
 	public void AddToolButtonManager() {
-		PlayerHand rightHand = GameObject.FindGameObjectWithTag ("right_hand").GetComponent<PlayerHand>();
-		if (rightHand != null) {
+		GameObject rhObj = GameObject.FindGameObjectWithTag ("right_hand");
+		if (rhObj != null) {
+			PlayerHand rightHand = rhObj.GetComponent<PlayerHand>();
 			GameObject tbm = new GameObject ("ToolButtonManager");
 			tbm.AddComponent<ToolButtonManager> ();
 			tbm.tag = "tool_button_manager";
@@ -31,12 +32,15 @@ public abstract class SceneEntry : MonoBehaviour {
 	}
 
 	public void AddMenuButtonManager() {
-		PlayerHand rightHand = GameObject.FindGameObjectWithTag ("right_hand").GetComponent<PlayerHand>();
-		GameObject mbm = new GameObject ("MenuButtonManager");
-		mbm.AddComponent<MenuButtonManager> ();
-		mbm.GetComponent<MenuButtonManager>().RightHand = rightHand;
-		mbm.tag = "menu_button_manager";
-		mbm.transform.parent = transform.parent;
+		GameObject rhObj = GameObject.FindGameObjectWithTag ("right_hand");
+		if (rhObj != null) {
+			PlayerHand rightHand = rhObj.GetComponent<PlayerHand>();
+			GameObject mbm = new GameObject ("MenuButtonManager");
+			mbm.AddComponent<MenuButtonManager> ();
+			mbm.GetComponent<MenuButtonManager>().RightHand = rightHand;
+			mbm.tag = "menu_button_manager";
+			mbm.transform.parent = transform.parent;
+		}
 	}
 
 	public void ActivateGameInSeconds(float t) {
