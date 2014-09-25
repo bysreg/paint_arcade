@@ -16,7 +16,7 @@ public class ColorCapture2D : MonoBehaviour {
 
 	public Vector2 spriteInCanvasPos; // relative to canvas
 	public Texture2D oriSprite;
-	public Vector2 sizeInCanvas;
+	public Vector2 sizeInCanvas; // compared to the canvasBg
 	public Texture2D drawableArea; // black and white texture that acts as a mask. black means that the player can draw in that area.
 	public Texture2D lineTexture;
 
@@ -51,7 +51,7 @@ public class ColorCapture2D : MonoBehaviour {
 			for(int j=0; j < drawableArea.width; j++)
 			{
 				Color color = drawableArea.GetPixel(j, i);
-				if(color.r <=0.1) // black ?
+				if(color.r <= 0.1) // black ?
 				{
 					//print ("a : " + j + " " + i + " " + color.r);
 					Mapping mapping = new Mapping();
