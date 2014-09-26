@@ -176,6 +176,9 @@ public class ColorCapture2D : MonoBehaviour {
 		gameController.SavePlayerCreation (newSprite, creationType);
 
 		CombineTexture2DAndGameObject (newSprite);
+
+		//deactivate the drawable
+		GameObject.Find ("Drawable").SetActive (false);
 	}
 
 }
