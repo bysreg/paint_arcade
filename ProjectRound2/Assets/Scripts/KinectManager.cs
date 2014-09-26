@@ -91,9 +91,9 @@ namespace Kinect {
 
 		void syncLeftHand() {
 			if(leftHandMonitor.GetHandState() == HandMonitor.HandState.Hold) {
-				playerStatus = PlayerStatus.Hold;
-			} else if(leftHandMonitor.GetHandState() == HandMonitor.HandState.Operate) {
 				playerStatus = PlayerStatus.Operate;
+			} else if(leftHandMonitor.GetHandState() == HandMonitor.HandState.Operate) {
+				playerStatus = PlayerStatus.Hold;
 			}
 		}
 
