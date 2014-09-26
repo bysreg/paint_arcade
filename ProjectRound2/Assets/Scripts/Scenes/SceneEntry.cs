@@ -9,11 +9,14 @@ public abstract class SceneEntry : MonoBehaviour {
 	protected GameObject kinectObj;
 	protected GameObject tbmObj;
 	protected GameObject mbmObj;
+	public bool ShowCursor;
 
 	protected void Awake() {
 		kinectObj = GameObject.FindGameObjectWithTag("kinect");
 		tbmObj = GameObject.FindGameObjectWithTag("tool_button_manager");
 		mbmObj = GameObject.FindGameObjectWithTag("menu_button_manager");
+
+		Screen.showCursor = ShowCursor;
 	}
 
 	public void AddToolButtonManager() {
