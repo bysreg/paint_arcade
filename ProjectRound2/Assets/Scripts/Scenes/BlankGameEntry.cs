@@ -9,7 +9,7 @@ public class BlankGameEntry : SceneEntry {
 		base.Awake ();
 		Screen.showCursor = false;
 		ActivateGameInSeconds (2f);
-		SoundManager.instance.PlayBGMusic (0);
+		SoundManager.instance.PlayBGMusic (1, true);
 
 	}
 
