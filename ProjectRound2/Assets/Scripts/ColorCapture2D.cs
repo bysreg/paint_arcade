@@ -39,7 +39,7 @@ public class ColorCapture2D : MonoBehaviour {
 		//testing code
 		if (testReplacedTexture != null) 
 		{
-			CombineTexture2DAndGameObject(testReplacedTexture);
+			CombineTexture2DAndGameObject(TargetObj, testReplacedTexture);
 		}
 
 #if ENABLE_DRAWABLE_AREA
@@ -74,9 +74,8 @@ public class ColorCapture2D : MonoBehaviour {
 		}
 	}
 
-	public void CombineTexture2DAndGameObject(Texture2D texture) 
+	public void CombineTexture2DAndGameObject(GameObject _, Texture2D texture) 
 	{
-
 		if (ObjContents == null)
 			return;
 
@@ -175,7 +174,7 @@ public class ColorCapture2D : MonoBehaviour {
 
 		gameController.SavePlayerCreation (newSprite, creationType);
 
-		CombineTexture2DAndGameObject (newSprite);
+		CombineTexture2DAndGameObject (TargetObj, newSprite);
 
 		//deactivate the drawable
 		GameObject.Find ("Drawable").SetActive (false);
