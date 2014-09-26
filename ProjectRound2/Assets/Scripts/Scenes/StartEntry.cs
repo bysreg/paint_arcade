@@ -15,11 +15,11 @@ namespace TheBoxWorld.Scene {
 		}
 
 		public override void ProcessDoneButton() {
-			Invoke ("LoadNext", 1f);
+			Invoke ("LoadNext", .5f);
 		}
 
 		void LoadNext() {
-			SceneManager.instance.asyncLoadNextSceneWithDelay (1f);
+			SceneManager.instance.asyncLoadNextSceneWithDelay (0f);
 		}
 	
 	}
