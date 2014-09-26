@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using PaintArcade.Generic;
 
 namespace Kinect.Button {
 
@@ -25,18 +25,24 @@ namespace Kinect.Button {
 				UnselectedTexture = BrushSizeSmallTexture;
 				SelectedTexture = BrushSizeSmallTexture;
 				HoverTexture = BrushSizeSmallTexture;
+				GameObject.Find ("GameController").GetComponent<GameController>().ChangeBrushRadius(Consts.BrushSizeSmall);
 			} else if(brushIndex == 1) {
 				UnselectedTexture = BrushSizeMiddleTexture;
 				SelectedTexture = BrushSizeMiddleTexture;
 				HoverTexture = BrushSizeMiddleTexture;
+				GameObject.Find ("GameController").GetComponent<GameController>().ChangeBrushRadius(Consts.BrushSizeMiddle);
+
 			} else if(brushIndex == 2) {
 				UnselectedTexture = BrushSizeLargeTexture;
 				SelectedTexture = BrushSizeLargeTexture;
 				HoverTexture = BrushSizeLargeTexture;
+				GameObject.Find ("GameController").GetComponent<GameController>().ChangeBrushRadius(Consts.BrushSizeLarge);
+
 			} else if(brushIndex == 3) {
 				UnselectedTexture = BrushSizeVeryLargeTexture;
 				SelectedTexture = BrushSizeVeryLargeTexture;
 				HoverTexture = BrushSizeVeryLargeTexture;
+				GameObject.Find ("GameController").GetComponent<GameController>().ChangeBrushRadius(Consts.BrushSizeVeryLarge);
 			}
 
 			UpdateOutlook();

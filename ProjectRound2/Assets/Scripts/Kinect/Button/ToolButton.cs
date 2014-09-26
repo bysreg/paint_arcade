@@ -28,6 +28,7 @@ namespace Kinect.Button {
 		public Color DrawColor;
 		public ToolType toolType;
 		public PlayerHand.ETool EToolID;
+		public string ColorName;
 		
 		public ButtonStatus buttonStatus = ButtonStatus.Unselected;
 		private MeshRenderer renderer;
@@ -47,6 +48,7 @@ namespace Kinect.Button {
 			timer = 0f;
 			hoverTime = 1f;
 			originalScale = transform.localScale;
+
 
 		}
 		

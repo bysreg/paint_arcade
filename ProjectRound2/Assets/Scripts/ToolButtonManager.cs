@@ -80,6 +80,8 @@ namespace Kinect.Button {
 							RightHand.color = button.DrawColor;
 							RightHand.color.a = 1;
 							RightHand.tool = PlayerHand.ETool.Brush;
+							string brushFilePath = "Textures/Cursor/Brush_" + button.ColorName;
+							RightHand.BrushOperateTexture = Resources.Load(brushFilePath, typeof(Texture2D)) as Texture2D;
 						} 
 					}
 					
@@ -89,21 +91,26 @@ namespace Kinect.Button {
 
 		void HandleShapeButtonSelected(int id, int handID) {
 			PlayerHand.ETool t = PlayerHand.ETool.Brush;
-			foreach (ToolButton button in buttons) {
-				if(button.id != id) {
-					if(button.toolType == ToolType.Shape) {
-						button.UnselectButton();
-					}
-				} else {
-					t = button.EToolID;
-					if(button.toolType == ToolType.Shape) {
-						if (handID == 1) {
-							RightHand.tool = button.EToolID;
-						} 
-					}
 
+			if (id != -1) {
+
+				foreach (ToolButton button in buttons) {
+					if(button.id != id) {
+						if(button.toolType == ToolType.Shape) {
+							button.UnselectButton();
+						}
+					} else {
+						t = button.EToolID;
+						if(button.toolType == ToolType.Shape) {
+							if (handID == 1) {
+								RightHand.tool = button.EToolID;
+							} 
+						}
+						
+					}
 				}
 			}
+
 
 			if (t == PlayerHand.ETool.Brush) {
 				SoundManager.instance.PlayButtonSound (0);

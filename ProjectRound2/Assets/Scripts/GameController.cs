@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Kinect;
+using PaintArcade.Generic;
 
 public class GameController : MonoBehaviour {
 
@@ -42,7 +43,7 @@ public class GameController : MonoBehaviour {
 		canvasObject.renderer.material.mainTexture = canvasTexture;
 //		brushShape = CustomBrushShapes.brushShapes [0];
 //		brushShape = BrushShape.CreateSquare (30, 30);
-		brushShape = BrushShape.CreateCircle (15);
+		brushShape = BrushShape.CreateCircle (Consts.BrushSizeSmall);
 		eraserShape = BrushShape.CreateCircle (eraserRadius);
 	}
 
