@@ -17,7 +17,7 @@ namespace Kinect.Button {
 			buttons = FindObjectsOfType(typeof(ToolButton)) as ToolButton[];
 			foreach (ToolButton button in buttons) {
 				button.onButtonSelected += HandleOnButtonSelected;
-				if(button.EToolID == PlayerHand.ETool.Brush) {
+				if(button.EToolID == PlayerHand.ETool.Brush && button.id == 0) {
 					brushButton = button;
 				}
 			}
@@ -90,8 +90,8 @@ namespace Kinect.Button {
 		}
 
 		void HandleShapeButtonSelected(int id, int handID) {
-			PlayerHand.ETool t = PlayerHand.ETool.Brush;
 
+			PlayerHand.ETool t = PlayerHand.ETool.Brush;
 			if (id != -1) {
 
 				foreach (ToolButton button in buttons) {
@@ -100,8 +100,8 @@ namespace Kinect.Button {
 							button.UnselectButton();
 						}
 					} else {
-						t = button.EToolID;
 						if(button.toolType == ToolType.Shape) {
+							t = button.EToolID;
 							if (handID == 1) {
 								RightHand.tool = button.EToolID;
 							} 

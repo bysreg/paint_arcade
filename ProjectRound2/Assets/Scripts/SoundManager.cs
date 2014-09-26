@@ -9,7 +9,7 @@ public class SoundManager : MonoBehaviour {
 	public GameObject ButtonSoundPlayer;
 	public AudioSource ButtonSoundAudioSource;
 
-	private string[] bgMusic = new string[] {"BlankSceneBG", "FishSceneBG", "TreeSceneBG"};
+	private string[] bgMusic = new string[] {"IntroScreenBG", "BlankBGM", "BirdsBGM", "HouseBGM"};
 	private string bgMusicPath = "Sounds/BGMusic/";
 
 	private string[] buttonSound = new string[] {"BrushSelector", "CircleSelector", "ColourSelector", "EraserSelector"};
@@ -49,6 +49,13 @@ public class SoundManager : MonoBehaviour {
 		ButtonSoundPlayer = new GameObject("ButtonSoundPlayer");
 		ButtonSoundPlayer.transform.parent = transform;
 		ButtonSoundAudioSource = ButtonSoundPlayer.AddComponent<AudioSource> ();
+	}
+
+	public void PlayBGMusic(int index, bool ifLoop) {
+		AudioClip newClip = (AudioClip)Resources.Load(string.Concat(bgMusicPath,bgMusic[index]), typeof(AudioClip));
+		BGPlayerAudioSouce.clip = newClip;
+		BGPlayerAudioSouce.loop = ifLoop;
+		BGPlayerAudioSouce.Play ();
 	}
 
 	public void PlayBGMusic(int index) {

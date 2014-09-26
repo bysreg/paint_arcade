@@ -10,7 +10,7 @@ public class Level1Entry : SceneEntry {
 		Screen.showCursor = ShowCursor;
 		ActivateGameInSeconds (.5f);
 		SceneManager.instance.NextSceneName = "Level4";
-		SoundManager.instance.PlayBGMusic (0);	
+		SoundManager.instance.PlayBGMusic (1);	
 	}
 	
 	public override void ProcessDoneButton() {
