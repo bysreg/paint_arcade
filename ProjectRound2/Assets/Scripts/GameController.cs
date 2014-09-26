@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Kinect;
 
 public class GameController : MonoBehaviour {
-	
+
 	public int canvasWidth;
 	public int canvasHeight;
 	public bool simulateWithMouse;
@@ -23,12 +24,14 @@ public class GameController : MonoBehaviour {
 	BrushShape eraserShape;
 	PlayerHand[] hands;
 	Color[] canvasDrawableAreaColors;
-	
+	static List<PlayerCreation> savedPlayerCreations;
+
 	void Awake()
 	{
 		canvasObject = GameObject.Find ("Canvas");
 		canvasBgObject = GameObject.Find ("CanvasBg");
 		hands = new PlayerHand[maxHands];
+		savedPlayerCreations = new List<PlayerCreation> ();
 	}
 
 	void Start()
@@ -53,6 +56,10 @@ public class GameController : MonoBehaviour {
 				//activate that object
 				colorCapture2Ds[i].TargetObj.SetActive(true);
 			}
+		}
+
+		if(GUI.Button(new Rect(140, 40, 100, 35), "Next"))  {
+			Application.LoadLevel("Final");
 		}
 	}
 
@@ -368,5 +375,15 @@ public class GameController : MonoBehaviour {
 	{
 		brushRadius = value;
 		brushShape = BrushShape.CreateCircle (value);
+	}
+
+	public void SavePlayerCreation(Texture2D texture, PlayerCreation.CreationType type)
+	{
+		savedPlayerCreations.Add(new PlayerCreation(texture, type));
+	}
+
+	public static List<PlayerCreation> GetSavedPlayerCreation()
+	{
+		return savedPlayerCreations;
 	}
 }

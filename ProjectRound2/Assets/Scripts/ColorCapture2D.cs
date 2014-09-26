@@ -19,18 +19,16 @@ public class ColorCapture2D : MonoBehaviour {
 	public Vector2 sizeInCanvas; // compared to the canvasBg
 	public Texture2D drawableArea; // black and white texture that acts as a mask. black means that the player can draw in that area.
 	public Texture2D lineTexture;
-
 	public GameObject TargetObj;
 	public GameObject test;
-	private Transform []ObjContents; // need to be same order as sprites
 	public int SpriteNum;
-
 	public string FileExtension;
+	public Texture2D testReplacedTexture;
+	public PlayerCreation.CreationType creationType;
 
+	private Transform []ObjContents; // need to be same order as sprites
 	private Sprite[] newSprite;
 	private List<Mapping> mappings;
-
-	public Texture2D testReplacedTexture;
 
 	void Start() 
 	{
@@ -174,6 +172,8 @@ public class ColorCapture2D : MonoBehaviour {
 
 		if(test != null)
 			test.renderer.material.mainTexture = newSprite;
+
+		gameController.SavePlayerCreation (newSprite, creationType);
 
 		CombineTexture2DAndGameObject (newSprite);
 	}
