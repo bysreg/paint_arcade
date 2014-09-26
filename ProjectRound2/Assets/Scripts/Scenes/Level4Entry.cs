@@ -18,6 +18,8 @@ public class Level4Entry : SceneEntry {
 			colorCapture2Ds[i].Impose();
 			colorCapture2Ds[i].TargetObj.SetActive(true);
 		}
+
+		SoundManager.instance.PlayAnimationSound (0);
 		Invoke ("LoadNext", 5f);
 	}
 

@@ -9,13 +9,17 @@ public class SoundManager : MonoBehaviour {
 	public GameObject ButtonSoundPlayer;
 	public AudioSource ButtonSoundAudioSource;
 
+	public GameObject AnimationSoundPlayer;
+	public AudioSource AnimationSoundAudioSource;
+
 	private string[] bgMusic = new string[] {"IntroScreenBG", "BlankBGM", "BirdsBGM", "HouseBGM"};
 	private string bgMusicPath = "Sounds/BGMusic/";
 
 	private string[] buttonSound = new string[] {"BrushSelector", "CircleSelector", "ColourSelector", "EraserSelector"};
 	private string buttonSoundPath = "Sounds/ButtonSound/";
 
-
+	private string[] animationSound = new string[] {"BirdSounds"};
+	private string animationSoundPath = "Sounds/AnimationSound/";
 
 	static SoundManager _instance;
 
@@ -49,6 +53,10 @@ public class SoundManager : MonoBehaviour {
 		ButtonSoundPlayer = new GameObject("ButtonSoundPlayer");
 		ButtonSoundPlayer.transform.parent = transform;
 		ButtonSoundAudioSource = ButtonSoundPlayer.AddComponent<AudioSource> ();
+
+		AnimationSoundPlayer = new GameObject("AnimationSoundPlayer");
+		AnimationSoundPlayer.transform.parent = transform;
+		AnimationSoundAudioSource = AnimationSoundPlayer.AddComponent<AudioSource> ();
 	}
 
 	public void PlayBGMusic(int index, bool ifLoop) {
@@ -69,6 +77,13 @@ public class SoundManager : MonoBehaviour {
 		AudioClip newClip = (AudioClip)Resources.Load(string.Concat(buttonSoundPath,buttonSound[index]), typeof(AudioClip));
 		ButtonSoundAudioSource.clip = newClip;
 		ButtonSoundAudioSource.Play();
+	}
+
+	public void PlayAnimationSound(int index) {
+		AudioClip newClip = (AudioClip)Resources.Load(string.Concat(animationSoundPath,animationSound[index]), typeof(AudioClip));
+		Debug.Log (newClip);
+		AnimationSoundAudioSource.clip = newClip;
+		AnimationSoundAudioSource.Play();
 	}
 	
 }
