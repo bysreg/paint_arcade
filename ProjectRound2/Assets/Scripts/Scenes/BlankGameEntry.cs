@@ -8,7 +8,7 @@ public class BlankGameEntry : SceneEntry {
 		AddToolButtonManager ();
 		base.Awake ();
 		Screen.showCursor = false;
-		ActivateGameInSeconds (7f);
+		ActivateGameInSeconds (2f);
 		SoundManager.instance.PlayBGMusic (0);
 
 	}

@@ -47,9 +47,10 @@ namespace Kinect.Button {
 			timer = 0f;
 			hoverTime = 1f;
 			originalScale = transform.localScale;
+
 		}
 		
-		void UpdateOutlook() {
+		public void UpdateOutlook() {
 			if (buttonStatus == ButtonStatus.Unselected) {
 				renderer.material.mainTexture = UnselectedTexture;
 			} else if(buttonStatus == ButtonStatus.Selected) {
@@ -114,7 +115,7 @@ namespace Kinect.Button {
 			UpdateOutlook();
 		}
 
-		public void SelectButton() {
+		public virtual void SelectButton() {
 			buttonStatus = ButtonStatus.Selected;
 			UpdateOutlook();
 		}
