@@ -378,6 +378,11 @@ public class GameController : MonoBehaviour {
 		brushShape = BrushShape.CreateCircle (value);
 	}
 
+	public void ChangeEraserRadius(int value) {
+		eraserRadius = value;
+		eraserShape = BrushShape.CreateCircle (eraserRadius);
+	}
+
 	public void SavePlayerCreation(Texture2D texture, PlayerCreation.CreationType type)
 	{
 		savedPlayerCreations.Add(new PlayerCreation(texture, type));

@@ -19,7 +19,7 @@ namespace Kinect {
 		public SkeletonWrapper SW;
 		public int player;
 		public PlayerHand RightHand;
-
+		public PlayerHand LeftHand;
 
 		private ContextTracker contextTracker;
 		private PlayerStatus playerStatus = PlayerStatus.Hold;
@@ -70,6 +70,9 @@ namespace Kinect {
 
 			RightHand.pos = canvas.transform.position;
 			RightHand.transform.position = canvas.transform.position;
+
+			LeftHand.pos = canvas.transform.position;
+			LeftHand.transform.position = canvas.transform.position;
 		}
 		
 		// Update is called once per frame
@@ -92,14 +95,25 @@ namespace Kinect {
 		void syncLeftHand() {
 			if(leftHandMonitor.GetHandState() == HandMonitor.HandState.Hold) {
 				playerStatus = PlayerStatus.Operate;
+				LeftHand.isHandDown = false;
 			} else if(leftHandMonitor.GetHandState() == HandMonitor.HandState.Operate) {
 				playerStatus = PlayerStatus.Hold;
+				LeftHand.isHandDown = true;
 			}
+
+			LeftHand.UpdateOutLook ();
+
+			Vector3 pos = rightHandMonitor.GetHandPosition();
+			pos.z = canvas.transform.position.z;
+			
+			LeftHand.prevIsHandDown = LeftHand.isHandDown;
+			LeftHand.prevPos = LeftHand.pos;
+			LeftHand.UpdatePosition(PaintPositionFromSkeletonPosition(pos));
 		}
 
 
 		void syncRightHand() {
-
+	
 			Vector3 pos = rightHandMonitor.GetHandPosition();
 			pos.z = canvas.transform.position.z;
 

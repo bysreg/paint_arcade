@@ -24,7 +24,10 @@ public class PlayerHand : MonoBehaviour{
 
 	private void Awake() {
 		renderer = GetComponent<MeshRenderer> ();
-		progressBar = transform.FindChild("ProgressBar").GetComponent<CircularProgressBar>();
+		Transform pbObj = transform.FindChild ("ProgressBar");
+		if(pbObj != null) {
+			progressBar = transform.FindChild("ProgressBar").GetComponent<CircularProgressBar>();
+		}
 	}
 
 	public void UpdateOutLook() {
@@ -83,11 +86,14 @@ public class PlayerHand : MonoBehaviour{
 	}
 
 	public void ShowProgressBar() {
-		progressBar.Activate();
+		if(progressBar !=null)
+			progressBar.Activate();
 	}
 
 	public void HideProgressBar() {
-		progressBar.Deactivate();
+		if (progressBar != null) {
+			progressBar.Deactivate();
+		}
 	}
 
 }
