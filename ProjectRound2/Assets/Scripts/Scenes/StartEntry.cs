@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using TheBoxWorld;
+using Kinect;
 
 namespace TheBoxWorld.Scene {
 	public class StartEntry : SceneEntry {
@@ -8,12 +8,18 @@ namespace TheBoxWorld.Scene {
 		public void Awake () {
 			AddMenuButtonManager ();
 			base.Awake ();
-			Screen.showCursor = false;
 			ActivateGameInSeconds (7f);
+			Screen.showCursor = ShowCursor;
+			SceneManager.instance.NextSceneName = "Level1";
+			SoundManager.instance.PlayBGMusic (0);	
 		}
 
 		public override void ProcessDoneButton() {
-			Debug.Log ("Load Next Scene");
+			Invoke ("LoadNext", 1f);
+		}
+
+		void LoadNext() {
+			SceneManager.instance.asyncLoadNextSceneWithDelay (1f);
 		}
 	
 	}
