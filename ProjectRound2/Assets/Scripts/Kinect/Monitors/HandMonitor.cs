@@ -57,7 +57,7 @@ namespace Kinect.Monitor {
 			float hipToNeckDistanceY = neckPosition.y - hipPosition.y;
 			float wristToHipDistanceY = wristPosition.y - hipPosition.y;
 
-			if(wristToHipDistanceY > hipToNeckDistanceY * 0.4f) {
+			if(wristToHipDistanceY > hipToNeckDistanceY * 0.3f) {
 				SetOperateState();
 			} else {
 				SetHoldState();

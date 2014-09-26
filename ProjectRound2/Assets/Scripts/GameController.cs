@@ -11,7 +11,6 @@ public class GameController : MonoBehaviour {
 	public int canvasHeight;
 	public bool simulateWithMouse;
 	public int maxHands;
-	public PlayerHand KinectLeftHand;
 	public PlayerHand KinectRightHand;
 	public Texture2D canvasBg; // mandatory
 	public Texture2D canvasDrawableArea;

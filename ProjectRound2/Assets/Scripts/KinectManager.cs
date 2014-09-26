@@ -103,12 +103,12 @@ namespace Kinect {
 
 			LeftHand.UpdateOutLook ();
 
-			Vector3 pos = rightHandMonitor.GetHandPosition();
+			Vector3 pos = leftHandMonitor.GetHandPosition();
 			pos.z = canvas.transform.position.z;
 			
 			LeftHand.prevIsHandDown = LeftHand.isHandDown;
 			LeftHand.prevPos = LeftHand.pos;
-			LeftHand.UpdatePosition(PaintPositionFromSkeletonPosition(pos));
+			LeftHand.UpdatePosition(PaintPositionFromSkeletonPosition(pos, 2.5f, 0.4f));
 		}
 
 
@@ -119,7 +119,7 @@ namespace Kinect {
 
 			RightHand.prevIsHandDown = RightHand.isHandDown;
 			RightHand.prevPos = RightHand.pos;
-			RightHand.UpdatePosition(PaintPositionFromSkeletonPosition(pos));
+			RightHand.UpdatePosition(PaintPositionFromSkeletonPosition(pos, -1.5f, 0.4f));
 
 			if(playerStatus == PlayerStatus.Hold) {
 				RightHand.isHandDown = false;
@@ -141,21 +141,19 @@ namespace Kinect {
 		}
 
 
-		Vector3 PaintPositionFromSkeletonPosition(Vector3 skeletonPosition) {
+		Vector3 PaintPositionFromSkeletonPosition(Vector3 skeletonPosition, float shiftX, float shiftY) {
 
 			float ratioX = (skeletonPosition.x - skeletonDrawCenter.x) / (skeletonDrawWidth*.5f);
 			float ratioY = (skeletonPosition.y - skeletonDrawCenter.y) / (skeletonDrawHeight*.5f);
 
-			ratioX -= 1.5f; // dont let hand go across body, sensor problem, shaky
+			ratioX += shiftX; // dont let hand go across body, sensor problem, shaky
 
-			ratioY += 0.3f; // from realtime test
+			ratioY += shiftY; // from realtime test
 
 			if(ratioX > 1f) ratioX = 1f;
 			if(ratioY > 1f) ratioY = 1f;
 			if(ratioX < -1f) ratioX = -1f;
 			if(ratioY < -1f) ratioY = -1f;
-
-			Debug.Log (ratioX + ", " + ratioY);
 
 
 			float x = canvas.transform.position.x + ratioX * canvasWidth*.5f * Consts.kinectToCanvasScale; 
