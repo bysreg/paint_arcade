@@ -42,10 +42,19 @@ namespace Kinect.Monitor {
 		public abstract void SetHandIndex();
 
 		public void Process(Dictionary <int, List <ContextPoint>> data) {
-			if (data == null)
-				return;
-			int maxIndex = data[0].Count-1;
-			
+			if (data == null || data.Count == 0) return;
+
+			int maxIndex = -1;
+
+			for (int i = 0; i < (int)Kinect.NuiSkeletonPositionIndex.Count; i ++) {
+				if(data.ContainsKey(i)) {
+					maxIndex = data[i].Count-1; 
+					break;
+				}
+			}
+
+			if(maxIndex < 0) return;
+
 			Vector3 wristPosition = data [wristIndex] [maxIndex].Position;
 			Vector3 handPos = data [handIndex] [maxIndex].Position;
 			Vector3 headPosition = data [(int)Kinect.NuiSkeletonPositionIndex.Head] [maxIndex].Position;

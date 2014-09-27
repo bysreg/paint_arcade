@@ -68,6 +68,9 @@ namespace Kinect {
 			canvasHeight = canvas.collider.bounds.size.y;
 			canvasHeightToWidthRatio = canvasHeight / canvasWidth;
 
+			skeletonDrawHeight = 0.3f;
+			skeletonDrawWidth = 0.3f;
+
 		}
 		
 		// Update is called once per frame
@@ -163,9 +166,18 @@ namespace Kinect {
 		}
 
 		void UpdateSkeletonDrawArea(Dictionary <int, List <ContextPoint>> data) {
-			int maxIndex = data[0].Count-1;
-			if (maxIndex <= 0)
-				return;
+			if (data == null || data.Count == 0) return;
+			
+			int maxIndex = -1;
+			
+			for (int i = 0; i < (int)Kinect.NuiSkeletonPositionIndex.Count; i ++) {
+				if(data.ContainsKey(i)) {
+					maxIndex = data[i].Count-1; 
+					break;
+				}
+			}
+			
+			if(maxIndex < 0) return;
 
 			//Debug.Log(data[(int)Kinect.NuiSkeletonPositionIndex.HandRight][maxIndex].Position.x + " " + data[(int)Kinect.NuiSkeletonPositionIndex.HandRight][maxIndex].Position.y);
 
