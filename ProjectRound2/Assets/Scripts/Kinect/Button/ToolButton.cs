@@ -27,7 +27,7 @@ namespace Kinect.Button {
 		public OnButtonSelectedHandler onButtonSelected;
 		public Color DrawColor;
 		public ToolType toolType;
-		public PlayerHand.ETool EToolID;
+		public ETool EToolID;
 		public string ColorName;
 		
 		public ButtonStatus buttonStatus = ButtonStatus.Unselected;

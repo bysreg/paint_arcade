@@ -8,9 +8,6 @@ namespace Kinect.Button {
 		public PlayerHand RightHand;
 
 		private ToolButton [] buttons;
-		private PlayerHand[] mouseHands;
-		private bool simulateWithMouse; // need to fetch it from GameController
-
 		private ToolButton brushButton;
 		private SizeButton sizeButton;
 
@@ -19,7 +16,7 @@ namespace Kinect.Button {
 			buttons = FindObjectsOfType(typeof(ToolButton)) as ToolButton[];
 			foreach (ToolButton button in buttons) {
 				button.onButtonSelected += HandleOnButtonSelected;
-				if(button.EToolID == PlayerHand.ETool.Brush && button.id == 0) {
+				if(button.EToolID == ETool.Brush && button.id == 0) {
 					brushButton = button;
 				}
 				if(button.id == -1) {
@@ -28,18 +25,6 @@ namespace Kinect.Button {
 			}
 
 			SelectFromUserDefault ();
-
-			GameObject gObj = GameObject.Find ("GameController");
-			if(gObj != null) {
-				GameController gameController = gObj.GetComponent<GameController> ();
-				simulateWithMouse = gameController.simulateWithMouse;
-				if (gameController.simulateWithMouse) {
-					mouseHands = gameController.GetPlayerHands();
-				}
-			} else {
-				Debug.Log("Cannot find game controller");
-			}
-
 		}
 
 		void SelectFromUserDefault() {
@@ -91,10 +76,6 @@ namespace Kinect.Button {
 		void Update () {
 			foreach (ToolButton button in buttons) {
 				button.UpdateWithPlayerHand(RightHand);
-				if(simulateWithMouse)
-				{
-					button.UpdateWithPlayerHand(mouseHands[0]);
-				}
 			}
 		}
 
@@ -119,7 +100,7 @@ namespace Kinect.Button {
 						if (handID == 1) {
 							RightHand.color = button.DrawColor;
 							RightHand.color.a = 1;
-							RightHand.tool = PlayerHand.ETool.Brush;
+							RightHand.tool = ETool.Brush;
 							string brushFilePath = "Textures/Cursor/Brush_" + button.ColorName;
 							RightHand.BrushOperateTexture = Resources.Load(brushFilePath, typeof(Texture2D)) as Texture2D;
 						} 
@@ -133,7 +114,7 @@ namespace Kinect.Button {
 
 		void HandleShapeButtonSelected(int id, int handID) {
 
-			PlayerHand.ETool t = PlayerHand.ETool.Brush;
+			ETool t = ETool.Brush;
 			if (id != -1) {
 
 				foreach (ToolButton button in buttons) {
@@ -155,9 +136,9 @@ namespace Kinect.Button {
 
 			Consts.SelectedShapeButtonID = id; 
 
-			if (t == PlayerHand.ETool.Brush) {
+			if (t == ETool.Brush) {
 				SoundManager.instance.PlayButtonSound (0);
-			} else if (t == PlayerHand.ETool.Eraser){
+			} else if (t == ETool.Eraser){
 				SoundManager.instance.PlayButtonSound (3);
 			}
 		}

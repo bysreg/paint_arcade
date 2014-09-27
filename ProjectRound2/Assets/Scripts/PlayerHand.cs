@@ -2,6 +2,9 @@
 using System.Collections;
 using Kinect.Button;
 
+
+public enum ETool {Brush = 0, Eraser, None};
+
 public class PlayerHand : MonoBehaviour{
 
 	public Vector2 uvpos = new Vector2 ();
@@ -11,8 +14,6 @@ public class PlayerHand : MonoBehaviour{
 	public bool prevIsHandDown;
 	public ETool tool = ETool.Brush;
 	public Color color = Color.black;
-
-	public enum ETool {Brush = 0, Eraser, None};
 
 	public Texture BrushOperateTexture;
 	public Texture BrushHoldTexture;

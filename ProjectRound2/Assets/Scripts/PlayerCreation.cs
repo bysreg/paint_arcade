@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerCreation : MonoBehaviour {
+public class PlayerCreation {
 
 	public readonly Texture2D texture;
 	public readonly CreationType type;

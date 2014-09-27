@@ -8,7 +8,7 @@ public class Level1Entry : SceneEntry {
 		AddToolButtonManager ();
 		base.Awake ();
 		Screen.showCursor = ShowCursor;
-		ActivateGameInSeconds (.5f);
+		ActivateGameInSeconds (2f);
 		SceneManager.instance.NextSceneName = "Level4";
 		SoundManager.instance.PlayBGMusic (1);	
 	}

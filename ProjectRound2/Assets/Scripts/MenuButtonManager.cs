@@ -7,32 +7,15 @@ namespace Kinect.Button {
 		public PlayerHand RightHand;
 
 		private MenuButton [] buttons;
-		private PlayerHand[] mouseHands;
-		private bool simulateWithMouse; // need to fetch it from GameController
 
 		void Start () {
 			buttons = FindObjectsOfType(typeof(MenuButton)) as MenuButton[];
-			GameObject gObj = GameObject.Find ("GameController");
-			if(gObj != null) {
-				GameController gameController = gObj.GetComponent<GameController> ();
-				simulateWithMouse = gameController.simulateWithMouse;
-				if (gameController.simulateWithMouse) {
-					mouseHands = gameController.GetPlayerHands();
-				}
-			} else {
-				Debug.Log("Cannot find game controller");
-			}
-
 		}
 		
 		// Update is called once per frame
 		void Update () {
 			foreach (MenuButton button in buttons) {
-				if(simulateWithMouse){
-					button.UpdateWithPlayerHand(mouseHands[0]);
-				} else {
-					button.UpdateWithPlayerHand(RightHand);
-				}
+				button.UpdateWithPlayerHand(RightHand);
 			}
 		}
 

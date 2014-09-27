@@ -22,7 +22,7 @@ public class GameController : MonoBehaviour {
 	GameObject canvasBgObject;
 	BrushShape brushShape;
 	BrushShape eraserShape;
-	PlayerHand[] hands;
+	PlayerHandData[] hands;
 	Color[] canvasDrawableAreaColors;
 	static List<PlayerCreation> savedPlayerCreations;
 
@@ -30,7 +30,7 @@ public class GameController : MonoBehaviour {
 	{
 		canvasObject = GameObject.Find ("Canvas");
 		canvasBgObject = GameObject.Find ("CanvasBg");
-		hands = new PlayerHand[maxHands];
+		hands = new PlayerHandData[maxHands];
 		savedPlayerCreations = new List<PlayerCreation> ();
 	}
 
@@ -117,11 +117,11 @@ public class GameController : MonoBehaviour {
 		{
 			if (hands [i].isHandDown) 
 			{
-				if(hands[i].tool == PlayerHand.ETool.Brush)
+				if(hands[i].tool == ETool.Brush)
 				{
 					ConnectBrushPoint(hands[i], DrawBrush, brushShape);
 				}
-				else if(hands[i].tool == PlayerHand.ETool.Eraser)
+				else if(hands[i].tool == ETool.Eraser)
 				{
 					ConnectBrushPoint(hands[i], Erase, eraserShape);
 				}
@@ -211,7 +211,7 @@ public class GameController : MonoBehaviour {
 //		return true;
 	}
 
-	void ConnectBrushPoint(PlayerHand hand, Action<Vector2, Color, BrushShape> drawf, BrushShape brushShape)
+	void ConnectBrushPoint(PlayerHandData hand, Action<Vector2, Color, BrushShape> drawf, BrushShape brushShape)
 	{
 		if (!hand.prevIsHandDown || !hand.isHandDown)
 			return;
@@ -228,7 +228,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	// NOTE : pos0.x, pos0.y, pos1.x, pos1.y, must be integer
-	void DrawLine(PlayerHand hand, Action<Vector2, Color, BrushShape> drawf, BrushShape brushShape)
+	void DrawLine(PlayerHandData hand, Action<Vector2, Color, BrushShape> drawf, BrushShape brushShape)
 	{
 		Vector2 pos0 = hand.prevPos;
 		Vector2 pos1 = hand.pos;
@@ -273,11 +273,11 @@ public class GameController : MonoBehaviour {
 	{
 		if (Input.GetKeyDown (KeyCode.Z)) 
 		{
-			hands[0].tool = PlayerHand.ETool.Eraser;
+			hands[0].tool = ETool.Eraser;
 		}
 		if (Input.GetKeyDown (KeyCode.X)) 
 		{
-			hands[0].tool = PlayerHand.ETool.Brush;
+			hands[0].tool = ETool.Brush;
 		}
 		if(Input.GetKeyDown (KeyCode.N))
 		{
@@ -352,7 +352,7 @@ public class GameController : MonoBehaviour {
 	{
 		for (int i = 0; i<maxHands; i++) 
 		{
-			hands[i] = new PlayerHand();
+			hands[i] = new PlayerHandData();
 		}
 	}
 
@@ -366,7 +366,7 @@ public class GameController : MonoBehaviour {
 		return canvasBg;
 	}
 
-	public PlayerHand[] GetPlayerHands()
+	public PlayerHandData[] GetPlayerHands()
 	{
 		return hands;
 	}

@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 
-public class BrushShape : MonoBehaviour {
+public class BrushShape {
 
 	public byte[] matrix; // flattened 2d array
 	public int width;
