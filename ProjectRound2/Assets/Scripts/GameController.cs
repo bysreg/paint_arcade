@@ -59,7 +59,7 @@ public class GameController : MonoBehaviour {
 		}
 
 		if(GUI.Button(new Rect(140, 40, 100, 35), "Next"))  {
-			Application.LoadLevel("Level4");
+			Application.LoadLevel("Final");
 		}
 	}
 
@@ -382,9 +382,9 @@ public class GameController : MonoBehaviour {
 		eraserShape = BrushShape.CreateCircle (eraserRadius);
 	}
 
-	public void SavePlayerCreation(Texture2D texture, PlayerCreation.CreationType type)
+	public void SavePlayerCreation(Texture2D texture, PlayerCreation.CreationType type, int spriteNum)
 	{
-		savedPlayerCreations.Add(new PlayerCreation(texture, type));
+		savedPlayerCreations.Add(new PlayerCreation(texture, type, spriteNum));
 	}
 
 	public static List<PlayerCreation> GetSavedPlayerCreation()

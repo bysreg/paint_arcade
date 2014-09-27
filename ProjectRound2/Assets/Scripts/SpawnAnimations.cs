@@ -20,22 +20,26 @@ public class SpawnAnimations : MonoBehaviour {
 		{
 			if(creations[i].type == PlayerCreation.CreationType.Bird)
 			{
-				Instantiate(bird);
-				bird.position = Vector3.zero;
+				SpawnCreation(bird, creations[i]);
 			}
 			else if(creations[i].type == PlayerCreation.CreationType.Human)
 			{
-				Instantiate(human);
-				human.position = Vector3.zero;
+				SpawnCreation(human, creations[i]);
 			}
 			else if(creations[i].type == PlayerCreation.CreationType.House)
 			{
-				Instantiate(house);
-				house.position = Vector3.zero;
+				SpawnCreation(house, creations[i]);
             }
 		}
-
-
 	}
 
+	void SpawnCreation(Transform prefab, PlayerCreation creation)
+	{
+		Transform clone = Instantiate(prefab) as Transform;
+		clone.position = Vector3.zero;
+		Transform[] objContents = new Transform[creation.spriteNum];
+
+		ColorCapture2D.FindChildAndSetData(objContents, clone);
+		ColorCapture2D.CombineTexture2DAndGameObject (creation.spriteNum, objContents, creation.texture);
+	}
 }

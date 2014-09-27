@@ -1,6 +1,4 @@
-﻿#define ENABLE_DRAWABLE_AREA
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
@@ -26,23 +24,20 @@ public class ColorCapture2D : MonoBehaviour {
 	public Texture2D testReplacedTexture;
 	public PlayerCreation.CreationType creationType;
 
-	private Transform []ObjContents; // need to be same order as sprites
-	private Sprite[] newSprite;
+	private Transform[] ObjContents; // need to be same order as sprites
 	private List<Mapping> mappings;
 
 	void Start() 
 	{
-		newSprite = new Sprite[SpriteNum];
 		ObjContents = new Transform[SpriteNum];
-		FindChildAndSetData(TargetObj.transform);
+		FindChildAndSetData(ObjContents, TargetObj.transform);
 
 		//testing code
 		if (testReplacedTexture != null) 
 		{
-			CombineTexture2DAndGameObject(TargetObj, testReplacedTexture);
+			CombineTexture2DAndGameObject(SpriteNum, ObjContents, testReplacedTexture);
 		}
 
-#if ENABLE_DRAWABLE_AREA
 		mappings = new List<Mapping>();
 		for (int i=0; i < drawableArea.height; i++) 
 		{
@@ -60,30 +55,31 @@ public class ColorCapture2D : MonoBehaviour {
             }
         }
 		//print ("count " + mappings.Count);
-#endif
 	}
 
-	void FindChildAndSetData(Transform t) 
+	public static void FindChildAndSetData(Transform[] contents, Transform t) 
 	{
 		SpriteRenderer renderer = t.GetComponent<SpriteRenderer>();
 		string numbersOnly = Regex.Replace(renderer.sprite.name, ".+[^0-9]", "");
 		//Debug.Log (int.Parse (numbersOnly));
-		ObjContents [int.Parse (numbersOnly)] = t;
+		contents [int.Parse (numbersOnly)] = t;
 		foreach (Transform pt in t) {
-			FindChildAndSetData(pt);
+			FindChildAndSetData(contents, pt);
 		}
 	}
 
-	public void CombineTexture2DAndGameObject(GameObject _, Texture2D texture) 
+	public static void CombineTexture2DAndGameObject(int spriteNum, Transform[] contents, Texture2D texture) 
 	{
-		if (ObjContents == null)
+		if (contents == null)
 			return;
 
-		for (int i=0; i<ObjContents.Length; i++) {
-			SpriteRenderer renderer = ObjContents[i].GetComponent<SpriteRenderer>();
+		Sprite[] newSprite = new Sprite[spriteNum];
+
+		for (int i=0; i<contents.Length; i++) {
+			SpriteRenderer renderer = contents[i].GetComponent<SpriteRenderer>();
 			string numbersOnly = Regex.Replace(renderer.sprite.name, ".+[^0-9]", "");
 			Bounds bounds =renderer.bounds;
-			Vector2 position = ObjContents[i].transform.position;
+			Vector2 position = contents[i].transform.position;
 			Vector2 min = bounds.min;
 			Vector2 size = bounds.size;
 			Vector2 offsetOfAbsolutePositionRelativelyToMinOfBounds = position - min;
@@ -110,31 +106,6 @@ public class ColorCapture2D : MonoBehaviour {
 		float yscale = sizeInCanvas.y * 1.0f / newSprite.height;
 		//print ("aaaaaaaaa : " + xscale + " " + yscale);
 
-//		for (int i=0; i<newSprite.height; i++) 
-//		{
-//			for (int j=0; j<newSprite.width; j++) 
-//			{	
-//				float u = (spriteInCanvasPos.x + (j * xscale)) * 1.0f / (canvasBg.width - 1);
-//				float v = (spriteInCanvasPos.y + (i * yscale)) * 1.0f / (canvasBg.height - 1);
-//
-//				if(i==newSprite.height - 1 && j == newSprite.width - 1)
-//				{
-//					print ("lalalal : " + u + " " + v);
-//					print ("x comp : " + spriteInCanvasPos.x + " " + j + " " + canvasTexture.width + " " + xscale);
-//					print ("y comp : " + spriteInCanvasPos.y + " " + i + " " + canvasTexture.height + " " + yscale);
-//				}
-//
-//				Color color = canvasTexture.GetPixelBilinear(u, v);
-//				if(color.r == 1.0f && color.g == 1.0f && color.b == 1.0f)
-//				{
-//					color.a = 0f;
-//				}
-//
-//				newSprite.SetPixel(j, i, color);
-//			}
-//		}
-
-#if ENABLE_DRAWABLE_AREA
 		//initialize with white color
 		for(int i=0;i<newSprite.height;i++)
 		{
@@ -149,7 +120,6 @@ public class ColorCapture2D : MonoBehaviour {
 			Color color = canvasTexture.GetPixelBilinear(mappings[i].canvasUV.x, mappings[i].canvasUV.y);
 			newSprite.SetPixel((int) (mappings[i].destUV.x * newSprite.width), (int) (mappings[i].destUV.y * newSprite.height), color);
 		}
-#endif
 		//apply lines
 		Color[] linesColor = lineTexture.GetPixels ();
 
@@ -172,9 +142,9 @@ public class ColorCapture2D : MonoBehaviour {
 		if(test != null)
 			test.renderer.material.mainTexture = newSprite;
 
-		gameController.SavePlayerCreation (newSprite, creationType);
+		gameController.SavePlayerCreation (newSprite, creationType, SpriteNum);
 
-		CombineTexture2DAndGameObject (TargetObj, newSprite);
+		CombineTexture2DAndGameObject (SpriteNum, ObjContents, newSprite);
 
 		//deactivate the drawable
 		GameObject.Find ("Drawable").SetActive (false);
