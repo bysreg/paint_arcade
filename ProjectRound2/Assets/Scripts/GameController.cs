@@ -199,19 +199,10 @@ public class GameController : MonoBehaviour {
 
 	bool CheckIsDrawable(float u, float v)
 	{
-		//fIXME
 		int x, y;
 		x = (int) (u * canvasBg.width);
 		y = (int) (v * canvasBg.height);
-		//x = (int) u;
-		//y = (int) v;
-		//return canvasDrawableAreaColors [u + v * canvasWidth].r <= 0.1;
-		//return canvasDrawableAreaColors [x + y * canvasWidth].r <= 0.1;
-		//print (x + " " + y);
-		//return canvasDrawableAreaColors [x + y * canvasBg.width].r <= 0.1; // 2
-		//return canvasDrawableArea.GetPixelBilinear (u, v).r > 0.;
 		return canvasDrawableArea.GetPixel (x, y).r == 0;
-//		return true;
 	}
 
 	void ConnectBrushPoint(PlayerHandData hand, Action<Vector2, Color, BrushShape> drawf, BrushShape brushShape)

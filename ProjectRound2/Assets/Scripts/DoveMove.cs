@@ -20,7 +20,7 @@ public class DoveMove : MonoBehaviour {
 		//print (deltaY);
 
 		//transform.position += -transform.right * speed * Time.deltaTime;
-		transform.position = new Vector3 (transform.position.x - speed * Time.deltaTime, deltaY, transform.position.z);
+		transform.position = new Vector3 (transform.position.x - speed * Time.deltaTime, deltaY + oriY, transform.position.z);
 	}
 
 }
