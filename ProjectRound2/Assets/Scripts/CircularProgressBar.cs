@@ -9,10 +9,12 @@ public class CircularProgressBar : MonoBehaviour {
 
 	public void Activate() {
 		Deactivate();
+		this.renderer.enabled = true;
 		StartCoroutine(RadialProgress(1));
 	}
 
 	public void Deactivate() {
+		this.renderer.enabled = false;
 		StopAllCoroutines();
 		currentProgress = 0;
 		gameObject.renderer.material.SetFloat("_Cutoff", 1f);
@@ -25,7 +27,6 @@ public class CircularProgressBar : MonoBehaviour {
 			gameObject.renderer.material.SetFloat("_Cutoff", 1-currentProgress);
 			yield return 0;
 		}
-		currentProgress = 1f;
-		gameObject.renderer.material.SetFloat("_Cutoff", currentProgress);
+		Deactivate ();
 	}
 }

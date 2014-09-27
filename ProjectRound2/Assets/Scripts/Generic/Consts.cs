@@ -8,12 +8,12 @@ namespace PaintArcade.Generic {
 		public static float kinectToCanvasScale = 1.2f;
 		public static int BrushSizeSmall = 4;
 		public static int BrushSizeMiddle = 8;
-		public static int BrushSizeLarge = 15;
-		public static int BrushSizeVeryLarge = 25;
+		public static int BrushSizeLarge = 13;
+		public static int BrushSizeVeryLarge = 20;
 		public static int EraserSizeSmall = 6;
 		public static int EraserSizeMiddle = 10;
-		public static int EraserSizeLarge = 18;
-		public static int EraserSizeVeryLarge = 27;
+		public static int EraserSizeLarge = 17;
+		public static int EraserSizeVeryLarge = 24;
 
 		public static float EraserSmallScale = 1f;
 		public static float BrushSmallScale = 1f;
