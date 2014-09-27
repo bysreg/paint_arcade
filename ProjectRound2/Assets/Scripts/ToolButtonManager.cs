@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using PaintArcade.Generic;
 
 namespace Kinect.Button {
 	public class ToolButtonManager : MonoBehaviour {
@@ -11,6 +12,7 @@ namespace Kinect.Button {
 		private bool simulateWithMouse; // need to fetch it from GameController
 
 		private ToolButton brushButton;
+		private SizeButton sizeButton;
 
 			// Use this for initialization
 		void Start () {
@@ -20,7 +22,12 @@ namespace Kinect.Button {
 				if(button.EToolID == PlayerHand.ETool.Brush && button.id == 0) {
 					brushButton = button;
 				}
+				if(button.id == -1) {
+					sizeButton = (SizeButton)button;
+				}
 			}
+
+			SelectFromUserDefault ();
 
 			GameObject gObj = GameObject.Find ("GameController");
 			if(gObj != null) {
@@ -31,6 +38,39 @@ namespace Kinect.Button {
 				}
 			} else {
 				Debug.Log("Cannot find game controller");
+			}
+
+		}
+
+		void SelectFromUserDefault() {
+			if (buttons.Length == 0) {
+				return;
+			}
+
+			ToolButton selectedColorButton = null;
+			ToolButton selectedShapeButton = null;
+
+			foreach (ToolButton button in buttons) {
+				if(button.toolType == ToolType.Colour && button.id == Consts.SelectedColorButtonID) {
+					selectedColorButton = button;
+				}
+
+				if(button.toolType == ToolType.Shape && button.id == Consts.SelectedShapeButtonID) {
+					selectedShapeButton = button;
+				}
+			}
+			if (selectedColorButton) {
+				selectedColorButton.SelectButton();
+				HandleColorButtonSelected(selectedColorButton.id, 1);
+			}
+
+			if (selectedShapeButton) {
+				selectedShapeButton.SelectButton();
+				HandleShapeButtonSelected(selectedShapeButton.id, 1);
+			}
+
+			if (sizeButton) {
+				sizeButton.SelectButtonIndex(Consts.SelectedSizeButtonIndex);
 			}
 
 		}
@@ -87,6 +127,8 @@ namespace Kinect.Button {
 					
 				}
 			}
+			Consts.SelectedColorButtonID = id; 
+
 		}
 
 		void HandleShapeButtonSelected(int id, int handID) {
@@ -111,6 +153,7 @@ namespace Kinect.Button {
 				}
 			}
 
+			Consts.SelectedShapeButtonID = id; 
 
 			if (t == PlayerHand.ETool.Brush) {
 				SoundManager.instance.PlayButtonSound (0);

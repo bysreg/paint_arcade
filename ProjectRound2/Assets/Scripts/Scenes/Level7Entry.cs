@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Kinect;
 
 public class Level7Entry : SceneEntry {
-
-	void Start () {
-		Screen.showCursor = false; //FIXME :
-		SoundManager.instance.PlayBGMusic (2);
+	public void Awake () {
+		AddToolButtonManager ();
+		base.Awake ();
+		Screen.showCursor = ShowCursor;
+		ActivateGameInSeconds (2f);
+		SceneManager.instance.NextSceneName = "";
+		SoundManager.instance.PlayBGMusic (4);	
 	}
 	
 	public override void ProcessDoneButton() {
@@ -14,6 +18,13 @@ public class Level7Entry : SceneEntry {
 			colorCapture2Ds[i].Impose();
 			colorCapture2Ds[i].TargetObj.SetActive(true);
 		}
+		
+		SoundManager.instance.PlayAnimationSound (0);
+		DeactivateGame ();
+		//Invoke ("LoadNext", 5f);
 	}
-
+	
+	void LoadNext() {
+		SceneManager.instance.asyncLoadNextSceneWithDelay (1f);
+	}
 }

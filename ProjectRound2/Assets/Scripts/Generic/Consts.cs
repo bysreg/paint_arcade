@@ -10,6 +10,9 @@ namespace PaintArcade.Generic {
 		public static int BrushSizeMiddle = 8;
 		public static int BrushSizeLarge = 15;
 		public static int BrushSizeVeryLarge = 25;
+		public static int SelectedShapeButtonID = 0;
+		public static int SelectedColorButtonID = 0;
+		public static int SelectedSizeButtonIndex = 0;
 
 	}
 }

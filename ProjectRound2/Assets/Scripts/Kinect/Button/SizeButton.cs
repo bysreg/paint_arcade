@@ -45,6 +45,8 @@ namespace Kinect.Button {
 				GameObject.Find ("GameController").GetComponent<GameController>().ChangeBrushRadius(Consts.BrushSizeVeryLarge);
 			}
 
+			Consts.SelectedSizeButtonIndex = brushIndex;
+
 			UpdateOutlook();
 			Invoke ("ReactivateButton", .3f);
 		}
@@ -55,6 +57,13 @@ namespace Kinect.Button {
 
 		void OnDestroy() {
 			CancelInvoke("ReactivateButton");
+		}
+
+		public void SelectButtonIndex(int index) {
+			brushIndex = index - 1;
+			if (brushIndex < 0)
+				brushIndex = maxIndex;
+			SelectButton ();
 		}
 	}
 

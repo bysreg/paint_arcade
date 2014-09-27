@@ -8,7 +8,7 @@ public class Level4Entry : SceneEntry {
 		base.Awake ();
 		Screen.showCursor = ShowCursor;
 		ActivateGameInSeconds (2f);
-		SceneManager.instance.NextSceneName = "Level2";
+		SceneManager.instance.NextSceneName = "Level7";
 		SoundManager.instance.PlayBGMusic (2);	
 	}
 
@@ -21,7 +21,7 @@ public class Level4Entry : SceneEntry {
 
 		SoundManager.instance.PlayAnimationSound (0);
 		DeactivateGame ();
-		//Invoke ("LoadNext", 5f);
+		Invoke ("LoadNext", 5f);
 	}
 
 	void LoadNext() {

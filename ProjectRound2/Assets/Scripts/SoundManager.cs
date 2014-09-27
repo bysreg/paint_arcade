@@ -12,7 +12,7 @@ public class SoundManager : MonoBehaviour {
 	public GameObject AnimationSoundPlayer;
 	public AudioSource AnimationSoundAudioSource;
 
-	private string[] bgMusic = new string[] {"IntroScreenBG", "BlankBGM", "BirdsBGM", "HouseBGM"};
+	private string[] bgMusic = new string[] {"IntroScreenBG", "BlankBGM", "BirdsBGM", "HouseBGM", "HumanBGM"};
 	private string bgMusicPath = "Sounds/BGMusic/";
 
 	private string[] buttonSound = new string[] {"BrushSelector", "CircleSelector", "ColourSelector", "EraserSelector"};
