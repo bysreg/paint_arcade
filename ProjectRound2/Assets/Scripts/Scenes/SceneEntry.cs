@@ -52,6 +52,12 @@ public abstract class SceneEntry : MonoBehaviour {
 		EnableToolButtonManagerInSeconds(t);
 	}
 
+	public void DeactivateGame() {
+		DisableKinect();
+		DisableMenuButtonManager();
+		DisableToolButtonManager();
+	}
+
 	void EnableMenuButtonManagerInSeconds(float t) {
 		if (mbmObj != null) {
 			mbmObj.SetActive(false);
@@ -62,6 +68,12 @@ public abstract class SceneEntry : MonoBehaviour {
 	void EnableMenuButtonManager() {
 		if (mbmObj != null) {
 			mbmObj.SetActive(true);
+		}
+	}
+
+	void DisableMenuButtonManager() {
+		if (mbmObj != null) {
+			mbmObj.SetActive(false);
 		}
 	}
 
@@ -79,6 +91,12 @@ public abstract class SceneEntry : MonoBehaviour {
 		}
 	}
 
+	void DisableToolButtonManager() {
+		if (tbmObj != null) {
+			tbmObj.SetActive(false);
+		}
+	}
+
 
 	void EnableKinectInSeconds(float t) {
 		if (kinectObj != null) {
@@ -91,6 +109,12 @@ public abstract class SceneEntry : MonoBehaviour {
 	void EnableKinect() {
 		if (kinectObj != null) {
 			kinectObj.SetActive(true);
+		}
+	}
+
+	void DisableKinect() {
+		if (kinectObj != null) {
+			kinectObj.SetActive(false);
 		}
 	}
 

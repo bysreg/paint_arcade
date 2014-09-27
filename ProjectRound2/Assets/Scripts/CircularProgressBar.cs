@@ -15,18 +15,18 @@ public class CircularProgressBar : MonoBehaviour {
 	public void Deactivate() {
 		StopAllCoroutines();
 		currentProgress = 0;
-		gameObject.renderer.material.SetFloat("_Cutoff", 1);
+		gameObject.renderer.material.SetFloat("_Cutoff", 0.99f);
 
 	}
 
 
 	IEnumerator RadialProgress(float time) {
 		float rate = 1 / time;
-		while (currentProgress < 0.99) {
+		while (currentProgress < 0.99f) {
 			currentProgress += Time.deltaTime * rate;
 			gameObject.renderer.material.SetFloat("_Cutoff", 1-currentProgress);
 			yield return 0;
 		}
-		gameObject.renderer.material.SetFloat("_Cutoff", 1);
+		gameObject.renderer.material.SetFloat("_Cutoff", 0.99f);
 	}
 }

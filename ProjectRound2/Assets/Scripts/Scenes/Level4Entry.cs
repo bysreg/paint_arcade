@@ -20,7 +20,8 @@ public class Level4Entry : SceneEntry {
 		}
 
 		SoundManager.instance.PlayAnimationSound (0);
-		Invoke ("LoadNext", 5f);
+		DeactivateGame ();
+		//Invoke ("LoadNext", 5f);
 	}
 
 	void LoadNext() {

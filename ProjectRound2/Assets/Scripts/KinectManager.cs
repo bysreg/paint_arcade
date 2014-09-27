@@ -58,21 +58,16 @@ namespace Kinect {
 				return;
 			}
 
-			rightHandMonitor = gameObject.AddComponent<RightHandMonitor>();
-			leftHandMonitor = gameObject.AddComponent<LeftHandMonitor>();
-
 			contextTracker = gameObject.AddComponent<ContextTracker>();
 			contextTracker.AssignSkeletonWrapper (SW, player);
 
+			rightHandMonitor = gameObject.AddComponent<RightHandMonitor>();
+			leftHandMonitor = gameObject.AddComponent<LeftHandMonitor>();
+		
 			canvasWidth = canvas.collider.bounds.size.x;
 			canvasHeight = canvas.collider.bounds.size.y;
 			canvasHeightToWidthRatio = canvasHeight / canvasWidth;
 
-			RightHand.pos = canvas.transform.position;
-			RightHand.transform.position = canvas.transform.position;
-
-			LeftHand.pos = canvas.transform.position;
-			LeftHand.transform.position = canvas.transform.position;
 		}
 		
 		// Update is called once per frame
@@ -108,7 +103,9 @@ namespace Kinect {
 			
 			LeftHand.prevIsHandDown = LeftHand.isHandDown;
 			LeftHand.prevPos = LeftHand.pos;
-			LeftHand.UpdatePosition(PaintPositionFromSkeletonPosition(pos, 2.5f, 0.4f));
+			Vector3 adjustedPos = PaintPositionFromSkeletonPosition (pos, 2.5f, 0.4f);
+			adjustedPos.x += LeftHand.collider.bounds.size.x * ((adjustedPos.x > 0)?-0.5f:0.5f);
+			LeftHand.UpdatePosition(adjustedPos);
 		}
 
 
@@ -119,7 +116,9 @@ namespace Kinect {
 
 			RightHand.prevIsHandDown = RightHand.isHandDown;
 			RightHand.prevPos = RightHand.pos;
-			RightHand.UpdatePosition(PaintPositionFromSkeletonPosition(pos, -1.5f, 0.4f));
+			Vector3 adjustedPos = PaintPositionFromSkeletonPosition(pos, -1.5f, 0.4f);
+			adjustedPos.x += RightHand.collider.bounds.size.x * ((adjustedPos.x > 0)?-0.5f:0.5f);
+			RightHand.UpdatePosition(adjustedPos);
 
 			if(playerStatus == PlayerStatus.Hold) {
 				RightHand.isHandDown = false;

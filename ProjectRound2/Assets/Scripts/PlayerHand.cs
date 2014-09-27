@@ -62,10 +62,7 @@ public class PlayerHand : MonoBehaviour{
 				this.transform.position = pos;
 			}
 
-		} else {
-			this.pos = pos;
-			this.transform.position = pos;
-		}
+		} 
 
 		if (mbmObj != null) {
 			MenuButtonManager mbm = mbmObj.GetComponent<MenuButtonManager>();
@@ -79,7 +76,9 @@ public class PlayerHand : MonoBehaviour{
 				this.transform.position = pos;
 			}
 			
-		} else {
+		} 
+
+		if (tbmObj == null && mbmObj == null) {
 			this.pos = pos;
 			this.transform.position = pos;
 		}

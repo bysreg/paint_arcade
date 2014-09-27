@@ -59,7 +59,7 @@ public class GameController : MonoBehaviour {
 		}
 
 		if(GUI.Button(new Rect(140, 40, 100, 35), "Next"))  {
-			Application.LoadLevel("Final");
+			Application.LoadLevel("Level4");
 		}
 	}
 

@@ -14,6 +14,7 @@ public class Level1Entry : SceneEntry {
 	}
 	
 	public override void ProcessDoneButton() {
+		DeactivateGame ();
 		Invoke ("LoadNext", 1f);
 	}
 	

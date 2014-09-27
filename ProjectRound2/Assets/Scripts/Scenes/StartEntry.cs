@@ -8,13 +8,14 @@ namespace TheBoxWorld.Scene {
 		public void Awake () {
 			AddMenuButtonManager ();
 			base.Awake ();
-			ActivateGameInSeconds (7f);
+			ActivateGameInSeconds (5f);
 			Screen.showCursor = ShowCursor;
 			SceneManager.instance.NextSceneName = "Level1";
 			SoundManager.instance.PlayBGMusic (0, false);	
 		}
 
 		public override void ProcessDoneButton() {
+			DeactivateGame ();
 			Invoke ("LoadNext", .5f);
 		}
 

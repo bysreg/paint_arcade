@@ -17,6 +17,7 @@ namespace Kinect {
 		private SkeletonWrapper trackedSkeleton;
 		private int trackingID;
 		private Dictionary <int, List <ContextPoint>> points;
+		private int index = 0;
 
 		public bool AssignSkeletonWrapper(SkeletonWrapper sw, int trackingID) {
 			this.trackingID = trackingID;
@@ -43,20 +44,22 @@ namespace Kinect {
 
 
 		public bool ReadSkeleton() {
+
 			if (trackedSkeleton.pollSkeleton ()) {
 				for (int i = 0; i < (int)Kinect.NuiSkeletonPositionIndex.Count; i ++) {
 					Add (i);
 				}
 			}
 
-			int maxIndex = points[0].Count-1;
-			if (maxIndex < windowSize-1)
+			if (index < windowSize - 1) {
+				index++;
 				return false;
+			}
 
 			return true;
 		}
 
-		void Start () {
+		void Awake () {
 			points = new Dictionary<int, List<ContextPoint>> ();
 		}
 
