@@ -9,6 +9,10 @@ public class SpawnAnimations : MonoBehaviour {
 	public Transform house;
 	public Transform human;
 
+	public Transform[] targetBirds;
+	public Transform[] targetHouses;
+	public Transform[] targetHumans;
+
 	void Start()
 	{
 		List<PlayerCreation> creations = GameController.GetSavedPlayerCreation ();
@@ -20,15 +24,15 @@ public class SpawnAnimations : MonoBehaviour {
 		{
 			if(creations[i].type == PlayerCreation.CreationType.Bird)
 			{
-				SpawnCreation(bird, creations[i]);
+				ReplaceTexture(targetBirds, creations[i]);
 			}
 			else if(creations[i].type == PlayerCreation.CreationType.Human)
 			{
-				SpawnCreation(human, creations[i]);
+				ReplaceTexture(targetHumans, creations[i]);
 			}
 			else if(creations[i].type == PlayerCreation.CreationType.House)
 			{
-				SpawnCreation(house, creations[i]);
+				ReplaceTexture(targetHouses, creations[i]);
             }
 		}
 	}
@@ -41,5 +45,16 @@ public class SpawnAnimations : MonoBehaviour {
 
 		ColorCapture2D.FindChildAndSetData(objContents, clone);
 		ColorCapture2D.CombineTexture2DAndGameObject (creation.spriteNum, objContents, creation.texture);
+	}
+
+	void ReplaceTexture(Transform[] targets, PlayerCreation creation)
+	{
+		for(int i=0;i<targets.Length;i++)
+		{
+			Transform[] objContents = new Transform[creation.spriteNum];
+			
+			ColorCapture2D.FindChildAndSetData(objContents, targets[i]);
+			ColorCapture2D.CombineTexture2DAndGameObject (creation.spriteNum, objContents, creation.texture);
+		}
 	}
 }
