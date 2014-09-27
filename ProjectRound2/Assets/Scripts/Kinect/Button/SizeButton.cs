@@ -26,23 +26,33 @@ namespace Kinect.Button {
 				SelectedTexture = BrushSizeSmallTexture;
 				HoverTexture = BrushSizeSmallTexture;
 				GameObject.Find ("GameController").GetComponent<GameController>().ChangeBrushRadius(Consts.BrushSizeSmall);
+				GameObject.Find ("GameController").GetComponent<GameController>().ChangeEraserRadius(Consts.EraserSizeSmall);
+				Consts.BrushCurrentExtraScale = Consts.BrushSmallScale;
+				Consts.EraserCurrentExtraScale = Consts.EraserSmallScale;
 			} else if(brushIndex == 1) {
 				UnselectedTexture = BrushSizeMiddleTexture;
 				SelectedTexture = BrushSizeMiddleTexture;
 				HoverTexture = BrushSizeMiddleTexture;
 				GameObject.Find ("GameController").GetComponent<GameController>().ChangeBrushRadius(Consts.BrushSizeMiddle);
-
+				GameObject.Find ("GameController").GetComponent<GameController>().ChangeEraserRadius(Consts.EraserSizeMiddle);
+				Consts.BrushCurrentExtraScale = Consts.BrushMiddleScale;
+				Consts.EraserCurrentExtraScale = Consts.EraserMiddleScale;
 			} else if(brushIndex == 2) {
 				UnselectedTexture = BrushSizeLargeTexture;
 				SelectedTexture = BrushSizeLargeTexture;
 				HoverTexture = BrushSizeLargeTexture;
 				GameObject.Find ("GameController").GetComponent<GameController>().ChangeBrushRadius(Consts.BrushSizeLarge);
-
+				GameObject.Find ("GameController").GetComponent<GameController>().ChangeEraserRadius(Consts.EraserSizeLarge);
+				Consts.BrushCurrentExtraScale = Consts.BrushLargeScale;
+				Consts.EraserCurrentExtraScale = Consts.EraserLargeScale;
 			} else if(brushIndex == 3) {
 				UnselectedTexture = BrushSizeVeryLargeTexture;
 				SelectedTexture = BrushSizeVeryLargeTexture;
 				HoverTexture = BrushSizeVeryLargeTexture;
 				GameObject.Find ("GameController").GetComponent<GameController>().ChangeBrushRadius(Consts.BrushSizeVeryLarge);
+				GameObject.Find ("GameController").GetComponent<GameController>().ChangeEraserRadius(Consts.EraserSizeVeryLarge);
+				Consts.BrushCurrentExtraScale = Consts.BrushVeryLargeScale;
+				Consts.EraserCurrentExtraScale = Consts.EraserVeryLargeScale;
 			}
 
 			Consts.SelectedSizeButtonIndex = brushIndex;

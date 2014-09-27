@@ -14,8 +14,8 @@ public class GameController : MonoBehaviour {
 	public PlayerHand KinectRightHand;
 	public Texture2D canvasBg; // mandatory
 	public Texture2D canvasDrawableArea;
-	public int brushRadius = 10;
-	public int eraserRadius = 20;
+	public int brushRadius = Consts.BrushSizeSmall;
+	public int eraserRadius = Consts.EraserSizeSmall;
 
 	Texture2D canvasTexture;
 	GameObject canvasObject;
@@ -100,15 +100,18 @@ public class GameController : MonoBehaviour {
 				hands[0].isHandDown = KinectRightHand.isHandDown;
 				hands[0].color = KinectRightHand.color;
 				hands[0].tool = KinectRightHand.tool;
-				
-				float x = KinectRightHand.transform.position.x - KinectRightHand.collider.bounds.size.x*.5f;
-				float y = KinectRightHand.transform.position.y + KinectRightHand.collider.bounds.size.y*1.5f;
+
+
+				float x = KinectRightHand.transform.position.x - canvasObject.transform.position.x;
+				float y = KinectRightHand.transform.position.y - canvasObject.transform.position.y;
+
 				float width = canvasObject.collider.bounds.size.x;
 				float height = canvasObject.collider.bounds.size.y;
-				int px = (int)((width*.5f+x)/width*canvasWidth+canvasObject.transform.position.x);
-				int py = (int)((height*.5f+y)/height*canvasHeight+canvasObject.transform.position.y);
-				
-				hands[0].pos = new Vector2(px - brushShape.width*.5f, py + brushShape.height*.5f);
+
+				int px = (int)((x/width+0.5f)*canvasWidth);
+				int py = (int)((y/height+0.5f)*canvasHeight);
+
+				hands[0].pos = new Vector2(px, py + brushShape.height*.5f);
 			}
 			
 		}

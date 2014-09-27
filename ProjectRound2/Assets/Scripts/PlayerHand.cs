@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Kinect.Button;
-
+using PaintArcade.Generic;
 
 public enum ETool {Brush = 0, Eraser, None};
 
@@ -23,7 +23,10 @@ public class PlayerHand : MonoBehaviour{
 	private MeshRenderer renderer;
 	private CircularProgressBar progressBar;
 
+	private Vector3 originalLocalScale;
+
 	private void Awake() {
+		originalLocalScale = transform.localScale;
 		renderer = GetComponent<MeshRenderer> ();
 		Transform pbObj = transform.FindChild ("ProgressBar");
 		if(pbObj != null) {
@@ -38,13 +41,16 @@ public class PlayerHand : MonoBehaviour{
 			} else {
 				renderer.material.mainTexture = BrushHoldTexture;
 			}
+			transform.localScale = originalLocalScale * Consts.BrushCurrentExtraScale;
 		} else if (tool == ETool.Eraser) {
 			if(isHandDown) {
 				renderer.material.mainTexture = EraserOperateTexture;
 			} else {
 				renderer.material.mainTexture = EraserHoldTexture;
 			}
+			transform.localScale = originalLocalScale * Consts.EraserCurrentExtraScale;
 		}
+
 	}
 
 	public void UpdatePosition(Vector3 pos) {
@@ -95,5 +101,4 @@ public class PlayerHand : MonoBehaviour{
 			progressBar.Deactivate();
 		}
 	}
-
 }
