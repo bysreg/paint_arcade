@@ -29,7 +29,7 @@ namespace PaintArcade.Generic {
 
 		public static int SelectedShapeButtonID = 0;
 		public static int SelectedColorButtonID = 0;
-		public static int SelectedSizeButtonIndex = 0;
+		public static int SelectedSizeButtonIndex = 1;
 
 	}
 }

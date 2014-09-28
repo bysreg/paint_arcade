@@ -9,7 +9,6 @@ namespace TheBoxWorld.Scene {
 			AddMenuButtonManager ();
 			base.Awake ();
 			ActivateGameInSeconds (5f);
-			Screen.showCursor = ShowCursor;
 			SceneManager.instance.NextSceneName = "Level1";
 			SoundManager.instance.PlayBGMusic (0, false);	
 		}

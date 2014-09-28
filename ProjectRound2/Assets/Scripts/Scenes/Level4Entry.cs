@@ -6,7 +6,6 @@ public class Level4Entry : SceneEntry {
 	public void Awake () {
 		AddToolButtonManager ();
 		base.Awake ();
-		Screen.showCursor = ShowCursor;
 		ActivateGameInSeconds (2f);
 		SceneManager.instance.NextSceneName = "Level7";
 		SoundManager.instance.PlayBGMusic (2);	
