@@ -3,6 +3,8 @@ using System.Collections;
 using Kinect;
 
 public class Level8Entry : SceneEntry {
+	public Transform flyingHouse;
+
 	public void Awake () {
 		AddToolButtonManager ();
 		base.Awake ();
@@ -16,6 +18,7 @@ public class Level8Entry : SceneEntry {
 		for (int i=0; i<colorCapture2Ds.Length; i++) {
 			colorCapture2Ds[i].Impose();
 			colorCapture2Ds[i].TargetObj.SetActive(true);
+			flyingHouse.gameObject.SetActive(true);
 		}
 
 		//SoundManager.instance.PlayAnimationSound (0);
