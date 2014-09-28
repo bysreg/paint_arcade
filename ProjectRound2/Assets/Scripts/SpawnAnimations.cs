@@ -31,7 +31,7 @@ public class SpawnAnimations : MonoBehaviour {
 				ReplaceTexture(targetHumans, creations[i]);
 			}
 			else if(creations[i].type == PlayerCreation.CreationType.House)
-			{
+			{	
 				ReplaceTexture(targetHouses, creations[i]);
             }
 		}
