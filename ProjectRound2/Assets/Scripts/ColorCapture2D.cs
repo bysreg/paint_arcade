@@ -142,7 +142,8 @@ public class ColorCapture2D : MonoBehaviour {
 		if(test != null)
 			test.renderer.material.mainTexture = newSprite;
 
-		gameController.SavePlayerCreation (newSprite, creationType, SpriteNum);
+		//gameController.SavePlayerCreation (newSprite, creationType, SpriteNum);
+		SavedCreations.creations.SavePlayerCreation (newSprite, creationType, SpriteNum);
 
 		CombineTexture2DAndGameObject (SpriteNum, ObjContents, newSprite);
 

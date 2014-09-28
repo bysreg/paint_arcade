@@ -24,14 +24,14 @@ public class GameController : MonoBehaviour {
 	BrushShape eraserShape;
 	PlayerHandData[] hands;
 	Color[] canvasDrawableAreaColors;
-	static List<PlayerCreation> savedPlayerCreations;
+	//static List<PlayerCreation> savedPlayerCreations;
 
 	void Awake()
 	{
 		canvasObject = GameObject.Find ("Canvas");
 		canvasBgObject = GameObject.Find ("CanvasBg");
 		hands = new PlayerHandData[maxHands];
-		savedPlayerCreations = new List<PlayerCreation> ();
+		//savedPlayerCreations = new List<PlayerCreation> ();
 	}
 
 	void Start()
@@ -378,12 +378,8 @@ public class GameController : MonoBehaviour {
 
 	public void SavePlayerCreation(Texture2D texture, PlayerCreation.CreationType type, int spriteNum)
 	{
-		savedPlayerCreations.Add(new PlayerCreation(texture, type, spriteNum));
+		//savedPlayerCreations.Add(new PlayerCreation(texture, type, spriteNum));
+		SavedCreations.creations.SavePlayerCreation (texture, type, spriteNum);
 	}
 
-	public static List<PlayerCreation> GetSavedPlayerCreation()
-	{
-		return savedPlayerCreations;
-	}
-	
 }

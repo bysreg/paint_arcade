@@ -15,7 +15,7 @@ public class SpawnAnimations : MonoBehaviour {
 
 	void Start()
 	{
-		List<PlayerCreation> creations = GameController.GetSavedPlayerCreation ();
+		List<PlayerCreation> creations = SavedCreations.creations.GetSavedPlayerCreation ();
 
 		if (creations == null)
 			return;
