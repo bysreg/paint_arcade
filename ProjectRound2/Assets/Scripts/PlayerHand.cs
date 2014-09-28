@@ -64,9 +64,10 @@ public class PlayerHand : MonoBehaviour{
 			ToolButtonManager tbm = tbmObj.GetComponent<ToolButtonManager>();
 			ToolButton button = tbm.NearstestButton(pos);
 			if(button != null) {
-				Vector3 p = pos *.4f + button.transform.position *.6f;
-				this.pos = p;
-				this.transform.position = p;
+				Vector3 fixedPos = pos *.25f + button.transform.position *.75f;
+				fixedPos.z = pos.z;
+				this.pos = fixedPos;
+				this.transform.position = fixedPos;
 			} else {
 				this.pos = pos;
 				this.transform.position = pos;
@@ -78,9 +79,10 @@ public class PlayerHand : MonoBehaviour{
 			MenuButtonManager mbm = mbmObj.GetComponent<MenuButtonManager>();
 			MenuButton button = mbm.NearstestButton(pos);
 			if(button != null) {
-				Vector3 p = pos *.4f + button.transform.position *.6f;
-				this.pos = p;
-				this.transform.position = p;
+				Vector3 fixedPos = pos *.25f + button.transform.position *.75f;
+				fixedPos.z = pos.z;
+				this.pos = fixedPos;
+				this.transform.position = fixedPos;
 			} else {
 				this.pos = pos;
 				this.transform.position = pos;

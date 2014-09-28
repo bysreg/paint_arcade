@@ -104,7 +104,7 @@ namespace Kinect {
 			LeftHand.UpdateOutLook ();
 
 			Vector3 pos = leftHandMonitor.GetHandPosition();
-			pos.z = canvas.transform.position.z;
+			pos.z = canvas.transform.position.z - 0.05f;
 			
 			LeftHand.prevIsHandDown = LeftHand.isHandDown;
 			LeftHand.prevPos = LeftHand.pos;
@@ -117,7 +117,7 @@ namespace Kinect {
 		void syncRightHand() {
 	
 			Vector3 pos = rightHandMonitor.GetHandPosition();
-			pos.z = canvas.transform.position.z;
+			pos.z = canvas.transform.position.z - 0.05f;
 
 			RightHand.prevIsHandDown = RightHand.isHandDown;
 			RightHand.prevPos = RightHand.pos;
