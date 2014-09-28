@@ -27,6 +27,7 @@ public class Level8Entry : SceneEntry {
 	}
 
 	void LoadNext() {
+		SoundManager.instance.PlayButtonSound (6);
 		SceneManager.instance.asyncLoadNextSceneWithDelay (1f);
 	}
 }

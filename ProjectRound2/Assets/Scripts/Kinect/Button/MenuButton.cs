@@ -79,6 +79,7 @@ namespace Kinect.Button {
 			if (id == 0) {
 				Application.Quit();
 			} else if (id == 1) {
+				SoundManager.instance.PlayButtonSound (4);
 				SceneEntry entry = GameObject.FindGameObjectWithTag ("scene_entry").GetComponent<SceneEntry>();
 				entry.ProcessDoneButton ();
 			}
@@ -89,8 +90,8 @@ namespace Kinect.Button {
 			if (id == 0) {
 				Application.Quit();
 			} else if (id == 1) {
-				SceneManager.instance.asyncLoadScene("Level1");
 				SoundManager.instance.PlayButtonSound (4);
+				SceneManager.instance.asyncLoadScene("Level1");
 			}
 		}
 

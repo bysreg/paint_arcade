@@ -29,6 +29,7 @@ namespace Kinect.Button {
 		public ToolType toolType;
 		public ETool EToolID;
 		public string ColorName;
+		public bool ShowSelectAnimation = true;
 		
 		public ButtonStatus buttonStatus = ButtonStatus.Unselected;
 		private MeshRenderer renderer;
@@ -68,7 +69,8 @@ namespace Kinect.Button {
 				if(timer > hoverTime) {
 					SelectButton();
 					onButtonSelected(id, handID, toolType);
-					StartCoroutine(PlaySelectAnimation());
+					if(ShowSelectAnimation)
+						StartCoroutine(PlaySelectAnimation());
 				}
 			} else {
 				timer = 0f;
@@ -128,6 +130,7 @@ namespace Kinect.Button {
 		}
 
 		IEnumerator PlaySelectAnimation() {
+			Debug.Log ("Animation");
 			float x = 0f;
 			while(x<0.5f) {
 				transform.localScale = Vector3.Lerp(originalScale *0.9f, originalScale*1.05f, x*2f);
