@@ -91,7 +91,6 @@ public class KinectSensor : MonoBehaviour, KinectInterface {
 		if (KinectSensor.instance != null)
 		{
 			Debug.Log("There should be only one active instance of the KinectSensor component at at time.");
-			KinectSensor.instance = null;
 		}
 		try
 		{

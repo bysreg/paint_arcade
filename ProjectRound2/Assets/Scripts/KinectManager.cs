@@ -16,7 +16,7 @@ namespace Kinect {
 
 		public bool SimulateWithKeyBoard;
 
-		public SkeletonWrapper SW;
+		private SkeletonWrapper SW;
 		public int player;
 		public PlayerHand RightHand;
 		public PlayerHand LeftHand;
@@ -43,8 +43,10 @@ namespace Kinect {
 				this.enabled = false;
 				return ;
 			}
-			
-			if (SW == null) {
+
+			SW = GameObject.FindObjectOfType<SkeletonWrapper> ();
+
+			if (SW == null && !SimulateWithKeyBoard) {
 				Debug.Log ("Can't find skeleton wrapper.");
 				this.enabled = false;
 				return;
