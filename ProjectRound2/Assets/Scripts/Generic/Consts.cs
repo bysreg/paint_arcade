@@ -6,6 +6,7 @@ namespace PaintArcade.Generic {
 		public static float KinectDrawingSmoothFactor = 0.2f; // 0~1.0
 		public static float ValidOperateDistanceScale = 1f; //hand hold/draw state
 		public static float kinectToCanvasScale = 1.2f;
+		public static float ProgressBarSelectionTime = 0.7f;
 		public static int BrushSizeSmall = 4;
 		public static int BrushSizeMiddle = 8;
 		public static int BrushSizeLarge = 13;

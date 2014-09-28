@@ -108,7 +108,7 @@ namespace Kinect {
 			
 			LeftHand.prevIsHandDown = LeftHand.isHandDown;
 			LeftHand.prevPos = LeftHand.pos;
-			Vector3 adjustedPos = PaintPositionFromSkeletonPosition (pos, 2.5f, 0.4f);
+			Vector3 adjustedPos = PaintPositionFromSkeletonPosition (pos, 3.2f, 0.45f);
 			adjustedPos.x += LeftHand.collider.bounds.size.x * ((adjustedPos.x > 0)?-0.5f:0.5f);
 			LeftHand.UpdatePosition(adjustedPos);
 		}
@@ -121,7 +121,7 @@ namespace Kinect {
 
 			RightHand.prevIsHandDown = RightHand.isHandDown;
 			RightHand.prevPos = RightHand.pos;
-			Vector3 adjustedPos = PaintPositionFromSkeletonPosition(pos, -1.5f, 0.4f);
+			Vector3 adjustedPos = PaintPositionFromSkeletonPosition(pos, -1.7f, 0.45f);
 			adjustedPos.x += RightHand.collider.bounds.size.x * ((adjustedPos.x > 0)?-0.5f:0.5f);
 			RightHand.UpdatePosition(adjustedPos);
 

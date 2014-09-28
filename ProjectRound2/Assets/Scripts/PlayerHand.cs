@@ -14,6 +14,7 @@ public class PlayerHand : MonoBehaviour{
 	public bool prevIsHandDown;
 	public ETool tool = ETool.Brush;
 	public Color color = Color.black;
+	public bool FixedSize = false;
 
 	public Texture BrushOperateTexture;
 	public Texture BrushHoldTexture;
@@ -41,14 +42,16 @@ public class PlayerHand : MonoBehaviour{
 			} else {
 				renderer.material.mainTexture = BrushHoldTexture;
 			}
-			transform.localScale = originalLocalScale * Consts.BrushCurrentExtraScale;
+			if(!FixedSize)
+				transform.localScale = originalLocalScale * Consts.BrushCurrentExtraScale;
 		} else if (tool == ETool.Eraser) {
 			if(isHandDown) {
 				renderer.material.mainTexture = EraserOperateTexture;
 			} else {
 				renderer.material.mainTexture = EraserHoldTexture;
 			}
-			transform.localScale = originalLocalScale * Consts.EraserCurrentExtraScale;
+			if(!FixedSize)
+				transform.localScale = originalLocalScale * Consts.EraserCurrentExtraScale;
 		}
 
 	}

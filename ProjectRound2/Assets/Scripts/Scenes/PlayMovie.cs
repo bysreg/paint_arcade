@@ -21,6 +21,7 @@ namespace Kinect.Scene {
 		
 		void playMovie() {
 			movieTexture.Play ();
+			SoundManager.instance.PlayBGMusic (0, false);	
 		}
 		
 		void showStart() {

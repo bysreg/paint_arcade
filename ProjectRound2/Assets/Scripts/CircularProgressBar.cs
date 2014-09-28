@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using PaintArcade.Generic;
 
 public class CircularProgressBar : MonoBehaviour {
 	private float currentProgress;
@@ -11,7 +12,7 @@ public class CircularProgressBar : MonoBehaviour {
 	public void Activate() {
 		Deactivate();
 		this.renderer.enabled = true;
-		StartCoroutine(RadialProgress(1));
+		StartCoroutine(RadialProgress(Consts.ProgressBarSelectionTime));
 	}
 
 	public void Deactivate() {

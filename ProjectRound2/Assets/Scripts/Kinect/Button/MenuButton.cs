@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Kinect;
+using PaintArcade.Generic;
 
 namespace Kinect.Button {
 
@@ -28,7 +29,7 @@ namespace Kinect.Button {
 			float y = transform.position.y - height * .5f * .95f;
 			validRect = new Rect (x, y, width * .9f, height * .9f);
 			timer = 0f;
-			hoverTime = 1f;
+			hoverTime = Consts.ProgressBarSelectionTime;
 			originalScale = transform.localScale;
 		}
 		

@@ -10,7 +10,6 @@ namespace TheBoxWorld.Scene {
 			base.Awake ();
 			ActivateGameInSeconds (5f);
 			SceneManager.instance.NextSceneName = "Level1";
-			SoundManager.instance.PlayBGMusic (0, false);	
 		}
 
 		public override void ProcessDoneButton() {
