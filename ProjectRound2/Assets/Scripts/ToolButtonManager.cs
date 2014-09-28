@@ -134,7 +134,8 @@ namespace Kinect.Button {
 				}
 			}
 
-			Consts.SelectedShapeButtonID = id; 
+			if(id != -1)
+				Consts.SelectedShapeButtonID = id; 
 
 			if (t == ETool.Brush) {
 				SoundManager.instance.PlayButtonSound (0);
@@ -159,7 +160,7 @@ namespace Kinect.Button {
 				}
 			}
 
-			if (minDistance < .5f)
+			if (minDistance < .6f)
 				return button;
 
 			return null;
