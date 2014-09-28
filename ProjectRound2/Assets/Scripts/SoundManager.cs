@@ -15,7 +15,7 @@ public class SoundManager : MonoBehaviour {
 	private string[] bgMusic = new string[] {"IntroScreenBG", "BlankBGM", "BirdsBGM", "HouseBGM", "HumanBGM"};
 	private string bgMusicPath = "Sounds/BGMusic/";
 
-	private string[] buttonSound = new string[] {"BrushSelector", "CircleSelector", "ColourSelector", "EraserSelector"};
+	private string[] buttonSound = new string[] {"BrushSelector", "CircleSelector", "ColourSelector", "EraserSelector", "MenuSelector", "BrushSizeSelector", "DoneButtonSelector"};
 	private string buttonSoundPath = "Sounds/ButtonSound/";
 
 	private string[] animationSound = new string[] {"BirdSounds"};

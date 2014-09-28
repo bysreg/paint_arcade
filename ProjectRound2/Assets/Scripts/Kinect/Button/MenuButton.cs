@@ -86,11 +86,11 @@ namespace Kinect.Button {
 		}
 
 		void OnMouseDown() {
-			//TODO:for temp test
 			if (id == 0) {
 				Application.Quit();
 			} else if (id == 1) {
 				SceneManager.instance.asyncLoadScene("Level1");
+				SoundManager.instance.PlayButtonSound (4);
 			}
 		}
 

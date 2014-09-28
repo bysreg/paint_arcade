@@ -134,8 +134,12 @@ namespace Kinect.Button {
 				}
 			}
 
-			if(id != -1)
+			if (id == -1) {
+				SoundManager.instance.PlayButtonSound (5);
+			} else {
 				Consts.SelectedShapeButtonID = id; 
+			}
+
 
 			if (t == ETool.Brush) {
 				SoundManager.instance.PlayButtonSound (0);
@@ -145,6 +149,7 @@ namespace Kinect.Button {
 		}
 
 		void HandleSystemButtonSelected(int id, int handID) {
+			SoundManager.instance.PlayButtonSound (6);
 			SceneEntry entry = GameObject.FindGameObjectWithTag ("scene_entry").GetComponent<SceneEntry>();
 			entry.ProcessDoneButton ();
 		}
