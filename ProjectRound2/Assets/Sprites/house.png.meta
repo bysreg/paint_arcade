@@ -47,10 +47,10 @@ TextureImporter:
     - name: house_0
       rect:
         serializedVersion: 2
-        x: 215
-        y: 31
-        width: 605
-        height: 365
+        x: 10
+        y: 14
+        width: 1008
+        height: 610
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
