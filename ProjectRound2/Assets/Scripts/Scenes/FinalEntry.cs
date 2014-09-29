@@ -5,9 +5,8 @@ using Kinect;
 public class FinalEntry : SceneEntry {
 	public void Awake () {
 		SceneManager.instance.NextSceneName = "CreditScene";
-		//SoundManager.instance.PlayBGMusic (4);
+		SoundManager.instance.PlayBGMusic (5);	
 		Invoke ("LoadNext", 10f);
-
 	}
 	
 	public override void ProcessDoneButton() {

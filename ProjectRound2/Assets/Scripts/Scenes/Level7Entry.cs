@@ -18,7 +18,7 @@ public class Level7Entry : SceneEntry {
 			colorCapture2Ds[i].TargetObj.SetActive(true);
 		}
 		
-		//SoundManager.instance.PlayAnimationSound (0);
+		SoundManager.instance.PlayAnimationSound (2);
 		DeactivateGame ();
 		Invoke ("LoadNext", 5f);
 	}

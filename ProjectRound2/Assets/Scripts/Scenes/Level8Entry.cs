@@ -21,7 +21,7 @@ public class Level8Entry : SceneEntry {
 			flyingHouse.gameObject.SetActive(true);
 		}
 
-		//SoundManager.instance.PlayAnimationSound (0);
+		SoundManager.instance.PlayAnimationSound (1);
 		DeactivateGame ();
 		Invoke ("LoadNext", 5f);
 	}
