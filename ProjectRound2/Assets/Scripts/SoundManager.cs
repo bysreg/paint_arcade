@@ -49,14 +49,18 @@ public class SoundManager : MonoBehaviour {
 		BGPlayer = new GameObject("BGPlayer");
 		BGPlayer.transform.parent = transform;
 		BGPlayerAudioSouce = BGPlayer.AddComponent<AudioSource> ();
+		BGPlayerAudioSouce.volume = 0.55f;
 
 		ButtonSoundPlayer = new GameObject("ButtonSoundPlayer");
 		ButtonSoundPlayer.transform.parent = transform;
 		ButtonSoundAudioSource = ButtonSoundPlayer.AddComponent<AudioSource> ();
+		ButtonSoundAudioSource.volume = 0.9f;
 
 		AnimationSoundPlayer = new GameObject("AnimationSoundPlayer");
 		AnimationSoundPlayer.transform.parent = transform;
 		AnimationSoundAudioSource = AnimationSoundPlayer.AddComponent<AudioSource> ();
+		AnimationSoundAudioSource.volume = 1f;
+
 	}
 
 	public void PlayBGMusic(int index, bool ifLoop) {
@@ -84,6 +88,12 @@ public class SoundManager : MonoBehaviour {
 		Debug.Log (newClip);
 		AnimationSoundAudioSource.clip = newClip;
 		AnimationSoundAudioSource.Play();
+	}
+
+	public void StopAllAudio() {
+		AnimationSoundAudioSource.Stop ();
+		ButtonSoundAudioSource.Stop ();
+		BGPlayerAudioSouce.Stop ();
 	}
 	
 }

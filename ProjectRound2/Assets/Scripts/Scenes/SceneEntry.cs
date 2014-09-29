@@ -9,13 +9,14 @@ public abstract class SceneEntry : MonoBehaviour {
 	protected GameObject kinectObj;
 	protected GameObject tbmObj;
 	protected GameObject mbmObj;
+	protected GameObject gcObj;
 	public bool ShowCursor;
 
 	protected void Awake() {
 		kinectObj = GameObject.FindGameObjectWithTag("kinect");
 		tbmObj = GameObject.FindGameObjectWithTag("tool_button_manager");
 		mbmObj = GameObject.FindGameObjectWithTag("menu_button_manager");
-
+		gcObj = GameObject.FindGameObjectWithTag ("GameController");
 		Screen.showCursor = ShowCursor;
 	}
 
@@ -50,6 +51,7 @@ public abstract class SceneEntry : MonoBehaviour {
 		EnableKinectInSeconds(t);
 		EnableMenuButtonManagerInSeconds(t);
 		EnableToolButtonManagerInSeconds(t);
+		EnableGameControllerInSeconds(t+1f);
 	}
 
 	public void DeactivateGame() {
@@ -83,6 +85,22 @@ public abstract class SceneEntry : MonoBehaviour {
 			Invoke("EnableToolButtonManager", t);
 		}
 		
+	}
+
+	void EnableGameControllerInSeconds(float t) {
+		if (gcObj != null) {
+			Invoke("EnableGameController", t);
+		}
+		
+	}
+
+	void EnableGameController() {
+		if (gcObj != null) {
+			GameController controller = gcObj.GetComponent<GameController>();
+			if(controller != null) { 
+				controller.SetActivate();
+			}
+		}
 	}
 	
 	void EnableToolButtonManager() {

@@ -17,6 +17,8 @@ public class GameController : MonoBehaviour {
 	public int brushRadius = Consts.BrushSizeSmall;
 	public int eraserRadius = Consts.EraserSizeSmall;
 
+	private bool isActivate = false;
+
 	Texture2D canvasTexture;
 	GameObject canvasObject;
 	GameObject canvasBgObject;
@@ -67,6 +69,9 @@ public class GameController : MonoBehaviour {
 	{
 		HandleKeyPress ();
 
+		if (!isActivate && !simulateWithMouse)
+			return;
+
 		if (simulateWithMouse) 
 		{
 			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
@@ -100,22 +105,22 @@ public class GameController : MonoBehaviour {
 				hands[0].isHandDown = KinectRightHand.isHandDown;
 				hands[0].color = KinectRightHand.color;
 				hands[0].tool = KinectRightHand.tool;
-
-
+				
+				
 				float x = KinectRightHand.transform.position.x - canvasObject.transform.position.x;
 				float y = KinectRightHand.transform.position.y - canvasObject.transform.position.y;
-
+				
 				float width = canvasObject.collider.bounds.size.x;
 				float height = canvasObject.collider.bounds.size.y;
-
+				
 				int px = (int)((x/width+0.5f)*canvasWidth);
 				int py = (int)((y/height+0.5f)*canvasHeight);
-
+				
 				hands[0].pos = new Vector2(px, py + brushShape.height*.5f);
 			}
 			
 		}
-
+		
 		for (int i=0; i<maxHands; i++) 
 		{
 			if (hands [i].isHandDown) 
@@ -382,4 +387,8 @@ public class GameController : MonoBehaviour {
 		SavedCreations.creations.SavePlayerCreation (texture, type, spriteNum);
 	}
 
+	public void SetActivate() {
+		Debug.Log ("GameController SetActivate");
+		isActivate = true;
+	}
 }

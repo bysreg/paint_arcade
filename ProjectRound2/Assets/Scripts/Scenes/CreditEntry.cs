@@ -7,7 +7,7 @@ public class CreditEntry : SceneEntry {
 		AddToolButtonManager ();
 		base.Awake ();
 		ActivateGameInSeconds (2f);
-		//SoundManager.instance.PlayBGMusic (4);	
+		SoundManager.instance.PlayBGMusic (1);	
 	}
 	
 	public override void ProcessDoneButton() {
