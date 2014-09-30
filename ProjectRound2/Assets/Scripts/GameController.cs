@@ -50,19 +50,19 @@ public class GameController : MonoBehaviour {
 
 	void OnGUI()
 	{
-		if(GUI.Button(new Rect(20, 40, 100, 35), "Done"))  {
-			ColorCapture2D[] colorCapture2Ds = GetComponents<ColorCapture2D>();
-			for(int i=0; i<colorCapture2Ds.Length;i++)
-			{
-				colorCapture2Ds[i].Impose();
-				//activate that object
-				colorCapture2Ds[i].TargetObj.SetActive(true);
-			}
-		}
-
-		if(GUI.Button(new Rect(140, 40, 100, 35), "Next"))  {
-			Application.LoadLevel("Final");
-		}
+//		if(GUI.Button(new Rect(20, 40, 100, 35), "Done"))  {
+//			ColorCapture2D[] colorCapture2Ds = GetComponents<ColorCapture2D>();
+//			for(int i=0; i<colorCapture2Ds.Length;i++)
+//			{
+//				colorCapture2Ds[i].Impose();
+//				//activate that object
+//				colorCapture2Ds[i].TargetObj.SetActive(true);
+//			}
+//		}
+//
+//		if(GUI.Button(new Rect(140, 40, 100, 35), "Next"))  {
+//			Application.LoadLevel("Final");
+//		}
 	}
 
 	void Update()
